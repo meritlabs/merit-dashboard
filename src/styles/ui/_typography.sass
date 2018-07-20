@@ -1,0 +1,30 @@
+.main-header
+  +font(900, 24px, 30px, $title-color)
+  letter-spacing: .4px
+  margin-bottom: 30px
+
+.title
+  &--primary
+    +font(900, 24px, 30px, $title-color)
+    letter-spacing: .4px
+  &--secondary
+    +font(500, 20px, 30px, $title-color)
+    letter-spacing: .4px
+.ui-wysiwyg
+  +font(300, 16px, 24px, $gun-metal)
+  p
+    margin-bottom: 24px
+  &__heading
+    font-weight: 500
+    +chageFontSize(18px, 22px)
+.ui-wysiwyg--log
+  p
+    margin-bottom: 10px
+  .error
+    color: $rose-pink
+  .warn
+    color: $yellow
+  .info
+    color: $blue
+  .debug
+    color: $dark-grey-blue

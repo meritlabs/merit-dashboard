@@ -1,0 +1,50 @@
+=clear-fix
+  &:after
+    content: ""
+    display: block
+    clear: both
+    width: 100%
+    height: 1px
+    margin-bottom: -1px
+
+=font($weight: default, $size: 17px, $height: 20px, $color: default, $style: normal, $decoration: none, $transform: none, $family: default)
+  font-size: $size
+  line-height: $height
+  @if $color != default
+    color: $color
+
+  @if $family != default
+    font-family: $family
+
+  @if $weight != default
+    font-weight: $weight
+
+  @if $style != normal
+    font-style: $style
+
+  @if $decoration != none
+    text-decoration: $decoration
+
+  @if $transform != none
+    text-transform: $transform
+
+  text-rendering: geometricPrecision
+  opacity: 0.99999
+
+=chageFontSize($size, $height: null)
+  font-size: $size
+  @if $height != null
+    line-height: $height
+
+=transition($speed, $type)
+  transition: all $speed $type
+
+=resetForAbsoluteCentering()
+  top: 0
+  right: 0
+  left: 0
+  bottom: 0
+
+=display($value)
+  &:not([hidden])
+    display: $value
