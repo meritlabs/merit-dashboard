@@ -4,12 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AppHeaderComponent } from './core/components/app-header/app-header.component';
-import { MainComponent } from './core/main/main.component';
+import { RankViewComponent } from './core/rank-view/rank-view.component';
 
-const appRoutes: Routes = [{ path: '', component: MainComponent }];
+const appRoutes: Routes = [{ path: '', component: RankViewComponent }];
 
 @NgModule({
-  declarations: [AppComponent, AppHeaderComponent, MainComponent],
+  declarations: [AppComponent, AppHeaderComponent, RankViewComponent],
   imports: [
     BrowserModule,
     RouterModule.forRoot(
