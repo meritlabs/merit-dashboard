@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from '@dashboard/desktop/app/app-routing.module';
 import { AppComponent } from '@dashboard/desktop/app/app.component';
 import { LoggerService } from '@dashboard/common/services/logger.service';
+import { RanksService } from '@dashboard/common/services/rank.service.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n');
@@ -21,7 +22,7 @@ export function loadConfigs() {
 }
 
 export function getProviders() {
-  return [LoggerService];
+  return [LoggerService, RanksService];
 }
 
 @NgModule({
