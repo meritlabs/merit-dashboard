@@ -6,3 +6,6 @@
     wealth.
   </p>
 </div>
+<div *ngFor="let item of ranks.ranks">
+  {{item.rank}} / {{item.alias || item.address}}
+</div>

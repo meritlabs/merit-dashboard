@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RanksService } from '../../../common/services/rank.service.service';
 
 @Component({
   selector: 'app-rank-view',
@@ -6,7 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./rank-view.component.scss'],
 })
 export class RankViewComponent implements OnInit {
-  constructor() {}
+  constructor(private ranksService: RanksService) {}
 
-  ngOnInit() {}
+  ranks: any;
+  async ngOnInit() {
+    this.ranks = await this.ranksService.getRank(100).toPromise();
+  }
 }
