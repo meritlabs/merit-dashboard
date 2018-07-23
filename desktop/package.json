@@ -1,0 +1,46 @@
+{
+  "name": "merit-dashboard-desktop",
+  "version": "0.0.1",
+  "description": "Merit dashboard web app",
+  "homepage": "https://github.com/meritlabs/dashboard-ui",
+  "authors": [
+    "Merit Labs"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "start": "webpack-dev-server --port=4200",
+    "build": "webpack",
+    "postinstall": "rm -rf ./node_modules/rxjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meritlabs/dashboard-ui"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@angular-devkit/core": "0.3.2",
+    "@angular/cli": "~1.7.1",
+    "@angular/compiler-cli": "5.0.3",
+    "@angular/language-service": "5.0.3",
+    "@ngtools/webpack": "1.10.1",
+    "autoprefixer": "^7.2.3",
+    "circular-dependency-plugin": "^4.2.1",
+    "copy-webpack-plugin": "~4.4.1",
+    "file-loader": "^1.1.5",
+    "html-webpack-plugin": "^2.29.0",
+    "istanbul-instrumenter-loader": "^3.0.0",
+    "postcss-import": "^11.0.0",
+    "postcss-loader": "^2.0.10",
+    "postcss-url": "^7.1.2",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.1",
+    "typescript": "2.4.2",
+    "uglify-js": "github:mishoo/UglifyJS2#harmony",
+    "uglifyjs-webpack-plugin": "^1.2.4",
+    "url-loader": "^0.6.2",
+    "webpack": "~3.11.0",
+    "webpack-dev-server": "2.11.0"
+  }
+}

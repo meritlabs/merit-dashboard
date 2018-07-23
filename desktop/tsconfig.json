@@ -1,0 +1,33 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "baseUrl": ".",
+    "paths": {
+      "@app/env": [
+        "../common/environments/environment.ts"
+      ],
+      "@dashboard/common/*": [
+        "../common/*"
+      ],
+      "@dashboard/desktop/*": [
+        "./src/*"
+      ]
+    },
+    "typeRoots": [
+      "../node_modules/@types",
+      "../node_modules/@firebase/app-types",
+      "../node_modules/@firebase/messaging-types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ]
+  }
+}
