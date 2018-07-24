@@ -8,7 +8,7 @@ export interface IAppState {
 
 const INITIAL_STATE: IAppState = {
   loading: true,
-  ranks: new Ranks(100, 0, 0),
+  ranks: new Ranks(false, 100, 0, 0),
 };
 
 export enum AppReducerActionType {
