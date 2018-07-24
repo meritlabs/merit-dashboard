@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AppHeaderComponent } from '@dashboard/desktop/app/core/components/app-header/app-header.component';
+import { AppHeaderComponent } from '@dashboard/desktop/app/core/components/app-sidebar/app-sidebar.component';
 import { RankItemComponent } from '@dashboard/desktop/app/core/components/rank/rank-item/rank-item.component';
 import { LoadingSpinnerComponent } from '@dashboard/desktop/app/core/components/loading-spinner/loading-spinner-small.component';
 
