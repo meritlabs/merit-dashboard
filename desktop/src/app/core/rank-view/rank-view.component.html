@@ -6,6 +6,7 @@
     wealth.
   </p>
 </div>
+
 <div class="ranksTable">
   <div class="header">
     <div class="cell cell-xs">
@@ -18,5 +19,15 @@
       Score
     </div>
   </div>
-  <app-rank-item *ngFor="let item of (ranks$ | async)?.ranks" [item]=item></app-rank-item>
+  <ng-container *ngIf="!(ranks$ | async).loading; else loading">
+    <app-rank-item *ngFor="let item of (ranks$ | async)?.ranks" [item]=item></app-rank-item>
+  </ng-container>
+  <ng-template #loading>
+    <div class="tableLoading text-italic text-center">
+      <div class="title-secondary">
+        <p>Loading table...</p>
+      </div>
+      <loading-spinner></loading-spinner>
+    </div>
+  </ng-template>
 </div>

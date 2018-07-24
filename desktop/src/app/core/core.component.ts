@@ -18,7 +18,8 @@ export class CoreComponent {
   constructor(private store: Store<IAppState>, public ranksService: RanksService) {}
 
   async ngOnInit() {
-    let ranks = await this.ranksService.getRank(100).toPromise();
-    this.store.dispatch(new LoadRanks(ranks as IRanks));
+    let ranks = (await this.ranksService.getRank(100).toPromise()) as IRanks;
+    ranks.loading = false;
+    this.store.dispatch(new LoadRanks(ranks));
   }
 }

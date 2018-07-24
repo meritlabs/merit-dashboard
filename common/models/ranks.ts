@@ -1,4 +1,5 @@
 export interface IRanks {
+  loading: boolean;
   limit: number;
   lotteryanv: number;
   lotteryentrants: number;
@@ -15,7 +16,13 @@ export interface IRank {
 }
 
 export class Ranks {
-  constructor(public limit: number, public lotteryanv: number, public lotteryentrants: number, public ranks?: Rank[]) {}
+  constructor(
+    public loading: boolean,
+    public limit: number,
+    public lotteryanv: number,
+    public lotteryentrants: number,
+    public ranks?: Rank[]
+  ) {}
 }
 
 export class Rank {
