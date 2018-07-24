@@ -1,11 +1,14 @@
 import { Action } from '@ngrx/store';
+import { Ranks, IRanks } from '@dashboard/common/models/ranks';
 
 export interface IAppState {
   loading: boolean;
+  ranks: Ranks;
 }
 
 const INITIAL_STATE: IAppState = {
   loading: true,
+  ranks: new Ranks(100, 0, 0),
 };
 
 export enum AppReducerActionType {

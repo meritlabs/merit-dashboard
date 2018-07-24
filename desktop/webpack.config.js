@@ -275,11 +275,7 @@ module.exports = (_, config) => {
     plugins: [
       new DefinePlugin({
         WEBPACK_CONFIG: {
-          COMMIT_HASH: JSON.stringify(
-            execSync('git rev-parse --short HEAD')
-              .toString()
-              .trim()
-          ),
+          COMMIT_HASH: JSON.stringify(execSync('git rev-parse --short HEAD').toString().trim()),
           VERSION: JSON.stringify(require('./package.json').version),
         },
       }),

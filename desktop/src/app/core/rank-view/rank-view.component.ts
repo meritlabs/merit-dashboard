@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RanksService } from '@dashboard/common/services/rank.service.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from '@dashboard/common/reducers/app.reducer';
+import { Observable } from 'rxjs/Observable';
+import { IRanks } from '@dashboard/common/models/ranks';
 
 @Component({
   selector: 'app-rank-view',
@@ -7,10 +10,8 @@ import { RanksService } from '@dashboard/common/services/rank.service.service';
   styleUrls: ['./rank-view.component.scss'],
 })
 export class RankViewComponent implements OnInit {
-  constructor(private ranksService: RanksService) {}
+  constructor(private store: Store<IAppState>) {}
 
-  ranks: any;
-  async ngOnInit() {
-    this.ranks = await this.ranksService.getRank(100).toPromise();
-  }
+  ranks$: Observable<IRanks> = this.store.select('ranks');
+  ngOnInit() {}
 }

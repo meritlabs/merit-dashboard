@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+
 /dist-server
 /tmp
 /out-tsc
@@ -9,7 +10,7 @@
 # dependencies
 /node_modules
 desktop/node_modules
-
+desktop/dist
 # IDEs and editors
 /.idea
 .project

@@ -5,4 +5,6 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { filter, tap } from 'rxjs/operators';
 
 @Injectable()
-export class AppEffects {}
+export class AppEffects {
+  constructor() {}
+}
