@@ -1,6 +1,6 @@
 @import "~styles/common/import-sass"
 
-\:host
+.appHeader
   display: block
   position: fixed
   width: 130px
@@ -9,9 +9,10 @@
   left: 0
   overflow-y: hidden
   transition: all .2s ease-in-out
-  &:hover
+  *
+    transition: all .2s ease-in-out
+  &.active
     width: 330px
-.appHeader
   background: $dark
   color: $white
   height: 100vh
@@ -22,7 +23,7 @@
 .logo
   max-width: 90px
   display: block
-  margin-bottom: 40px
+  margin-bottom: 30px
   img
     margin-bottom: 5px
   p
@@ -31,15 +32,51 @@
     letter-spacing: 3px
     font-weight: 400
 .menu
-  width: 300px
+  width: 290px
   display: flex
   position: relative
   flex-direction: column
   margin-right: -10px
   li
-    padding: 0 0 20px
+    padding: 10px 0
     font-size: 18px
     font-weight: 100
     cursor: pointer
-    &.active
+    display: flex
+    align-items: center
+    position: relative
+    &:after
+      content: ""
+      display: block
+      width: 100%
+      height: 1px
+      background: $steel-two
+      opacity: .5
+      position: absolute
+      bottom: 0px
+      left: 0
+      width: 90px
+    &.active,&:hover
       color: $blue
+      opacity: .9
+    .icon
+      width: 90px
+      margin-right: 20px
+      display: inline-block
+      text-align: center
+      merit-icon
+        max-width: 30px
+    .title
+      opacity: 0
+.appHeader.active
+  .menu li 
+    padding-left: 10px
+    &:after
+      width: 100%
+    .icon
+      width: 30px
+      margin-right: 15px
+      merit-icon
+        width: 100%
+    .title
+      opacity: 1
