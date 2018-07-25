@@ -1,0 +1,50 @@
+\:host
+  display: block
+
+div
+  position: relative
+
+app-loader
+  position: absolute
+  left: 0
+  right: 0
+  top: 0px
+  bottom: 0
+  display: flex
+  align-items: center
+  justify-content: center
+  opacity: 0
+  transition: opacity .3s
+  pointer-events: none
+
+.loading
+  app-loader
+    opacity: 1
+    transition: opacity .5s
+  div[class^="chartjs"]
+    visibility: hidden
+  canvas
+    visibility: hidden
+    &::after
+      background: rgba(255,255,255,.5)
+      transition: background .5s
+
+div[class^="chartjs"]
+  visibility: visible
+
+.chart
+  max-height: 700px
+
+canvas
+  visibility: visible
+  height: 700px
+  &::after
+    content: ''
+    background: rgba(0,0,0,.0)
+    position: absolute
+    left: 0
+    right: 0
+    top: 30px
+    bottom: 0
+    transition: background .3s
+    pointer-events: none
