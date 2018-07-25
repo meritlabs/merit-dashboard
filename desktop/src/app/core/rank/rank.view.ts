@@ -6,8 +6,8 @@ import { IRanks } from '@dashboard/common/models/ranks';
 
 @Component({
   selector: 'app-rank-view',
-  templateUrl: './rank-view.component.html',
-  styleUrls: ['./rank-view.component.sass'],
+  templateUrl: './rank.view.html',
+  styleUrls: ['./rank.view.sass'],
 })
 export class RankViewComponent implements OnInit {
   constructor(private store: Store<IAppState>) {}

@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { CoreComponent } from '@dashboard/desktop/app/core/core.component';
-import { RankViewComponent } from '@dashboard/desktop/app/core/rank-view/rank-view.component';
+import { RankViewComponent } from '@dashboard/desktop/app/core/rank/rank.view';
+import { MiningViewComponent } from '@dashboard/desktop/app/core/mining-info/mining.view';
 
 const routes: Routes = [
   {
@@ -10,8 +11,8 @@ const routes: Routes = [
     component: CoreComponent,
     children: [
       { path: '', component: RankViewComponent },
-      { path: '**', redirectTo: '/' },
-      { path: '**', redirectTo: '/' },
+      { path: 'ranks', component: RankViewComponent },
+      { path: 'mining', component: MiningViewComponent },
     ],
   },
 ];
