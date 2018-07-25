@@ -5,6 +5,6 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './stats.view.html',
   styleUrls: ['./stats.view.sass'],
 })
-export class RankViewComponent implements OnInit {
+export class StatsViewComponent implements OnInit {
   ngOnInit() {}
 }
