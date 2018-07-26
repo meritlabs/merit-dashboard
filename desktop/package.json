@@ -18,7 +18,8 @@
     "url": "https://github.com/meritlabs/dashboard-ui"
   },
   "dependencies": {
-    "chart.js": "^2.7.2"
+    "chart.js": "^2.7.2",
+    "d3": "^5.5.0"
   },
   "devDependencies": {
     "@angular-devkit/core": "0.3.2",

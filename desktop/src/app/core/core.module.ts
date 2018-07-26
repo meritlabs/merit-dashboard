@@ -7,9 +7,10 @@ import { RankViewComponent } from '@dashboard/desktop/app/core/rank/rank.view';
 import { CoreComponentsModule } from '@dashboard/desktop/app/core/components/core-components.module';
 import { MiningViewComponent } from '@dashboard/desktop/app/core/mining-info/mining.view';
 import { StatsViewComponent } from '@dashboard/desktop/app/core/stats/stats.view';
+import { NetworkViewComponent } from '@dashboard/desktop/app/core/network/network.view';
 
 export function getPages() {
-  return [RankViewComponent, MiningViewComponent, StatsViewComponent];
+  return [RankViewComponent, MiningViewComponent, StatsViewComponent, NetworkViewComponent];
 }
 
 @NgModule({
