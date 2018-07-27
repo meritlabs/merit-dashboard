@@ -1,33 +1,35 @@
-<div class="title-primary">
-  <p>World Merit Network Rating</p>
-</div>
-<div class="description-primary">
-  <p>Merit aims to be the world’s friendliest digital currency, making it effortless to pay friends, buy goods, and manage your
-    wealth.
-  </p>
-</div>
-
-<div class="ranksTable">
-  <div class="header">
-    <div class="cell cell-xs">
-      #
-    </div>
-    <div class="cell cell-lg">
-      Wallet
-    </div>
-    <div class="cell cell-lg">
-      Score
-    </div>
+<div class="container">
+  <div class="title-primary">
+    <p>World Merit Network Rating</p>
   </div>
-  <ng-container *ngIf="!(ranks$ | async).loading; else loading">
-    <app-rank-item *ngFor="let item of (ranks$ | async)?.ranks" [item]=item></app-rank-item>
-  </ng-container>
-  <ng-template #loading>
-    <div class="tableLoading text-italic text-center">
-      <div class="title-secondary">
-        <p>Loading table...</p>
+  <div class="description-primary">
+    <p>Merit aims to be the world’s friendliest digital currency, making it effortless to pay friends, buy goods, and manage
+      your wealth.
+    </p>
+  </div>
+
+  <div class="ranksTable">
+    <div class="header">
+      <div class="cell cell-xs">
+        #
       </div>
-      <loading-spinner></loading-spinner>
+      <div class="cell cell-lg">
+        Wallet
+      </div>
+      <div class="cell cell-lg">
+        Score
+      </div>
     </div>
-  </ng-template>
+    <ng-container *ngIf="!(ranks$ | async).loading; else loading">
+      <app-rank-item *ngFor="let item of (ranks$ | async)?.ranks" [item]=item></app-rank-item>
+    </ng-container>
+    <ng-template #loading>
+      <div class="tableLoading text-italic text-center">
+        <div class="title-secondary">
+          <p>Loading table...</p>
+        </div>
+        <loading-spinner></loading-spinner>
+      </div>
+    </ng-template>
+  </div>
 </div>
