@@ -3,6 +3,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import * as d3_3 from 'd3-3';
 import * as d3 from 'd3';
 
+declare const window: any;
 const D3 = Object.assign({}, d3, d3_3);
 
 @Component({
@@ -44,8 +45,8 @@ export class NetworkViewComponent {
       link.target = nodes[link.target] || (nodes[link.target] = { name: link.target });
     });
 
-    var width = 960,
-      height = 500;
+    var width = window.innerWidth / 1.25,
+      height = window.innerHeight / 1.25;
 
     var force = D3.layout
       .force()
@@ -83,6 +84,22 @@ export class NetworkViewComponent {
       .append('circle')
       .attr('fill', '#fff')
       .attr('r', 12);
+
+    node
+      .append('circle')
+      .attr('fill', 'rgb(0, 176, 221)')
+      .attr('r', 5)
+      .style('background', 'rgb(0, 176, 221)')
+      .style('transform', 'translateX(-20px)');
+    node
+      .append('text')
+      .attr('stroke', '#FFF')
+      .style('transform', 'translate(-23px, 4px)')
+      .style('font-size', '10px')
+      .text(function(d) {
+        return '+';
+      });
+
     node
       .append('image')
       .attr('xlink:href', 'https://www.merit.me/images/favicon.ico')
@@ -94,11 +111,16 @@ export class NetworkViewComponent {
     node
       .append('text')
       .attr('x', 12)
-      .attr('dy', '16px')
+      .attr('dy', 20)
       .attr('fill', 'rgb(0, 176, 221)')
+      .attr('stroke', 'rgb(0, 176, 221)')
+      .style('font-size', '11px')
       .text(function(d) {
         return d.name;
       });
+    node.on('click', function() {
+      console.log(this);
+    });
 
     function tick() {
       link
