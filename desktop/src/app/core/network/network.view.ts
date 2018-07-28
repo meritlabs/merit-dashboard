@@ -41,12 +41,14 @@ export class NetworkViewComponent {
     node = this.networkService.addNodeTitle(node);
     node = this.networkService.addPlusButton(node);
 
-    node.on('click', async function() {
-      // console.log(this);
-      // svg.remove();
-      // _this.arr = await _this.networkService.getNetwork(0);
-      // _this.generateGraph();
-    });
+    // node.on('click', async function(ev) {
+    //   console.log(ev);
+
+    //   console.log(this);
+    //   // svg.remove();
+    //   // _this.arr = await _this.networkService.getNetwork(0);
+    //   // _this.generateGraph();
+    // });
 
     function tick() {
       link

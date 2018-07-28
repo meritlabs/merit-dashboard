@@ -75,6 +75,7 @@ export class NetworkService {
       .append('circle')
       .attr('fill', '#fff')
       .attr('r', 15);
+
     node
       .append('image')
       .attr('xlink:href', 'https://www.merit.me/images/favicon.ico')
@@ -107,7 +108,15 @@ export class NetworkService {
       .attr('fill', 'rgb(0, 176, 221)')
       .attr('r', 5)
       .style('background', 'rgb(0, 176, 221)')
-      .style('transform', 'translateX(-20px)');
+      .style('transform', 'translateX(-20px)')
+      .on('click', async function(ev) {
+        console.log(ev);
+
+        console.log(this);
+        // svg.remove();
+        // _this.arr = await _this.networkService.getNetwork(0);
+        // _this.generateGraph();
+      });
 
     node
       .append('text')
