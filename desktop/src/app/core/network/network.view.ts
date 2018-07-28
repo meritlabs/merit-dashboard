@@ -1,5 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { NetworkService } from '@dashboard/common/services/network.service';
 import * as d3_3 from 'd3-3';
 import * as d3 from 'd3';
 
@@ -12,35 +12,22 @@ const D3 = Object.assign({}, d3, d3_3);
   styleUrls: ['./network.view.sass'],
 })
 export class NetworkViewComponent {
+  constructor(private networkService: NetworkService) {}
   @ViewChild('canvas') private canvas: ElementRef;
 
-  ngAfterViewInit() {
-    console.log(D3);
+  arr = [];
+  async ngAfterViewInit() {
+    this.arr = await this.networkService.getNetwork(0);
     this.generateGraph();
   }
-  // this.canvas.nativeElement
+
   generateGraph() {
-    var links = [
-      { source: 'Genesys', target: 'Genesys', type: '' },
-      { source: 'Genesys', target: 'Adil', type: '' },
-      { source: 'Adil', target: 'AdilW1', type: '' },
-      { source: 'Adil', target: 'AdilW2', type: '' },
-      { source: 'Adil', target: 'AdilW3', type: '' },
-      { source: 'Adil', target: 'AdilW4', type: '' },
-      { source: 'Adil', target: 'AdilW5', type: '' },
-      { source: 'AdilW5', target: 'AdilW21', type: '' },
-      { source: 'AdilW5', target: 'AdilW22', type: '' },
-      { source: 'AdilW5', target: 'AdilW23', type: '' },
-      { source: 'AdilW5', target: 'AdilW24', type: '' },
-      { source: 'AdilW5', target: 'AdilW25', type: '' },
-      { source: 'AdilW5', target: 'AdilW26', type: '' },
-      { source: 'AdilW5', target: 'AdilW27', type: '' },
-    ];
+    var _this = this;
 
     var nodes = {};
 
     // Compute the distinct nodes from the links.
-    links.forEach(function(link) {
+    this.arr.forEach(function(link) {
       link.source = nodes[link.source] || (nodes[link.source] = { name: link.source });
       link.target = nodes[link.target] || (nodes[link.target] = { name: link.target });
     });
@@ -51,7 +38,7 @@ export class NetworkViewComponent {
     var force = D3.layout
       .force()
       .nodes(D3.values(nodes))
-      .links(links)
+      .links(this.arr)
       .size([width, height])
       .linkDistance(60)
       .charge(-300)
@@ -76,8 +63,6 @@ export class NetworkViewComponent {
       .enter()
       .append('g')
       .attr('class', 'node')
-      .on('mouseover', mouseover)
-      .on('mouseout', mouseout)
       .call(force.drag);
 
     node
@@ -119,7 +104,9 @@ export class NetworkViewComponent {
         return d.name;
       });
     node.on('click', function() {
-      console.log(this);
+      _this.canvas.nativeElement.innerHTML = '';
+      _this.generateGraph();
+      console.log(_this.arr);
     });
 
     function tick() {
@@ -140,22 +127,6 @@ export class NetworkViewComponent {
       node.attr('transform', function(d) {
         return 'translate(' + d.x + ',' + d.y + ')';
       });
-    }
-
-    function mouseover() {
-      D3.select(this)
-        .select('circle')
-        .transition()
-        .duration(750)
-        .attr('r', 12);
-    }
-
-    function mouseout() {
-      D3.select(this)
-        .select('circle')
-        .transition()
-        .duration(750)
-        .attr('r', 12);
     }
   }
 }

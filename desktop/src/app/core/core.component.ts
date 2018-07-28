@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-import { RanksService } from '@dashboard/common/services/rank.service.service';
+import { RanksService } from '@dashboard/common/services/rank.service';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@dashboard/common/reducers/app.reducer';
 import { LoadRanks } from '@dashboard/common/actions/rank.action';
