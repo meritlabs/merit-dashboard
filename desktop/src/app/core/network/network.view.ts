@@ -26,10 +26,9 @@ export class NetworkViewComponent {
 
     var nodes = {};
 
-    // Compute the distinct nodes from the links.
     this.arr.forEach(function(link) {
-      link.source = nodes[link.source] || (nodes[link.source] = { name: link.source });
-      link.target = nodes[link.target] || (nodes[link.target] = { name: link.target });
+      link.source = nodes[link.source] || (nodes[link.source] = { name: link.label, size: link.weight });
+      link.target = nodes[link.target] || (nodes[link.target] = { name: link.label, size: link.weight });
     });
 
     var width = window.innerWidth / 1.25,
@@ -68,7 +67,7 @@ export class NetworkViewComponent {
     node
       .append('circle')
       .attr('fill', '#fff')
-      .attr('r', 12);
+      .attr('r', 15);
 
     node
       .append('circle')
@@ -103,10 +102,10 @@ export class NetworkViewComponent {
       .text(function(d) {
         return d.name;
       });
-    node.on('click', function() {
-      _this.canvas.nativeElement.innerHTML = '';
+    node.on('click', async function() {
+      svg.remove();
+      _this.arr = await _this.networkService.getNetwork(0);
       _this.generateGraph();
-      console.log(_this.arr);
     });
 
     function tick() {

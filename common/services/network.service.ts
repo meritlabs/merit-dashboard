@@ -26,6 +26,6 @@ export class NetworkService {
   private getRandomIntInclusive() {
     let min = 0;
     let max = 100;
-    return Math.floor(Math.random() * (max - min + 1)) + min; //Включаючи мінімум та максимум
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
