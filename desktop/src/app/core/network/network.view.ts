@@ -1,10 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NetworkService } from '@dashboard/common/services/network.service';
-import * as d3_3 from 'd3-3';
-import * as d3 from 'd3';
 
 declare const window: any;
-const D3 = Object.assign({}, d3, d3_3);
+declare const d3: any;
+const D3 = d3;
 
 @Component({
   selector: 'app-network-view',
@@ -40,6 +39,16 @@ export class NetworkViewComponent {
     node = this.networkService.drawMainCircle(node);
     node = this.networkService.addNodeTitle(node);
     node = this.networkService.addPlusButton(node);
+
+    var zoom = D3.behavior
+      .zoom()
+      .scaleExtent([1, 1.2])
+      .on('zoom', zoomed);
+
+    svg.call(zoom);
+    function zoomed() {
+      svg.attr('transform', 'translate(' + D3.event.translate + ')scale(' + D3.event.scale + ')');
+    }
 
     // node.on('click', async function(ev) {
     //   console.log(ev);
