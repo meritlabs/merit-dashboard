@@ -6,6 +6,7 @@ import { RankViewComponent } from '@dashboard/desktop/app/core/rank/rank.view';
 import { MiningViewComponent } from '@dashboard/desktop/app/core/mining-info/mining.view';
 import { StatsViewComponent } from '@dashboard/desktop/app/core/stats/stats.view';
 import { NetworkViewComponent } from '@dashboard/desktop/app/core/network/network.view';
+import { CalculatorViewComponent } from '@dashboard/desktop/app/core/calculator/calculator.view';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
       { path: 'mining', component: MiningViewComponent },
       { path: 'stats', component: StatsViewComponent },
       { path: 'network', component: NetworkViewComponent },
+      { path: 'calculator', component: CalculatorViewComponent },
     ],
   },
 ];
