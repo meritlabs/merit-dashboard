@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-wallet-info-view',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./wallet-info.view.sass'],
 })
 export class WalletInfoViewComponent {
-  constructor() {}
+  formData: FormGroup = this.formBuilder.group({
+    wallet: ['', [Validators.required]],
+  });
+  constructor(private formBuilder: FormBuilder) {}
+  validate(wallet) {
+    console.log(wallet);
+  }
 }
