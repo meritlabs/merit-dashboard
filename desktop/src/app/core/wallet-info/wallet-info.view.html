@@ -15,4 +15,31 @@
       <button class="ui-button ui-button--blue">VALIDATE</button>
     </div>
   </form>
+  <div class="statsWidget" *ngIf="formData.status === 'VALID'">
+    <div class="title-secondary">
+      <p>Wallet:
+        <strong>{{formData.controls.wallet.value}}</strong>
+      </p>
+    </div>
+    <div class="statsTable">
+      <div class="row">
+        <div class="column"></div>
+        <div class="column heading">Details</div>
+      </div>
+      <div class="row">
+        <div class="column heading">Is valid</div>
+        <div class="column selected">
+          <p>TRUE
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column heading">Is confirmed</div>
+        <div class="column selected">
+          <p>TRUE</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
