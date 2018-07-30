@@ -9,9 +9,17 @@ import { MiningViewComponent } from '@dashboard/desktop/app/core/mining-info/min
 import { StatsViewComponent } from '@dashboard/desktop/app/core/stats/stats.view';
 import { NetworkViewComponent } from '@dashboard/desktop/app/core/network/network.view';
 import { CalculatorViewComponent } from '@dashboard/desktop/app/core/calculator/calculator.view';
+import { WalletInfoViewComponent } from '@dashboard/desktop/app/core/wallet-info/wallet-info.view';
 
 export function getPages() {
-  return [RankViewComponent, MiningViewComponent, StatsViewComponent, NetworkViewComponent, CalculatorViewComponent];
+  return [
+    RankViewComponent,
+    MiningViewComponent,
+    StatsViewComponent,
+    NetworkViewComponent,
+    CalculatorViewComponent,
+    WalletInfoViewComponent,
+  ];
 }
 
 @NgModule({

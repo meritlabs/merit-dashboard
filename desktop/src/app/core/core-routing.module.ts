@@ -7,6 +7,7 @@ import { MiningViewComponent } from '@dashboard/desktop/app/core/mining-info/min
 import { StatsViewComponent } from '@dashboard/desktop/app/core/stats/stats.view';
 import { NetworkViewComponent } from '@dashboard/desktop/app/core/network/network.view';
 import { CalculatorViewComponent } from '@dashboard/desktop/app/core/calculator/calculator.view';
+import { WalletInfoViewComponent } from '@dashboard/desktop/app/core/wallet-info/wallet-info.view';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'stats', component: StatsViewComponent },
       { path: 'network', component: NetworkViewComponent },
       { path: 'calculator', component: CalculatorViewComponent },
+      { path: 'validate-wallet', component: WalletInfoViewComponent },
     ],
   },
 ];
