@@ -14,5 +14,52 @@
       hesitate to ask the community in Discord group, Telegram or forum.
     </p>
   </div>
-
-</div>
+  <div class="calculations">
+    <div class="half">
+      <form class="sendMerit__form" [formGroup]="formData" (keyup)="calculate(formData.controls.cyclesps.value)">
+        <label for="" class="ui-label">Please enter Your cycles/s</label>
+        <input type="text" placeholder="cycles/s" class="ui-input ui-input--form ui-input--text" formControlName="cyclesps">
+      </form>
+    </div>
+    <div class="half result">
+      <ng-container *ngIf="formData.status === 'VALID'">
+        <p class="ui-label">Result:</p>
+        <p>
+          If current net cycles/s will be same for the next 24 hours, you will be mining without interruption at
+          <strong>{{formData.controls.cyclesps.value}} cycles/s</strong>, your rewards will be approximately:
+          <strong>{{dailyReward}} MRT</strong>
+        </p>
+      </ng-container>
+    </div>
+  </div>
+  <div class="description-primary">
+    <small>
+      <p>
+        <strong>Why I got lower rewards than calculated?</strong>
+      </p>
+      <p>I saw many complaints from miners that didn't receive as many Merits as calculator computed. Calculations are based
+        on comparing your cycles/s with average of global cycles/s in last 30 blocks. There are some reasons why you might
+        not get as many MRT per day as it's calculated:</p>
+      <p>
+        <strong>You're not mining 24 hours continuously</strong>
+      </p>
+      <p>This is probably main problem with lower rewards. For now, pools are not fully stable and have some blackouts during
+        the day. It causes that you are not actually mining whole 24 hours. Also your miner can loose connection and fail
+        to reconnect. You then need to restart it manually - until then you're again loosing time of mining.</p>
+      <p>
+        <strong>You're not mining 24 hours with same cycles/s</strong>
+      </p>
+      <p>Check your cycles/s couple times before you get some average. Also maybe one or more cards stopped mining and number
+        of cycles calculated in second decreased. Merit mining software is in development and is not fully optimized yet.
+        Pay more attention to your mining rigs when mining Merit.
+      </p>
+      <p>
+        <strong>Net cycles/s changed</strong>
+      </p>
+      <p>
+        During your mining, global cycles/s can change by couple of %. It shouldn't be very significant but can cause lower or higher
+        results up to 30% if it's increasing or decreasing quickly. Usually it shouldn't be changed for more than 10% in
+        24 hours. You can always see current cycles/s on Network subpage.
+      </p>
+    </small>
+  </div>
