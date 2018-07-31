@@ -45,3 +45,19 @@
     text-align: right
   &-italic
     font-style: italic
+
+@media screen and (max-width: 860px)
+  .title
+    &-primary
+      +font(600, 20px, 26px)
+      margin-bottom: 20px
+    &-secondary
+      +font(500, 18px, 24px)
+  .description
+    &-primary
+      +font(400, 16px, 22px)
+      letter-spacing: .4px
+      max-width: 600px
+      margin-bottom: 40px
+      p
+        margin-bottom: 15px
