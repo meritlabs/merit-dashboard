@@ -39,3 +39,19 @@
     small
       font-weight: 400
       font-size: 16px
+
+@media screen and (max-width: 1024px)
+  .statsWidget
+    padding: 15px
+  .statsTable *
+    font-size: 15px
+  .statsTable .row .column
+    padding: 10px 0px 10px 10px
+  .statsTable .row .column:first-of-type
+    width: 150px
+@media screen and (max-width: 768px)
+  .statsTable .row
+    flex-direction: column
+    .column
+      border-left: 0px
+      width: 100%
