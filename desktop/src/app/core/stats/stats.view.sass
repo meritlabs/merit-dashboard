@@ -39,6 +39,8 @@
     small
       font-weight: 400
       font-size: 16px
+.hideDesktop
+  display: none
 
 @media screen and (max-width: 1024px)
   .statsWidget
@@ -50,8 +52,11 @@
   .statsTable .row .column:first-of-type
     width: 150px
 @media screen and (max-width: 768px)
+  .hideDesktop
+    display: block
   .statsTable .row
     flex-direction: column
     .column
+      padding: 10px 0px
       border-left: 0px
       width: 100%
