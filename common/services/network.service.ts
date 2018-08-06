@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Node } from '../models/network';
+import { Node, INodes } from '../models/network';
+import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
+import { LoadNodes } from '@dashboard/common/actions/nodes.action';
 
 @Injectable()
 export class NetworkService {
-  async getNetwork(arr) {
+  constructor(public dashboardApi: DashboardAPI_Service) {}
+
+  async getNetwork(address) {
+    let getReferrals = await this.dashboardApi.getReferrals(address);
     let network = [];
-    arr.map(item => {
-      let node;
-      if (item.rank === 1) {
-        node = new Node(`${item.rank}`, `${item.rank}`, `${item.rank}`, item.alias);
-      } else {
-        node = new Node(`${item.rank}`, `${item.rank}`, `${item.rank}`, item.alias);
-      }
-      network.push(node);
+    let referrals = Array.prototype.slice.apply(getReferrals);
+
+    referrals.map(item => {
+      network.push(new Node(`${address}`, `${item.address}`, `${item.address}`, item.alias));
     });
     return network;
   }
 
   createNodes(arr) {
     let nodes = {};
-    arr.forEach(function(link) {
+    arr.map(function(link) {
       link.source = nodes[link.source] || (nodes[link.source] = { name: link.label, size: link.weight });
       link.target = nodes[link.target] || (nodes[link.target] = { name: link.label, size: link.weight });
     });
@@ -32,8 +33,8 @@ export class NetworkService {
       .nodes(nodes)
       .links(links)
       .size(size)
-      .linkDistance(60)
-      .charge(-300)
+      .linkDistance(100)
+      .charge(-1000)
       .on('tick', tick)
       .start();
   }
@@ -93,9 +94,7 @@ export class NetworkService {
     return node;
   }
 
-  addPlusButton(node) {
-    console.log(node);
-
+  addPlusButton(node, store, networkService) {
     node
       .append('circle')
       .attr('fill', 'rgb(0, 176, 221)')
@@ -103,12 +102,9 @@ export class NetworkService {
       .style('background', 'rgb(0, 176, 221)')
       .style('transform', 'translateX(-20px)')
       .on('click', async function(ev) {
-        console.log(ev);
-
-        console.log(this);
-        // svg.remove();
-        // _this.arr = await _this.networkService.getNetwork(0);
-        // _this.generateGraph();
+        let gNodes = await networkService.getNetwork('MGgAma9epMrSipSm9Y2YjCWGGSt7gJWzM7');
+        console.log(gNodes);
+        store.dispatch(new LoadNodes({ loading: false, nodes: gNodes } as INodes));
       });
 
     node

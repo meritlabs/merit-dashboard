@@ -26,25 +26,16 @@ export class NetworkViewComponent {
   genesisAddress;
   ngOnInit() {
     this.nodes$.subscribe(res => {
-      if (!res.loading) {
+      if (res.nodes.length > 0) {
         this.arr = res.nodes;
         this.generateGraph();
       }
     });
-
-    // this.ranks.subscribe(res => {
-    //   if (res.ranks[0]) {
-    //     this.genesisAddress = res.ranks[0].address;
-    //   }
-    // });
-
-    // console.log(this.genesisAddress);
-
-    // let genesisReferrals = await this.dashboardApi.getReferrals(this.genesisAddress);
-    // console.log(genesisReferrals);
   }
 
   generateGraph() {
+    this.canvas.nativeElement.value = '';
+
     let array = this.arr;
     let width = window.innerWidth / 1.25;
     let height = window.innerHeight / 1.25;
@@ -61,7 +52,7 @@ export class NetworkViewComponent {
     node.call(force.drag);
     node = this.networkService.drawMainCircle(node);
     node = this.networkService.addNodeTitle(node);
-    node = this.networkService.addPlusButton(node);
+    node = this.networkService.addPlusButton(node, this.store, this.networkService);
 
     var zoom = D3.behavior
       .zoom()
@@ -70,17 +61,9 @@ export class NetworkViewComponent {
 
     svg.call(zoom);
     function zoomed() {
+      svg.attr('transition', 'all .3s linear');
       svg.attr('transform', 'translate(' + D3.event.translate + ')scale(' + D3.event.scale + ')');
     }
-
-    // node.on('click', async function(ev) {
-    //   console.log(ev);
-
-    //   console.log(this);
-    //   // svg.remove();
-    //   // _this.arr = await _this.networkService.getNetwork(0);
-    //   // _this.generateGraph();
-    // });
 
     function tick() {
       link

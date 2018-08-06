@@ -2,7 +2,7 @@ export interface IRanks {
   loading: boolean;
   lotteryanv: number;
   lotteryentrants: number;
-  rannks?: IRank[];
+  ranks?: IRank[];
 }
 
 export interface IRank {
