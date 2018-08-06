@@ -9,7 +9,7 @@ const mwsApiUrl = ENV.mwsApiUrl;
 export class NetworkService {
   constructor(private http: HttpClient) {}
   async getNetwork(from) {
-    let resp = await this.http.get(`${mwsApiUrl}community/leaderboard?limit=100`).toPromise();
+    let resp = await this.http.get(`${mwsApiUrl}leaderboard`).toPromise();
     let ranks = (resp as any).ranks;
     let network = [];
     ranks.forEach(item => {

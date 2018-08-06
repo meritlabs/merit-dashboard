@@ -13,6 +13,7 @@ import { AppComponent } from '@dashboard/desktop/app/app.component';
 import { LoggerService } from '@dashboard/common/services/logger.service';
 import { RanksService } from '@dashboard/common/services/rank.service';
 import { NetworkService } from '@dashboard/common/services/network.service';
+import MiningService from '@dashboard/common/services/mining.stats.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n');
@@ -23,7 +24,7 @@ export function loadConfigs() {
 }
 
 export function getProviders() {
-  return [LoggerService, RanksService, NetworkService];
+  return [LoggerService, RanksService, NetworkService, MiningService];
 }
 
 @NgModule({
