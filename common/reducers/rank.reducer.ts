@@ -1,4 +1,3 @@
-import { Action } from '@ngrx/store';
 import { Ranks, IRanks } from '../models/ranks';
 import { RANKS_ACTION, LoadRanks } from '../actions/rank.action';
 

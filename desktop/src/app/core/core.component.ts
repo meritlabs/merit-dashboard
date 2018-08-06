@@ -6,6 +6,8 @@ import { LoadRanks } from '@dashboard/common/actions/rank.action';
 import { IRanks } from '@dashboard/common/models/ranks';
 import { IBlocks } from '@dashboard/common/models/blocks';
 import { LoadBlocks } from '@dashboard/common/actions/blocks.action';
+import { LoadNodes } from '@dashboard/common/actions/nodes.action';
+import { INodes, Node } from '@dashboard/common/models/network';
 
 @Component({
   selector: 'core',
@@ -23,7 +25,9 @@ export class CoreComponent {
     let ranks = (await this.dashboardAPI.getLeaderBoard()) as IRanks;
     ranks.loading = false;
     this.store.dispatch(new LoadRanks(ranks));
-
     this.store.dispatch(new LoadBlocks({ loading: false, blocks: await this.dashboardAPI.getBlocksInfo() } as IBlocks));
+    console.log(ranks);
+
+    this.store.dispatch(new LoadNodes({ loading: false, nodes: [new Node('1', '2', '2')] } as INodes));
   }
 }

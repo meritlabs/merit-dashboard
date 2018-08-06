@@ -1,4 +1,3 @@
-import { Action } from '@ngrx/store';
 import { Blocks, IBlocks } from '../models/blocks';
 import { BLOCKS_ACTION, LoadBlocks } from '../actions/blocks.action';
 

@@ -21,24 +21,30 @@ export class NetworkViewComponent {
   ) {}
   @ViewChild('canvas') private canvas: ElementRef;
 
-  ranks = this.store.select('ranks');
+  nodes$ = this.store.select('nodes');
   arr = [];
   genesisAddress;
-  async ngOnInit() {
-    this.ranks.subscribe(res => {
-      if (res.ranks[0]) {
-        this.genesisAddress = res.ranks[0].address;
+  ngOnInit() {
+    this.nodes$.subscribe(res => {
+      if (!res.loading) {
+        this.arr = res.nodes;
+        this.generateGraph();
       }
     });
 
-    console.log(this.genesisAddress);
+    // this.ranks.subscribe(res => {
+    //   if (res.ranks[0]) {
+    //     this.genesisAddress = res.ranks[0].address;
+    //   }
+    // });
 
-    let genesisReferrals = await this.dashboardApi.getReferrals(this.genesisAddress);
-    console.log(genesisReferrals);
+    // console.log(this.genesisAddress);
+
+    // let genesisReferrals = await this.dashboardApi.getReferrals(this.genesisAddress);
+    // console.log(genesisReferrals);
   }
 
   generateGraph() {
-    let _this = this;
     let array = this.arr;
     let width = window.innerWidth / 1.25;
     let height = window.innerHeight / 1.25;
