@@ -9,7 +9,6 @@ import MiningService from '@dashboard/common/services/mining.stats.service';
 export class StatsViewComponent implements OnInit {
   constructor(public miningService: MiningService) {}
   async ngOnInit() {
-    let stats = await this.miningService.getMiningStats();
-    console.log(stats);
+    let stats = await this.miningService.getMiningStats()[0];
   }
 }
