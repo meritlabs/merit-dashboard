@@ -6,7 +6,7 @@ import { Node } from '@dashboard/common/models/network';
 const mwsApiUrl = ENV.mwsApiUrl;
 
 @Injectable()
-export default class MiningService {
+export class DashboardAPI_Service {
   constructor(private http: HttpClient) {}
   getMiningHistoryInfo() {
     return this._doGetRequest('mining-info');

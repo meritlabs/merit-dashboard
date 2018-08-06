@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-import { RanksService } from '@dashboard/common/services/rank.service';
+import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@dashboard/common/reducers/app.reducer';
 import { LoadRanks } from '@dashboard/common/actions/rank.action';
@@ -15,10 +15,10 @@ export class CoreComponent {
   topMenuItems: any[] = [];
   bottomMenuItems: any[] = [];
 
-  constructor(private store: Store<IAppState>, public ranksService: RanksService) {}
+  constructor(private store: Store<IAppState>, public dashboardAPI: DashboardAPI_Service) {}
 
   async ngOnInit() {
-    let ranks = (await this.ranksService.getRank(100).toPromise()) as IRanks;
+    let ranks = (await this.dashboardAPI.getLeaderBoard()) as IRanks;
     ranks.loading = false;
     this.store.dispatch(new LoadRanks(ranks));
   }

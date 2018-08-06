@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import MiningService from '@dashboard/common/services/mining.stats.service';
+import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 
 @Component({
   selector: 'app-stats-view',
@@ -7,8 +7,9 @@ import MiningService from '@dashboard/common/services/mining.stats.service';
   styleUrls: ['./stats.view.sass'],
 })
 export class StatsViewComponent implements OnInit {
-  constructor(public miningService: MiningService) {}
+  constructor(public dashboardAPI: DashboardAPI_Service) {}
   async ngOnInit() {
-    let stats = await this.miningService.getMiningStats()[0];
+    let stats = await this.dashboardAPI.getMiningInfo();
+    console.log(stats);
   }
 }

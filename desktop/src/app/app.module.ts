@@ -11,9 +11,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from '@dashboard/desktop/app/app-routing.module';
 import { AppComponent } from '@dashboard/desktop/app/app.component';
 import { LoggerService } from '@dashboard/common/services/logger.service';
-import { RanksService } from '@dashboard/common/services/rank.service';
 import { NetworkService } from '@dashboard/common/services/network.service';
-import MiningService from '@dashboard/common/services/mining.stats.service';
+import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n');
@@ -24,7 +23,7 @@ export function loadConfigs() {
 }
 
 export function getProviders() {
-  return [LoggerService, RanksService, NetworkService, MiningService];
+  return [LoggerService, NetworkService, DashboardAPI_Service];
 }
 
 @NgModule({
