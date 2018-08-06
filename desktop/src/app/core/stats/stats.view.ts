@@ -11,8 +11,6 @@ import { IAppState } from '@dashboard/common/reducers/app.reducer';
 export class StatsViewComponent implements OnInit {
   constructor(public dashboardAPI: DashboardAPI_Service, private store: Store<IAppState>) {}
 
-  blocks$ = this.store.select('blocks');
-
   async ngOnInit() {
     // console.log(await this.dashboardAPI.getMiningHistoryInfo());
     // console.log(await this.dashboardAPI.getBlocksInfo());

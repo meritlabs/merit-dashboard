@@ -8,6 +8,7 @@
     </p>
   </div>
   <div class="chart">
-    <canvas #canvas>{{chart}}</canvas>
+    <loading-spinner *ngIf="(blocks$ | async).loading"></loading-spinner>
+    <canvas #canvas [class.loaded]="!(blocks$ | async).loading">{{chart}}</canvas>
   </div>
 </div>
