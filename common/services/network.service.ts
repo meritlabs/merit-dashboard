@@ -1,23 +1,16 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ENV } from '@app/env';
-import { Node } from '@dashboard/common/models/network';
-
-const mwsApiUrl = ENV.mwsApiUrl;
+import { Node } from '../models/network';
 
 @Injectable()
 export class NetworkService {
-  constructor(private http: HttpClient) {}
-  async getNetwork(from) {
-    let resp = await this.http.get(`${mwsApiUrl}leaderboard`).toPromise();
-    let ranks = (resp as any).ranks;
+  async getNetwork(arr) {
     let network = [];
-    ranks.forEach(item => {
+    arr.map(item => {
       let node;
       if (item.rank === 1) {
         node = new Node(`${item.rank}`, `${item.rank}`, `${item.rank}`, item.alias);
       } else {
-        node = new Node(`${item.rank}`, `${this.getRandomIntInclusive()}`, `${item.rank}`, item.alias);
+        node = new Node(`${item.rank}`, `${item.rank}`, `${item.rank}`, item.alias);
       }
       network.push(node);
     });
@@ -127,11 +120,5 @@ export class NetworkService {
         return '+';
       });
     return node;
-  }
-
-  private getRandomIntInclusive() {
-    let min = 0;
-    let max = 100;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ENV } from '@app/env';
-import { Node } from '@dashboard/common/models/network';
 
 const mwsApiUrl = ENV.mwsApiUrl;
 
@@ -15,7 +14,7 @@ export class DashboardAPI_Service {
     return this._doGetRequest('blocks-info');
   }
   getReferrals(address) {
-    return this._doGetRequest(`address/${address}s/referrals`);
+    return this._doGetRequest(`address/${address}/referrals`);
   }
   getMiningInfo() {
     return this._doGetRequest('mininginfo');

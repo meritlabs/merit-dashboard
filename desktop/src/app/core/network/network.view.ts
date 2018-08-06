@@ -1,5 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NetworkService } from '@dashboard/common/services/network.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from '@dashboard/common/reducers/app.reducer';
+import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 
 declare const window: any;
 declare const d3: any;
@@ -11,13 +14,27 @@ const D3 = d3;
   styleUrls: ['./network.view.sass'],
 })
 export class NetworkViewComponent {
-  constructor(private networkService: NetworkService) {}
+  constructor(
+    private networkService: NetworkService,
+    public dashboardApi: DashboardAPI_Service,
+    private store: Store<IAppState>
+  ) {}
   @ViewChild('canvas') private canvas: ElementRef;
 
+  ranks = this.store.select('ranks');
   arr = [];
+  genesisAddress;
   async ngOnInit() {
-    this.arr = await this.networkService.getNetwork(0);
-    this.generateGraph();
+    this.ranks.subscribe(res => {
+      if (res.ranks[0]) {
+        this.genesisAddress = res.ranks[0].address;
+      }
+    });
+
+    console.log(this.genesisAddress);
+
+    let genesisReferrals = await this.dashboardApi.getReferrals(this.genesisAddress);
+    console.log(genesisReferrals);
   }
 
   generateGraph() {
