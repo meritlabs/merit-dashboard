@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import { IAppState } from '@dashboard/common/reducers/app.reducer';
 import { LoadRanks } from '@dashboard/common/actions/rank.action';
 import { IRanks } from '@dashboard/common/models/ranks';
+import { IBlocks } from '@dashboard/common/models/blocks';
+import { LoadBlocks } from '@dashboard/common/actions/blocks.action';
 
 @Component({
   selector: 'core',
@@ -21,5 +23,7 @@ export class CoreComponent {
     let ranks = (await this.dashboardAPI.getLeaderBoard()) as IRanks;
     ranks.loading = false;
     this.store.dispatch(new LoadRanks(ranks));
+
+    this.store.dispatch(new LoadBlocks({ loading: false, blocks: await this.dashboardAPI.getBlocksInfo() } as IBlocks));
   }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from '@dashboard/common/reducers/app.reducer';
 
 @Component({
   selector: 'app-stats-view',
@@ -7,9 +9,19 @@ import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.s
   styleUrls: ['./stats.view.sass'],
 })
 export class StatsViewComponent implements OnInit {
-  constructor(public dashboardAPI: DashboardAPI_Service) {}
+  constructor(public dashboardAPI: DashboardAPI_Service, private store: Store<IAppState>) {}
+
+  blocks$ = this.store.select('blocks');
+
   async ngOnInit() {
-    let stats = await this.dashboardAPI.getMiningInfo();
-    console.log(stats);
+    // console.log(await this.dashboardAPI.getMiningHistoryInfo());
+    // console.log(await this.dashboardAPI.getBlocksInfo());
+    // console.log(await this.dashboardAPI.getMiningInfo());
+    // console.log(await this.dashboardAPI.getBestBlockHash());
+    // console.log(await this.dashboardAPI.getBestBlock());
+    // console.log(await this.dashboardAPI.getBlock(((await this.dashboardAPI.getBestBlock()) as any).hash));
+  }
+  log(val) {
+    console.log(val);
   }
 }

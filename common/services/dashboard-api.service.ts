@@ -11,11 +11,11 @@ export class DashboardAPI_Service {
   getMiningHistoryInfo() {
     return this._doGetRequest('mining-info');
   }
-  setBlocksInfo() {
+  getBlocksInfo() {
     return this._doGetRequest('blocks-info');
   }
   getReferrals(address) {
-    return this._doGetRequest(`/address/${address}s/referrals`);
+    return this._doGetRequest(`address/${address}s/referrals`);
   }
   getMiningInfo() {
     return this._doGetRequest('mininginfo');
@@ -24,25 +24,25 @@ export class DashboardAPI_Service {
     return this._doGetRequest('leaderboard');
   }
   getAddressRank(address) {
-    return this._doGetRequest(`/rank/${address}`);
+    return this._doGetRequest(`rank/${address}`);
   }
   getAddressANV(address) {
-    return this._doGetRequest(`/anv/${address}`);
+    return this._doGetRequest(`anv/${address}`);
   }
   getAddressRewards(address) {
-    return this._doGetRequest(`/rewards/${address}`);
+    return this._doGetRequest(`rewards/${address}`);
   }
   getAddressBalance(address) {
-    return this._doGetRequest(`/balance/${address}`);
+    return this._doGetRequest(`balance/${address}`);
   }
   getBestBlockHash() {
-    return this._doGetRequest(`/bestblockhash`);
+    return this._doGetRequest(`bestblockhash`);
   }
   getBestBlock() {
-    return this._doGetRequest(`/bestblock`);
+    return this._doGetRequest(`bestblock`);
   }
   getBlock(hash) {
-    return this._doGetRequest(`/block/:hash`);
+    return this._doGetRequest(`block/${hash}`);
   }
   _doGetRequest(path) {
     return this.http.get(mwsApiUrl + path).toPromise();
