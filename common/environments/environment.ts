@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  mwsApiUrl: 'https://mws.merit.me/bws/api/v1/',
+  mwsApiUrl: 'https://cors-now.herokuapp.com/http://167.99.179.33:8301/',
 };
 
 export { environment as ENV };

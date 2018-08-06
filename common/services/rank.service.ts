@@ -8,6 +8,6 @@ const mwsApiUrl = ENV.mwsApiUrl;
 export class RanksService {
   constructor(private http: HttpClient) {}
   public getRank(limit) {
-    return this.http.get(`${mwsApiUrl}community/leaderboard?limit=${limit}`);
+    return this.http.get(`${mwsApiUrl}leaderboard`);
   }
 }
