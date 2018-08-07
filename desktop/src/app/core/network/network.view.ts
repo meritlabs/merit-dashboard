@@ -3,6 +3,8 @@ import { NetworkService } from '@dashboard/common/services/network.service';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@dashboard/common/reducers/app.reducer';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
+import { Nodes, INode } from '@dashboard/common/models/network';
+import { LoadNodes } from '@dashboard/common/actions/nodes.action';
 
 declare const window: any;
 declare const d3: any;
@@ -25,6 +27,7 @@ export class NetworkViewComponent {
   arr = [];
   genesisAddress;
   isLabelEnable: boolean = false;
+  gNodes: INode[] = [];
   ngOnInit() {
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
@@ -34,7 +37,13 @@ export class NetworkViewComponent {
     });
   }
 
+  loadNodes() {
+    this.store.dispatch(new LoadNodes({ nodes: this.gNodes } as any));
+    this.gNodes.length = 0;
+  }
+
   generateGraph() {
+    D3.select('svg').remove();
     let _this = this;
     let nodes_data = this.arr.map(item => ({ name: item.source, label: item.label, weight: item.weight }));
     let links_data = this.arr.map(item => ({ source: item.source, target: item.target }));
@@ -49,7 +58,7 @@ export class NetworkViewComponent {
     });
     let charge_force = d3
       .forceManyBody()
-      .distanceMax(-200)
+      .distanceMax(-400)
       .strength(-20);
 
     let center_force = d3.forceCenter(width / 2, height / 2);
@@ -110,6 +119,12 @@ export class NetworkViewComponent {
       });
     });
 
+    node.on('click', async function(d) {
+      _this.store.dispatch(new LoadNodes({ loading: true }));
+      _this.gNodes = await _this.networkService.getNetwork(d.name);
+      _this.store.dispatch(new LoadNodes({ loading: false }));
+    });
+
     node.on('mouseout', function() {
       link.attr('opacity', 1);
       node.attr('opacity', 1);
@@ -127,26 +142,6 @@ export class NetworkViewComponent {
     let zoom_handler = d3.zoom().on('zoom', zoom_actions);
 
     zoom_handler(svg);
-
-    //Drag functions
-    //d is the node
-    function drag_start(d) {
-      if (!d3.event.active) simulation.alphaTarget(0).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-
-    //make sure you can't drag the circle outside the box
-    function drag_drag(d) {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
-
-    function drag_end(d) {
-      if (!d3.event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
 
     function zoom_actions() {
       let zoomLvl = d3.event.transform;

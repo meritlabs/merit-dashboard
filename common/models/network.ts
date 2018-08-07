@@ -1,5 +1,5 @@
 export class Nodes {
-  constructor(public loading: boolean, public nodes: Node[]) {}
+  constructor(public loading?: boolean, public nodes?: Node[]) {}
 }
 export class Node {
   constructor(public source: string, public target: string, public weight: number, public label?: string) {
@@ -11,7 +11,7 @@ export class Node {
 }
 
 export interface INodes {
-  loading: boolean;
+  loading?: boolean;
   nodes: INode[];
 }
 
