@@ -34,38 +34,138 @@ export class NetworkViewComponent {
   }
 
   generateGraph() {
-    this.canvas.nativeElement.value = '';
-
-    let array = this.arr;
     let width = window.innerWidth / 1.25;
     let height = window.innerHeight / 1.25;
     let layout = D3.layout;
-    let nodes = this.networkService.createNodes(array);
+
     let select = D3.select(this.canvas.nativeElement);
     let size = [width, height];
+
     let svg = this.networkService.createSvg(select, size);
-    let values = D3.values(nodes);
-    let force = this.networkService.createForce(layout, array, values, size, tick);
-    let link = this.networkService.createLink(svg, force.links());
-    let node = this.networkService.createNode(svg, force.nodes());
 
-    node.call(force.drag);
-    node = this.networkService.drawMainCircle(node);
-    node = this.networkService.addNodeTitle(node);
-    node = this.networkService.addPlusButton(node, this.store, this.networkService);
+    let radius = 15;
 
-    var zoom = D3.behavior
-      .zoom()
-      .scaleExtent([1, 1.2])
-      .on('zoom', zoomed);
+    let nodes_data = this.arr;
 
-    svg.call(zoom);
-    function zoomed() {
-      svg.attr('transition', 'all .3s linear');
-      svg.attr('transform', 'translate(' + D3.event.translate + ')scale(' + D3.event.scale + ')');
+    let links_data = [];
+
+    //set up the simulation and add forces
+    let simulation = d3.forceSimulation().nodes(nodes_data);
+
+    let link_force = d3.forceLink(links_data).id(function(d) {
+      return d.name;
+    });
+
+    let charge_force = d3.forceManyBody().strength(-100);
+
+    let center_force = d3.forceCenter(width / 2, height / 2);
+
+    simulation
+      .force('charge_force', charge_force)
+      .force('center_force', center_force)
+      .force('links', link_force);
+
+    //add tick instructions:
+    simulation.on('tick', tickActions);
+
+    //add encompassing group for the zoom
+    let g = svg.append('g').attr('class', 'everything');
+
+    //draw lines for the links
+    let link = g
+      .append('g')
+      .attr('class', 'links')
+      .selectAll('line')
+      .data(links_data)
+      .enter()
+      .append('line')
+      .attr('stroke-width', 2)
+      .style('stroke', linkColour);
+
+    //draw circles for the nodes
+    let node = g
+      .append('g')
+      .attr('class', 'nodes')
+      .selectAll('circle')
+      .data(nodes_data)
+      .enter()
+      .append('circle')
+      .attr('r', radius)
+      .attr('fill', circleColour);
+
+    //add drag capabilities
+    let drag_handler = d3
+      .drag()
+      .on('start', drag_start)
+      .on('drag', drag_drag)
+      .on('end', drag_end);
+
+    drag_handler(node);
+
+    //add zoom capabilities
+    let zoom_handler = d3.zoom().on('zoom', zoom_actions);
+
+    zoom_handler(svg);
+
+    /** Functions **/
+
+    //Function to choose what color circle we have
+    //Let's return blue for males and red for females
+    function circleColour(d) {
+      if (d.sex == 'M') {
+        return 'blue';
+      } else {
+        return 'pink';
+      }
     }
 
-    function tick() {
+    //Function to choose the line colour and thickness
+    //If the link type is "A" return green
+    //If the link type is "E" return red
+    function linkColour(d) {
+      if (d.type == 'A') {
+        return 'green';
+      } else {
+        return 'red';
+      }
+    }
+
+    //Drag functions
+    //d is the node
+    function drag_start(d) {
+      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    //make sure you can't drag the circle outside the box
+    function drag_drag(d) {
+      d.fx = d3.event.x;
+      d.fy = d3.event.y;
+    }
+
+    function drag_end(d) {
+      if (!d3.event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    //Zoom functions
+    function zoom_actions() {
+      g.attr('transform', d3.event.transform);
+    }
+
+    function tickActions() {
+      //update circle positions each tick of the simulation
+      node
+        .attr('cx', function(d) {
+          return d.x;
+        })
+        .attr('cy', function(d) {
+          return d.y;
+        });
+
+      //update link positions
       link
         .attr('x1', function(d) {
           return d.source.x;
@@ -79,10 +179,6 @@ export class NetworkViewComponent {
         .attr('y2', function(d) {
           return d.target.y;
         });
-
-      node.attr('transform', function(d) {
-        return 'translate(' + d.x + ',' + d.y + ')';
-      });
     }
   }
 }

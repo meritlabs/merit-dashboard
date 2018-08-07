@@ -14,7 +14,7 @@ export class DashboardAPI_Service {
     return this._doGetRequest('blocks-info');
   }
   getReferrals(address) {
-    return this._doGetRequest(`address/${address}/nearby?nodes=1000`);
+    return this._doGetRequest(`address/${address}/nearby?nodes=10`);
   }
   getMiningInfo() {
     return this._doGetRequest('mininginfo');
