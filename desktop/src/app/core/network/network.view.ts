@@ -34,19 +34,18 @@ export class NetworkViewComponent {
   }
 
   generateGraph() {
+    let nodes_data = this.arr.map(item => ({ name: item.source, label: item.label }));
+    let links_data = this.arr.map(item => ({ source: item.source, target: item.target }));
     let width = window.innerWidth / 1.25;
     let height = window.innerHeight / 1.25;
     let select = D3.select(this.canvas.nativeElement);
     let size = [width, height];
     let svg = this.networkService.createSvg(select, size);
-    let radius = 15;
-    let nodes_data = this.arr;
-    let links_data = [];
     let simulation = d3.forceSimulation().nodes(nodes_data);
     let link_force = d3.forceLink(links_data).id(function(d) {
       return d.name;
     });
-    let charge_force = d3.forceManyBody().strength(-100);
+    let charge_force = d3.forceManyBody().strength(-5);
     let center_force = d3.forceCenter(width / 2, height / 2);
 
     simulation
@@ -68,19 +67,18 @@ export class NetworkViewComponent {
       .data(links_data)
       .enter()
       .append('line')
-      .attr('stroke-width', 2)
-      .style('stroke', linkColour);
+      .attr('stroke-width', 1)
+      .style('stroke', '#FFF');
 
     //draw circles for the nodes
     let node = g
       .append('g')
       .attr('class', 'nodes')
-      .selectAll('circle')
+      .selectAll('g')
       .data(nodes_data)
       .enter()
-      .append('circle')
-      .attr('r', radius)
-      .attr('fill', circleColour);
+      .append('g')
+      .attr('fill', '#FFF');
 
     //add drag capabilities
     let drag_handler = d3
@@ -96,33 +94,10 @@ export class NetworkViewComponent {
 
     zoom_handler(svg);
 
-    /** Functions **/
-
-    //Function to choose what color circle we have
-    //Let's return blue for males and red for females
-    function circleColour(d) {
-      if (d.sex == 'M') {
-        return 'blue';
-      } else {
-        return 'pink';
-      }
-    }
-
-    //Function to choose the line colour and thickness
-    //If the link type is "A" return green
-    //If the link type is "E" return red
-    function linkColour(d) {
-      if (d.type == 'A') {
-        return 'green';
-      } else {
-        return 'red';
-      }
-    }
-
     //Drag functions
     //d is the node
     function drag_start(d) {
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+      if (!d3.event.active) simulation.alphaTarget(0.1).restart();
       d.fx = d.x;
       d.fy = d.y;
     }
@@ -141,20 +116,31 @@ export class NetworkViewComponent {
 
     //Zoom functions
     function zoom_actions() {
-      g.attr('transform', d3.event.transform);
+      let zoomLvl = d3.event.transform;
+      if (zoomLvl.k > 2) {
+        node
+          .append('text')
+          .attr('x', 0)
+          .attr('dy', 0)
+          .attr('fill', 'rgb(0, 176, 221)')
+          .style('font-size', '5px')
+          .text(function(d) {
+            return d.label;
+          });
+        charge_force = d3.forceManyBody().strength(-200);
+        center_force = d3.forceCenter(width / 2, height / 2);
+
+        simulation
+          .force('charge_force', charge_force)
+          .force('center_force', center_force)
+          .force('links', link_force);
+      } else {
+        node.selectAll('text').remove();
+      }
+      g.attr('transform', zoomLvl);
     }
 
     function tickActions() {
-      //update circle positions each tick of the simulation
-      node
-        .attr('cx', function(d) {
-          return d.x;
-        })
-        .attr('cy', function(d) {
-          return d.y;
-        });
-
-      //update link positions
       link
         .attr('x1', function(d) {
           return d.source.x;
@@ -168,6 +154,10 @@ export class NetworkViewComponent {
         .attr('y2', function(d) {
           return d.target.y;
         });
+
+      node.attr('transform', function(d) {
+        return 'translate(' + d.x + ',' + d.y + ')';
+      });
     }
   }
 }
