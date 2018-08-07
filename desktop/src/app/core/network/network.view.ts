@@ -24,6 +24,7 @@ export class NetworkViewComponent {
   nodes$ = this.store.select('nodes');
   arr = [];
   genesisAddress;
+  isLabelEnable: boolean = false;
   ngOnInit() {
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
@@ -34,6 +35,7 @@ export class NetworkViewComponent {
   }
 
   generateGraph() {
+    let _this = this;
     let nodes_data = this.arr.map(item => ({ name: item.source, label: item.label }));
     let links_data = this.arr.map(item => ({ source: item.source, target: item.target }));
     let width = window.innerWidth / 1.25;
@@ -57,6 +59,7 @@ export class NetworkViewComponent {
     simulation.on('tick', tickActions);
 
     //add encompassing group for the zoom
+
     let g = svg.append('g').attr('class', 'everything');
 
     //draw lines for the links
@@ -79,6 +82,19 @@ export class NetworkViewComponent {
       .enter()
       .append('g')
       .attr('fill', '#FFF');
+
+    node
+      .append('circle')
+      .attr('fill', '#fff')
+      .attr('r', 5);
+
+    node
+      .append('image')
+      .attr('xlink:href', 'https://www.merit.me/images/favicon.ico')
+      .attr('x', -2)
+      .attr('y', -2)
+      .attr('width', 4)
+      .attr('height', 4);
 
     //add drag capabilities
     let drag_handler = d3
@@ -114,16 +130,20 @@ export class NetworkViewComponent {
       d.fy = null;
     }
 
-    //Zoom functions
     function zoom_actions() {
       let zoomLvl = d3.event.transform;
-      if (zoomLvl.k > 2) {
+
+      if (zoomLvl.k > 2 && !_this.isLabelEnable) {
+        _this.isLabelEnable = true;
+        node.append('rect');
+
         node
           .append('text')
-          .attr('x', 0)
-          .attr('dy', 0)
-          .attr('fill', 'rgb(0, 176, 221)')
           .style('font-size', '5px')
+          .style('fill', '#FFDF00')
+          .attr('x', 5)
+          .attr('y', -5)
+          .attr('dy', '.35em')
           .text(function(d) {
             return d.label;
           });
@@ -134,8 +154,10 @@ export class NetworkViewComponent {
           .force('charge_force', charge_force)
           .force('center_force', center_force)
           .force('links', link_force);
-      } else {
+      } else if (zoomLvl.k < 2) {
+        _this.isLabelEnable = false;
         node.selectAll('text').remove();
+        node.selectAll('rect').remove();
       }
       g.attr('transform', zoomLvl);
     }
