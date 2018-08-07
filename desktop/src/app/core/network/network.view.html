@@ -6,6 +6,18 @@
     <div class="description-primary">
       <p>Explorer the Merit Network</p>
     </div>
+    <div class="networkNavigator">
+      <label for="">Show address networks</label>
+      <input type="text">
+      <button>build graph</button>
+    </div>
+    <div class="networkBreadCrumbs">
+      <ul>
+        <li *ngFor="let item of breadCrumbs" (click)="backToParent(item)">
+          {{item}}
+        </li>
+      </ul>
+    </div>
     <loading-spinner *ngIf="(nodes$ | async).loading"></loading-spinner>
     <div #canvas class="canvas" [class.loaded]="!(nodes$ | async).loading"></div>
 

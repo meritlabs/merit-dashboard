@@ -44,4 +44,23 @@
   opacity: 0
   &.loaded
     opacity: 1
-  
+.networkBreadCrumbs
+  color: $white
+  ul
+    display: flex
+    font-size: 13px
+    li
+      display: block
+      max-width: 100px
+      overflow: hidden
+      box-sizing: border-box
+      display: flex
+      cursor: pointer
+      margin-right: 10px
+      text-decoration: underline
+      font-style: italic
+      &:before
+        content: ">"
+      &:first-of-type
+        &:before
+          display: none

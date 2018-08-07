@@ -28,10 +28,16 @@ export class NetworkViewComponent {
   genesisAddress;
   isLabelEnable: boolean = false;
   gNodes: INode[] = [];
+  breadCrumbs = [];
   ngOnInit() {
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
         this.arr = res.nodes;
+        let isDuplicate = this.breadCrumbs.find(item => item === this.arr[0].source);
+        console.log(isDuplicate);
+
+        if (!isDuplicate) this.breadCrumbs.push(this.arr[0].source);
+
         this.generateGraph();
       }
     });
@@ -40,6 +46,15 @@ export class NetworkViewComponent {
   loadNodes() {
     this.store.dispatch(new LoadNodes({ nodes: this.gNodes } as any));
     this.gNodes.length = 0;
+  }
+  async backToParent(item) {
+    this.store.dispatch(new LoadNodes({ loading: true }));
+    let gNodes = await this.networkService.getNetwork(item);
+    this.store.dispatch(new LoadNodes({ loading: false, nodes: gNodes }));
+    var index = this.breadCrumbs.indexOf(item);
+    if (index > -1) {
+      this.breadCrumbs.length = index + 1;
+    }
   }
 
   generateGraph() {
