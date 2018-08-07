@@ -36,7 +36,7 @@ export class NetworkViewComponent {
 
   generateGraph() {
     let _this = this;
-    let nodes_data = this.arr.map(item => ({ name: item.source, label: item.label }));
+    let nodes_data = this.arr.map(item => ({ name: item.source, label: item.label, weight: item.weight }));
     let links_data = this.arr.map(item => ({ source: item.source, target: item.target }));
     let width = window.innerWidth / 1.25;
     let height = window.innerHeight / 1.25;
@@ -47,7 +47,11 @@ export class NetworkViewComponent {
     let link_force = d3.forceLink(links_data).id(function(d) {
       return d.name;
     });
-    let charge_force = d3.forceManyBody().strength(-5);
+    let charge_force = d3
+      .forceManyBody()
+      .distanceMax(-200)
+      .strength(-20);
+
     let center_force = d3.forceCenter(width / 2, height / 2);
 
     simulation
@@ -86,7 +90,30 @@ export class NetworkViewComponent {
     node
       .append('circle')
       .attr('fill', '#fff')
-      .attr('r', 5);
+      .attr('r', function(d) {
+        let w = d.weight;
+        if (w > 100) w = 30;
+        if (w > 50 && w < 100) w = 15;
+        if (w < 50 && w > 10) w = 10;
+        if (w === 0) w = 3;
+        return w;
+      });
+    node.on('mouseover', function(d) {
+      node.attr('opacity', function(n) {
+        if (d === n) return 1;
+        else return 0.05;
+      });
+
+      link.attr('opacity', function(l) {
+        if (d === l.source || d === l.target) return 1;
+        else return 0.05;
+      });
+    });
+
+    node.on('mouseout', function() {
+      link.attr('opacity', 1);
+      node.attr('opacity', 1);
+    });
 
     node
       .append('image')
@@ -96,15 +123,6 @@ export class NetworkViewComponent {
       .attr('width', 4)
       .attr('height', 4);
 
-    //add drag capabilities
-    let drag_handler = d3
-      .drag()
-      .on('start', drag_start)
-      .on('drag', drag_drag)
-      .on('end', drag_end);
-
-    drag_handler(node);
-
     //add zoom capabilities
     let zoom_handler = d3.zoom().on('zoom', zoom_actions);
 
@@ -113,7 +131,7 @@ export class NetworkViewComponent {
     //Drag functions
     //d is the node
     function drag_start(d) {
-      if (!d3.event.active) simulation.alphaTarget(0.1).restart();
+      if (!d3.event.active) simulation.alphaTarget(0).restart();
       d.fx = d.x;
       d.fy = d.y;
     }
@@ -147,7 +165,11 @@ export class NetworkViewComponent {
           .text(function(d) {
             return d.label;
           });
-        charge_force = d3.forceManyBody().strength(-200);
+        charge_force = d3
+          .forceManyBody()
+          .distanceMax(-400)
+          .strength(-1000);
+
         center_force = d3.forceCenter(width / 2, height / 2);
 
         simulation
@@ -183,3 +205,13 @@ export class NetworkViewComponent {
     }
   }
 }
+
+// DRAG ABILITY
+//add drag capabilities
+// let drag_handler = d3
+//   .drag()
+//   .on('start', drag_start)
+//   .on('drag', drag_drag)
+//   .on('end', drag_end);
+
+// drag_handler(node);

@@ -12,12 +12,12 @@ export class NetworkService {
     let network = [];
     let referrals = Array.prototype.slice.apply(getReferrals);
 
-    network.push(new Node(`${address}`, `${address}`, `${address}`, `CORE`));
+    network.push(new Node(`${address}`, `${address}`, 10000, `CORE`));
     referrals.map(item => {
-      network.push(new Node(`${item.address}`, `${item.parentAddress}`, `${item.address}`, item.alias));
+      let weight = referrals.filter(wItem => wItem.parentAddress === item.address).length;
+      network.push(new Node(`${item.address}`, `${item.parentAddress}`, weight, item.alias));
     });
     console.log(network);
-
     return network;
   }
 
