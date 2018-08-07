@@ -36,28 +36,17 @@ export class NetworkViewComponent {
   generateGraph() {
     let width = window.innerWidth / 1.25;
     let height = window.innerHeight / 1.25;
-    let layout = D3.layout;
-
     let select = D3.select(this.canvas.nativeElement);
     let size = [width, height];
-
     let svg = this.networkService.createSvg(select, size);
-
     let radius = 15;
-
     let nodes_data = this.arr;
-
     let links_data = [];
-
-    //set up the simulation and add forces
     let simulation = d3.forceSimulation().nodes(nodes_data);
-
     let link_force = d3.forceLink(links_data).id(function(d) {
       return d.name;
     });
-
     let charge_force = d3.forceManyBody().strength(-100);
-
     let center_force = d3.forceCenter(width / 2, height / 2);
 
     simulation
