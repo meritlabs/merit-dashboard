@@ -35,19 +35,6 @@ export class CoreComponent {
 
     this.gNodes = await this.networkService.getNetwork('MGgAma9epMrSipSm9Y2YjCWGGSt7gJWzM7');
 
-    this.loadNodes(1);
-  }
-  async loadNodes(tryCount) {
-    let loadMore = await this.networkService.getNetwork(this.gNodes[tryCount].target);
-    tryCount++;
-    loadMore.map(item => {
-      this.gNodes.push(item);
-    });
-
-    if (this.gNodes.length < 100) {
-      this.loadNodes(tryCount);
-    } else {
-      this.store.dispatch(new LoadNodes({ loading: false, nodes: this.gNodes } as INodes));
-    }
+    this.store.dispatch(new LoadNodes({ loading: false, nodes: this.gNodes } as INodes));
   }
 }

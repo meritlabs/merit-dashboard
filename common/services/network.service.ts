@@ -11,9 +11,10 @@ export class NetworkService {
     let getReferrals = await this.dashboardApi.getReferrals(address);
     let network = [];
     let referrals = Array.prototype.slice.apply(getReferrals);
+    console.log(referrals);
 
     referrals.map(item => {
-      network.push(new Node(`${address}`, `${item.address}`, `${item.address}`, item.alias));
+      network.push(new Node(`${item.parentAddress}`, `${item.address}`, `${item.address}`, item.alias));
     });
     return network;
   }
