@@ -34,8 +34,6 @@ export class NetworkViewComponent {
       if (res.nodes.length > 0) {
         this.arr = res.nodes;
         let isDuplicate = this.breadCrumbs.find(item => item === this.arr[0].source);
-        console.log(isDuplicate);
-
         if (!isDuplicate) this.breadCrumbs.push(this.arr[0].source);
 
         this.generateGraph();
@@ -62,8 +60,8 @@ export class NetworkViewComponent {
     let _this = this;
     let nodes_data = this.arr.map(item => ({ name: item.source, label: item.label, weight: item.weight }));
     let links_data = this.arr.map(item => ({ source: item.source, target: item.target }));
-    let width = window.innerWidth / 1.25;
-    let height = window.innerHeight / 1.25;
+    let width = this.canvas.nativeElement.offsetWidth;
+    let height = this.canvas.nativeElement.offsetHeight;
     let select = D3.select(this.canvas.nativeElement);
     let size = [width, height];
     let svg = this.networkService.createSvg(select, size);
@@ -74,9 +72,9 @@ export class NetworkViewComponent {
     let charge_force = d3
       .forceManyBody()
       .distanceMax(-400)
-      .strength(-20);
+      .strength(-40);
 
-    let center_force = d3.forceCenter(width / 2, height / 2);
+    let center_force = d3.forceCenter(width / 2.5, height / 2.5);
 
     simulation
       .force('charge_force', charge_force)
@@ -161,7 +159,7 @@ export class NetworkViewComponent {
     function zoom_actions() {
       let zoomLvl = d3.event.transform;
 
-      if (zoomLvl.k > 2 && !_this.isLabelEnable) {
+      if (zoomLvl.k > 1.2 && !_this.isLabelEnable) {
         _this.isLabelEnable = true;
         node.append('rect');
 
@@ -175,18 +173,9 @@ export class NetworkViewComponent {
           .text(function(d) {
             return d.label;
           });
-        charge_force = d3
-          .forceManyBody()
-          .distanceMax(-400)
-          .strength(-1000);
-
-        center_force = d3.forceCenter(width / 2, height / 2);
-
-        simulation
-          .force('charge_force', charge_force)
-          .force('center_force', center_force)
-          .force('links', link_force);
-      } else if (zoomLvl.k < 2) {
+        charge_force = d3.forceManyBody().strength(-500);
+        simulation.force('charge_force', charge_force);
+      } else if (zoomLvl.k < 1.2) {
         _this.isLabelEnable = false;
         node.selectAll('text').remove();
         node.selectAll('rect').remove();

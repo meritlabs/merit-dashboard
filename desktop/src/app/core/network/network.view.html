@@ -1,25 +1,30 @@
 <div class="container">
-  <div class="blackTheme">
-    <div class="title-primary">
-      <p>Meet the Merit Networ</p>
-    </div>
-    <div class="description-primary">
-      <p>Explorer the Merit Network</p>
-    </div>
-    <div class="networkNavigator">
-      <label for="">Show address networks</label>
-      <input type="text">
-      <button>build graph</button>
-    </div>
-    <div class="networkBreadCrumbs">
-      <ul>
-        <li *ngFor="let item of breadCrumbs" (click)="backToParent(item)">
-          {{item}}
-        </li>
-      </ul>
+  <div class="blackTheme networkView">
+    <div>
+      <div class="title-primary">
+        <p>Meet the Merit Networ</p>
+      </div>
+      <div class="description-primary">
+        <p>Explorer the Merit Network</p>
+      </div>
+      <div class="networkNavigator">
+        <label for="" class="ui-label">Find wallet (enter addresses or alias below)</label>
+        <div class="networkNavigator_group">
+          <input type="text" class="ui-input ui-input--text">
+          <button class="ui-button">FIND</button>
+        </div>
+      </div>
+      <div class="networkBreadCrumbs">
+        <ul>
+          <li *ngFor="let item of breadCrumbs" (click)="backToParent(item)">
+            <i>{{item}}</i>
+          </li>
+        </ul>
+      </div>
     </div>
     <loading-spinner *ngIf="(nodes$ | async).loading"></loading-spinner>
-    <div #canvas class="canvas" [class.loaded]="!(nodes$ | async).loading"></div>
+    <div #canvas class="canvas graphWrap" [class.loaded]="!(nodes$ | async).loading"></div>
+
 
     <div *ngIf="gNodes.length > 1" class="nodesDialog_wrapper">
       <div class="nodesDialog">
