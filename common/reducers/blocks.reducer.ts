@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Blocks, IBlocks } from '../models/blocks';
 import { BLOCKS_ACTION, LoadBlocks } from '../actions/blocks.action';
 
@@ -16,7 +17,8 @@ export function blocksReducer(state: IBlocks = INITIAL_STATE, action: LoadBlocks
         if (index !== 99) prevBlockDiff = prevBlockDiff = blocks[index + 1].difficulty;
         difficultyChange = ((currentBlockDiff - prevBlockDiff) / ((currentBlockDiff + prevBlockDiff) / 2)) * 100;
         item.difficultyChange = `${difficultyChange.toFixed(2)}%`;
-
+        item.lastChange = moment(item.timestamp).format('MMM Do YYYY');
+        item.timestamp = `${moment(item.timestamp)}`;
         return item;
       });
       blocks.reverse();
