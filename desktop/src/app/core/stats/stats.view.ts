@@ -15,13 +15,16 @@ export class StatsViewComponent implements OnInit {
     currentBlock: {},
     blocksToReTarget: 0,
     networkAvgCyclesPS: 0,
+    blockTime: 0,
   };
 
   async ngOnInit() {
     let currentBlockHash = (await this.dashboardAPI.getBlocksInfo(1, 1))[0].hash;
     let getMiningInfo = Array.prototype.slice.apply(await this.dashboardAPI.getMiningHistoryInfo(30));
     let totalCpS = 0;
-
+    let blockTimeStart = Date.parse(getMiningInfo[0].timestamp);
+    let blockTimeEnd = Date.parse(getMiningInfo[29].timestamp);
+    let blockTime = ((blockTimeStart - blockTimeEnd) / 1000 / 30).toFixed(1);
     getMiningInfo.map(item => {
       totalCpS += item.networkCyclesPS;
     });
@@ -31,6 +34,7 @@ export class StatsViewComponent implements OnInit {
 
     this.stats.currentBlock = await this.dashboardAPI.getBlock(currentBlockHash);
     this.stats.currentBlock.difficulty = this.stats.currentBlock.difficulty.toFixed(3);
+    this.stats.blockTime = blockTime;
     console.log(this.stats);
 
     // 1440 - ($currentBlock % 1440);
