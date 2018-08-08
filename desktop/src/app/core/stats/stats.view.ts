@@ -20,6 +20,10 @@ export class StatsViewComponent implements OnInit {
     lastReTargetBlock: {},
     reTargetInBlocks: 0,
     reTargetIn: '',
+    retargetInHours: '',
+    retarget100InHours: '',
+    retargetTimestamp: '',
+    retarget100Timestamp: '',
   };
 
   async ngOnInit() {
@@ -27,9 +31,7 @@ export class StatsViewComponent implements OnInit {
     let getBlocks = Array.prototype.slice.apply(await this.dashboardAPI.getBlocksInfo(5000, 1));
     let getMiningInfo = Array.prototype.slice.apply(await this.dashboardAPI.getMiningHistoryInfo(30));
     let totalCpS = 0;
-    let blockTimeStart = Date.parse(getMiningInfo[0].timestamp);
-    let blockTimeEnd = Date.parse(getMiningInfo[29].timestamp);
-    let blockTime = ((blockTimeStart - blockTimeEnd) / 1000 / 30).toFixed(1);
+    let blockTime = await this.getBlockTime(30);
     getMiningInfo.map(item => {
       totalCpS += item.networkCyclesPS;
     });
@@ -43,13 +45,39 @@ export class StatsViewComponent implements OnInit {
     this.stats.reTargetInBlocks = this.stats.currentBlock.height - this.stats.lastReTargetBlock.height;
     this.stats.reTargetIn = moment(this.stats.lastReTargetBlock.timestamp).format('MM-DD-YY, h:mm A');
 
-    console.log(this.stats);
+    let rtBasedSinceRetarget = await this.getNextRetargetTimeInSeconds(
+      this.stats.currentBlock.height,
+      this.stats.currentBlock.height % 100
+    );
+    let rtBasedLast100Blocks = await this.getNextRetargetTimeInSeconds(this.stats.currentBlock.height, 100);
 
-    // 1440 - ($currentBlock % 1440);
-    // console.log(await this.dashboardAPI.getBlocksInfo());
-    // console.log(await this.dashboardAPI.getMiningInfo());
-    // console.log(await this.dashboardAPI.getBestBlockHash());
-    // console.log(await this.dashboardAPI.getBestBlock());
-    // console.log(await this.dashboardAPI.getBlock(((await this.dashboardAPI.getBestBlock()) as any).hash));
+    this.stats.retargetInHours = this.getRetargetInPredictionTime(rtBasedSinceRetarget);
+    this.stats.retarget100InHours = this.getRetargetInPredictionTime(rtBasedLast100Blocks);
+    this.stats.retargetTimestamp = this.getRetargetPredictionDateTime(rtBasedSinceRetarget);
+    this.stats.retarget100Timestamp = this.getRetargetPredictionDateTime(rtBasedLast100Blocks);
+    console.log(this.stats);
+  }
+  async getNextRetargetTimeInSeconds(currentBlock, blocksAgoToStart) {
+    let singleBlockTime = parseFloat(await this.getBlockTime(blocksAgoToStart));
+    let blocksToRetarget = 1440 - (currentBlock % 1440);
+    return Math.round(singleBlockTime * blocksToRetarget);
+  }
+  async getBlockTime(blocksAgoToStart) {
+    let getMiningInfo = await this.dashboardAPI.getMiningHistoryInfo(blocksAgoToStart);
+    Array.prototype.slice.apply(getMiningInfo);
+    let blockTimeStart = Date.parse(getMiningInfo[0].timestamp);
+    let blockTimeEnd = Date.parse(getMiningInfo[blocksAgoToStart - 1].timestamp);
+    return ((blockTimeStart - blockTimeEnd) / 1000 / 30).toFixed(0);
+  }
+  getRetargetInPredictionTime(val) {
+    let rtHours = Math.floor(val / 3600);
+    let reMinutes = Math.floor((val % 3600) / 60);
+    return `${rtHours}:${reMinutes}`;
+  }
+  getRetargetPredictionDateTime(val) {
+    let timeNowInMs = Date.parse(new Date().toString());
+    let nexRtInMs = val * 1000;
+
+    return moment(timeNowInMs + nexRtInMs).format('MM-DD-YY, h:mm A');
   }
 }

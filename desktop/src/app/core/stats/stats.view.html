@@ -75,19 +75,19 @@
       <div class="row">
         <div class="column heading">Next retarget in</div>
         <div class="column selected">
-          <p>0:17 hours
+          <p>{{stats?.retargetInHours}} hours
           </p>
         </div>
         <div class="column selected">
-          <p>0:14 hours</p>
+          <p>{{stats?.retarget100InHours}} hours</p>
         </div>
       </div>
       <div class="row">
         <div class="column heading">Next retarget at</div>
         <div class="column selected">
-          <p>2018-07-26 12:36</p>
+          <p>{{stats?.retargetTimestamp}}</p>
         </div>
-        <div class="column selected">2018-07-26 12:34</div>
+        <div class="column selected">{{stats?.retarget100Timestamp}}</div>
       </div>
       <div class="row">
         <div class="column heading">Next difficulty</div>
