@@ -8,14 +8,18 @@ export class DashboardAPI_Service {
   getMiningHistoryInfo() {
     return this._doGetRequestDA('mining-info');
   }
-  getBlocksInfo() {
-    return this._doGetRequestDA('blocks-info');
+  getBlocksInfo(amount?, step?) {
+    if (!amount) amount = 100;
+    if (!step) step = 1140;
+    return this._doGetRequestDA(`blocks-info?blocks=${amount}&step=${step}`);
   }
   getReferrals(address) {
     return this._doGetRequestDA(`address/${address}/nearby?nodes=300`);
   }
-  getMiningInfo() {
-    return this._doGetRequestDA('mininginfo');
+  getMiningInfo(step?, amount?) {
+    if (!amount) amount = 100;
+    if (!step) step = 100;
+    return this._doGetRequestDA(`mininginfo?step=${step}&n=${amount}`);
   }
   getLeaderBoard() {
     return this._doGetRequestDA('leaderboard');

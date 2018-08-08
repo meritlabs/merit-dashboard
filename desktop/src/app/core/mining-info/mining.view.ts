@@ -26,8 +26,8 @@ export class MiningViewComponent implements OnInit, OnChanges, OnDestroy {
         this.chartToolTips.push([
           `Block: ${item.height}`,
           `Time: ${item.timestamp}`,
-          'Last change: -',
-          'Diff change: -',
+          `Last change: -`,
+          `Diff change: ${item.difficultyChange}`,
         ]);
       });
 
