@@ -5,8 +5,8 @@ import { ENV } from '@app/env';
 @Injectable()
 export class DashboardAPI_Service {
   constructor(private http: HttpClient) {}
-  getMiningHistoryInfo() {
-    return this._doGetRequestDA('mining-info');
+  getMiningHistoryInfo(amount?) {
+    return this._doGetRequestDA(`mining-info?n=${amount}`);
   }
   getBlocksInfo(amount?, step?) {
     if (!amount) amount = 100;
@@ -43,6 +43,8 @@ export class DashboardAPI_Service {
     return this._doGetRequestDA(`bestblock`);
   }
   getBlock(hash) {
+    console.log(hash);
+
     return this._doGetRequestDA(`block/${hash}`);
   }
   validateAddress(address) {
