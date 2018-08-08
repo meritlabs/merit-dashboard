@@ -21,7 +21,7 @@ export class Block {
     public hash: string,
     public height: number,
     public timestamp: string,
-    public lastChange: string,
-    public difficultyChange: string
+    public lastChange?: string,
+    public difficultyChange?: string
   ) {}
 }
