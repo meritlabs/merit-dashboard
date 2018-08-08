@@ -17,7 +17,6 @@ export class NetworkService {
       let weight = referrals.filter(wItem => wItem.parentAddress === item.address).length;
       network.push(new Node(`${item.address}`, `${item.parentAddress}`, weight, item.alias));
     });
-    console.log(network);
     return network;
   }
 

@@ -3,8 +3,9 @@ import { NetworkService } from '@dashboard/common/services/network.service';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@dashboard/common/reducers/app.reducer';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
-import { Nodes, INode } from '@dashboard/common/models/network';
+import { INode } from '@dashboard/common/models/network';
 import { LoadNodes } from '@dashboard/common/actions/nodes.action';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 declare const window: any;
 declare const d3: any;
@@ -19,7 +20,8 @@ export class NetworkViewComponent {
   constructor(
     private networkService: NetworkService,
     public dashboardApi: DashboardAPI_Service,
-    private store: Store<IAppState>
+    private store: Store<IAppState>,
+    private formBuilder: FormBuilder
   ) {}
   @ViewChild('canvas') private canvas: ElementRef;
 
@@ -29,13 +31,22 @@ export class NetworkViewComponent {
   isLabelEnable: boolean = false;
   gNodes: INode[] = [];
   breadCrumbs = [];
+  formData: FormGroup = this.formBuilder.group({
+    address: '',
+  });
+  async validate(address) {
+    let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
+    let isValid: any = getAddress.isValid;
+    let validAddress;
+    if (isValid) validAddress = getAddress.address;
+    this.loadGraph(validAddress);
+  }
   ngOnInit() {
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
         this.arr = res.nodes;
         let isDuplicate = this.breadCrumbs.find(item => item === this.arr[0].source);
         if (!isDuplicate) this.breadCrumbs.push(this.arr[0].source);
-
         this.generateGraph();
       }
     });
@@ -53,6 +64,12 @@ export class NetworkViewComponent {
     if (index > -1) {
       this.breadCrumbs.length = index + 1;
     }
+  }
+
+  async loadGraph(address) {
+    this.store.dispatch(new LoadNodes({ loading: true }));
+    this.gNodes = await this.networkService.getNetwork(address);
+    this.store.dispatch(new LoadNodes({ loading: false }));
   }
 
   generateGraph() {
@@ -132,10 +149,8 @@ export class NetworkViewComponent {
       });
     });
 
-    node.on('click', async function(d) {
-      _this.store.dispatch(new LoadNodes({ loading: true }));
-      _this.gNodes = await _this.networkService.getNetwork(d.name);
-      _this.store.dispatch(new LoadNodes({ loading: false }));
+    node.on('click', function(d) {
+      _this.loadGraph(d.name);
     });
 
     node.on('mouseout', function() {

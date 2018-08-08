@@ -7,13 +7,13 @@
       <div class="description-primary">
         <p>Explorer the Merit Network</p>
       </div>
-      <div class="networkNavigator">
+      <form [formGroup]="formData" (ngSubmit)="validate(formData.controls.address.value)" class="networkNavigator">
         <label for="" class="ui-label">Find wallet (enter addresses or alias below)</label>
         <div class="networkNavigator_group">
-          <input type="text" class="ui-input ui-input--text">
+          <input type="text" class="ui-input ui-input--text" formControlName="address">
           <button class="ui-button">FIND</button>
         </div>
-      </div>
+      </form>
       <div class="networkBreadCrumbs">
         <ul>
           <li *ngFor="let item of breadCrumbs" (click)="backToParent(item)">
