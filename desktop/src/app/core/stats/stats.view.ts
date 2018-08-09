@@ -10,7 +10,7 @@ import { IAppState } from '@dashboard/common/reducers/app.reducer';
   styleUrls: ['./stats.view.sass'],
 })
 export class StatsViewComponent implements OnInit {
-  constructor(public dashboardAPI: DashboardAPI_Service, private store: Store<IAppState>) {}
+  constructor(public dashboardAPI: DashboardAPI_Service) {}
 
   stats: any = {
     currentBlock: {},
