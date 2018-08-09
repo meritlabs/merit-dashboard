@@ -15,10 +15,12 @@
       <button class="ui-button ui-button--blue">VALIDATE</button>
     </div>
   </form>
-  <div class="statsWidget" *ngIf="formData.status === 'VALID'">
+  <div class="statsWidget" *ngIf="isValid">
     <div class="title-secondary">
-      <p>Wallet:
-        <strong>{{formData.controls.wallet.value}}</strong>
+      <p>
+        <strong>{{address.address}}
+          <i *ngIf="address.alias">({{address.alias}})</i>
+        </strong>
       </p>
     </div>
     <div class="statsTable">
@@ -29,14 +31,19 @@
       <div class="row">
         <div class="column heading">Is valid</div>
         <div class="column selected">
-          <p>TRUE
-          </p>
+          <p>{{address.isValid}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column heading">Is beaconed</div>
+        <div class="column selected">
+          <p>{{address.isBeaconed}}</p>
         </div>
       </div>
       <div class="row">
         <div class="column heading">Is confirmed</div>
         <div class="column selected">
-          <p>TRUE</p>
+          <p>{{address.isConfirmed}}</p>
         </div>
       </div>
 
