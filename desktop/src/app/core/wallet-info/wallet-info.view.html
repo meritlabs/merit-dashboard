@@ -15,86 +15,91 @@
       <button class="ui-button ui-button--blue">VALIDATE</button>
     </div>
   </form>
-  <div class="statsWidget" *ngIf="isValid">
-    <div class="title-secondary">
-      <p>
-        <strong>{{address?.address}}
-          <i *ngIf="address.alias">({{address?.alias}})</i>
-        </strong>
-      </p>
-    </div>
-    <div class="statsTable">
-      <div class="row hideOnMobile">
-        <div class="column"></div>
-        <div class="column heading">Details</div>
-      </div>
-      <div class="row" [class.alert]="!address?.isValid">
-        <div class="column heading">Is valid</div>
-        <div class="column selected">
-          <p>{{address?.isValid}}</p>
-        </div>
-      </div>
-      <div class="row" [class.alert]="!address?.isBeaconed">
-        <div class="column heading">Is beaconed</div>
-        <div class="column selected">
-          <p>{{address.isBeaconed}}</p>
-        </div>
-      </div>
-      <div class="row" [class.alert]="!address?.isConfirmed">
-        <div class="column heading">Is confirmed</div>
-        <div class="column selected">
-          <p>{{address.isConfirmed}}</p>
-        </div>
-      </div>
-      <div class="row" [class.alert]="address?.balance === 0">
-        <div class="column heading">Balance</div>
-        <div class="column selected">
-          <p>{{address?.balance}}</p>
-        </div>
-      </div>
-      <div class="row" [class.alert]="!address?.top">
-        <div class="column heading">Network position</div>
-        <div class="column selected">
-          <p>{{address?.top || "-"}}</p>
-        </div>
-      </div>
-      <div class="row" [class.alert]="!address?.rank">
-        <div class="column heading">Network rank</div>
-        <div class="column selected">
-          <p>{{address?.rank || "-"}}</p>
-        </div>
-      </div>
-    </div>
-    <div class="referralsMap" *ngIf="address?.referralsMap">
+  <ng-container *ngIf="!isLoading; else loading">
+    <div class="statsWidget" *ngIf="isValid">
       <div class="title-secondary">
         <p>
-          <strong>Referrals map</strong>
+          <strong>{{address?.address}}
+            <i *ngIf="address.alias">({{address?.alias}})</i>
+          </strong>
         </p>
       </div>
-      <div class="ranksTable">
-        <div class="header">
-          <div class="cell cell-xs">
-            #
-          </div>
-          <div class="cell cell-lg">
-            Wallet
-          </div>
-          <div class="cell cell-lg">
-            Joined
+      <div class="statsTable">
+        <div class="row hideOnMobile">
+          <div class="column"></div>
+          <div class="column heading">Details</div>
+        </div>
+        <div class="row" [class.alert]="!address?.isValid">
+          <div class="column heading">Is valid</div>
+          <div class="column selected">
+            <p>{{address?.isValid}}</p>
           </div>
         </div>
-        <div class="ranksTableRow" *ngFor="let item of address?.referralsMap; let i = index">
-          <div class="cell cell-xs">
-            {{i + 1}}
+        <div class="row" [class.alert]="!address?.isBeaconed">
+          <div class="column heading">Is beaconed</div>
+          <div class="column selected">
+            <p>{{address.isBeaconed}}</p>
           </div>
-          <div class="cell cell-lg">
-            {{item.alias || 'Anonymous'}}
+        </div>
+        <div class="row" [class.alert]="!address?.isConfirmed">
+          <div class="column heading">Is confirmed</div>
+          <div class="column selected">
+            <p>{{address.isConfirmed}}</p>
           </div>
-          <div class="cell cell-lg">
-            {{item.created | moment}}
+        </div>
+        <div class="row" [class.alert]="address?.balance === 0">
+          <div class="column heading">Balance</div>
+          <div class="column selected">
+            <p>{{address?.balance}}</p>
+          </div>
+        </div>
+        <div class="row" [class.alert]="!address?.top">
+          <div class="column heading">Network position</div>
+          <div class="column selected">
+            <p>{{address?.top || "-"}}</p>
+          </div>
+        </div>
+        <div class="row" [class.alert]="!address?.rank">
+          <div class="column heading">Network rank</div>
+          <div class="column selected">
+            <p>{{address?.rank || "-"}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="referralsMap" *ngIf="address?.referralsMap">
+        <div class="title-secondary">
+          <p>
+            <strong>Referrals map</strong>
+          </p>
+        </div>
+        <div class="ranksTable">
+          <div class="header">
+            <div class="cell cell-xs">
+              #
+            </div>
+            <div class="cell cell-lg">
+              Wallet
+            </div>
+            <div class="cell cell-lg">
+              Joined
+            </div>
+          </div>
+          <div class="ranksTableRow" *ngFor="let item of address?.referralsMap; let i = index">
+            <div class="cell cell-xs">
+              {{i + 1}}
+            </div>
+            <div class="cell cell-lg">
+              {{item.alias || 'Anonymous'}}
+            </div>
+            <div class="cell cell-lg">
+              {{item.created | moment}}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-container>
+  <ng-template #loading>
+    <loading-spinner></loading-spinner>
+  </ng-template>
 </div>

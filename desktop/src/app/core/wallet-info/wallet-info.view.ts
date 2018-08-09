@@ -12,11 +12,16 @@ export class WalletInfoViewComponent {
     wallet: ['', [Validators.required]],
   });
   isValid: boolean;
+  isLoading: boolean;
   address: any;
+
   constructor(private formBuilder: FormBuilder, public dashboardApi: DashboardAPI_Service) {}
+
   async validate(address) {
+    this.isLoading = true;
     let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
     let isValid: any = getAddress.isValid;
+
     if (isValid) {
       let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
       let ranks: any;
@@ -32,8 +37,11 @@ export class WalletInfoViewComponent {
         this.address.rank = (ranks.anv / 1e8).toFixed(0);
         this.address.referralsMap = referralsMap;
       }
-
-      console.log(referralsMap);
+      this.isLoading = false;
+    } else {
+      this.isLoading = false;
+      this.isValid = false;
+      this.formData.controls.wallet.status = 'INVALID';
     }
   }
 }
