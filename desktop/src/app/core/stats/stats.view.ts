@@ -1,8 +1,6 @@
 import * as moment from 'moment';
 import { Component, OnInit } from '@angular/core';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
-import { Store } from '@ngrx/store';
-import { IAppState } from '@dashboard/common/reducers/app.reducer';
 
 @Component({
   selector: 'app-stats-view',
@@ -36,7 +34,7 @@ export class StatsViewComponent implements OnInit {
     let currentBlockHash = (await this.dashboardAPI.getBlocksInfo(1, 1))[0].hash;
     let currentBlock: any = await this.dashboardAPI.getBlock(currentBlockHash);
     let currentBlockN = currentBlock.height;
-    let getBlocks = Array.prototype.slice.apply(await this.dashboardAPI.getBlocksInfo(1000, 1));
+    let getBlocks = Array.prototype.slice.apply(await this.dashboardAPI.getBlocksInfo(10000, 1));
     let getMiningInfo = Array.prototype.slice.apply(await this.dashboardAPI.getMiningHistoryInfo(blocksAgo));
     let lastReTargetBlock = getBlocks.find(item => item.height % nPowTargetTimeSpan === 0);
     let blockTime = await this.getBlockTime(blocksAgo);
@@ -80,7 +78,6 @@ export class StatsViewComponent implements OnInit {
     this.stats.retarget100Timestamp = retarget100Timestamp;
     this.stats.retargetDifficulty = retargetDifficulty;
     this.stats.retarget100Difficulty = retarget100Difficulty;
-    console.log(this.stats);
   }
   async getNextRetargetTimeInSeconds(currentBlock, blocksAgoToStart) {
     let singleBlockTime = parseFloat(await this.getBlockTime(blocksAgoToStart));
