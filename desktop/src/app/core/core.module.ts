@@ -10,6 +10,7 @@ import { StatsViewComponent } from '@dashboard/desktop/app/core/stats/stats.view
 import { NetworkViewComponent } from '@dashboard/desktop/app/core/network/network.view';
 import { CalculatorViewComponent } from '@dashboard/desktop/app/core/calculator/calculator.view';
 import { WalletInfoViewComponent } from '@dashboard/desktop/app/core/wallet-info/wallet-info.view';
+import { MomentPipe } from '@dashboard/common/pipes/moment';
 
 export function getPages() {
   return [
@@ -25,6 +26,6 @@ export function getPages() {
 @NgModule({
   entryComponents: [CoreComponent, ...getPages()],
   imports: [CommonModule, CoreRoutingModule, CoreComponentsModule, ReactiveFormsModule, FormsModule],
-  declarations: [CoreComponent, ...getPages()],
+  declarations: [CoreComponent, ...getPages(), MomentPipe],
 })
 export class CoreModule {}

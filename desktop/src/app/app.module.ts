@@ -13,6 +13,7 @@ import { AppComponent } from '@dashboard/desktop/app/app.component';
 import { LoggerService } from '@dashboard/common/services/logger.service';
 import { NetworkService } from '@dashboard/common/services/network.service';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
+import { MomentPipe } from '@dashboard/common/pipes/moment';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/i18n');

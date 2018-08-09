@@ -16,6 +16,9 @@ export class DashboardAPI_Service {
   getReferrals(address) {
     return this._doGetRequestDA(`address/${address}/nearby?nodes=300`);
   }
+  getAddressNetwork(address) {
+    return this._doGetRequestDA(`address/${address}/referrals`);
+  }
   getMiningInfo(step?, amount?) {
     if (!amount) amount = 100;
     if (!step) step = 100;
@@ -43,8 +46,6 @@ export class DashboardAPI_Service {
     return this._doGetRequestDA(`bestblock`);
   }
   getBlock(hash) {
-    console.log(hash);
-
     return this._doGetRequestDA(`block/${hash}`);
   }
   validateAddress(address) {

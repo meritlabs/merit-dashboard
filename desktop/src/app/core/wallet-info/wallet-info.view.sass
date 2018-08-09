@@ -50,7 +50,15 @@
     small
       font-weight: 400
       font-size: 16px
-
+.ranksTableRow
+  width: 100%
+  display: flex
+  &:nth-child(2n)
+    background: $grey
+.referralsMap
+  padding-top: 40px
+  .ranksTable
+    border-right: 1px solid $white
 @media screen and (max-width: 768px)
   .validateWallet
     flex-direction: column
