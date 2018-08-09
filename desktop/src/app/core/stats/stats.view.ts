@@ -24,11 +24,13 @@ export class StatsViewComponent implements OnInit {
     retarget100InHours: '',
     retargetTimestamp: '',
     retarget100Timestamp: '',
+    retargetDifficulty: 0,
+    retarget100Difficulty: 0,
   };
 
   async ngOnInit() {
     let currentBlockHash = (await this.dashboardAPI.getBlocksInfo(1, 1))[0].hash;
-    let getBlocks = Array.prototype.slice.apply(await this.dashboardAPI.getBlocksInfo(5000, 1));
+    let getBlocks = Array.prototype.slice.apply(await this.dashboardAPI.getBlocksInfo(10000, 1));
     let getMiningInfo = Array.prototype.slice.apply(await this.dashboardAPI.getMiningHistoryInfo(30));
     let totalCpS = 0;
     let blockTime = await this.getBlockTime(30);
@@ -37,10 +39,10 @@ export class StatsViewComponent implements OnInit {
     });
 
     this.stats.lastReTargetBlock = getBlocks.find(item => item.height % 1440 === 0);
-    this.stats.networkCyclesPS = getMiningInfo[0].networkCyclesPS.toFixed(2);
-    this.stats.networkAvgCyclesPS = (totalCpS / 30).toFixed(2);
+    this.stats.networkCyclesPS = getMiningInfo[0].networkCyclesPS.toFixed(0);
+    this.stats.networkAvgCyclesPS = (totalCpS / 30).toFixed(0);
     this.stats.currentBlock = await this.dashboardAPI.getBlock(currentBlockHash);
-    this.stats.currentBlock.difficulty = this.stats.currentBlock.difficulty.toFixed(3);
+    this.stats.currentBlock.difficulty = this.stats.currentBlock.difficulty.toFixed(0);
     this.stats.blockTime = blockTime;
     this.stats.reTargetInBlocks = this.stats.currentBlock.height - this.stats.lastReTargetBlock.height;
     this.stats.reTargetIn = moment(this.stats.lastReTargetBlock.timestamp).format('MM-DD-YY, h:mm A');
@@ -55,6 +57,16 @@ export class StatsViewComponent implements OnInit {
     this.stats.retarget100InHours = this.getRetargetInPredictionTime(rtBasedLast100Blocks);
     this.stats.retargetTimestamp = this.getRetargetPredictionDateTime(rtBasedSinceRetarget);
     this.stats.retarget100Timestamp = this.getRetargetPredictionDateTime(rtBasedLast100Blocks);
+    this.stats.retargetDifficulty = await this.getNextDifficulty(
+      this.stats.currentBlock.height,
+      this.stats.currentBlock.difficulty,
+      this.stats.currentBlock.height % 1440
+    );
+    this.stats.retarget100Difficulty = await this.getNextDifficulty(
+      this.stats.currentBlock.height,
+      this.stats.currentBlock.difficulty,
+      100
+    );
     console.log(this.stats);
   }
   async getNextRetargetTimeInSeconds(currentBlock, blocksAgoToStart) {
@@ -77,7 +89,20 @@ export class StatsViewComponent implements OnInit {
   getRetargetPredictionDateTime(val) {
     let timeNowInMs = Date.parse(new Date().toString());
     let nexRtInMs = val * 1000;
-
     return moment(timeNowInMs + nexRtInMs).format('MM-DD-YY, h:mm A');
+  }
+  async getNextDifficulty(currentBlock, currentDiff, blocksAgoToStart) {
+    let blocksSinceRetarget = currentBlock % 1440;
+    let blocksToRetarget = 1440 - blocksSinceRetarget;
+
+    let singleBlockTimeSinceRetarget = parseFloat(await this.getBlockTime(blocksSinceRetarget));
+    let singleBlockTime = parseFloat(await this.getBlockTime(blocksAgoToStart));
+
+    console.log(singleBlockTimeSinceRetarget);
+    console.log(singleBlockTime);
+
+    let total_time = blocksSinceRetarget * singleBlockTimeSinceRetarget + blocksToRetarget * singleBlockTime;
+    let coefficient = total_time / (24 * 360);
+    return Math.round(currentDiff / coefficient);
   }
 }
