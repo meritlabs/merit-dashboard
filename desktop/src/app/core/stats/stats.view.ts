@@ -44,8 +44,10 @@ export class StatsViewComponent implements OnInit {
     let networkAvgCyclesPS = 0;
     let currentBlockDifficulty = currentBlock.difficulty.toFixed(0);
     let totalCpS = 0;
-    let rtBasedSinceRetarget = await this.getNextRetargetTimeInSeconds(currentBlockN, currentBlockN % blocksAgoToStart);
-
+    let rtBasedSinceRetarget = await this.getNextRetargetTimeInSeconds(
+      currentBlockN,
+      currentBlockN % nPowTargetTimeSpan
+    );
     let rtBasedLast100Blocks = await this.getNextRetargetTimeInSeconds(currentBlockN, blocksAgoToStart);
     let reTargetIn = moment(lastReTargetBlock.timestamp).format('MM-DD-YY, h:mm A');
     let retargetInHours = this.getRetargetInPredictionTime(rtBasedSinceRetarget);
@@ -112,8 +114,7 @@ export class StatsViewComponent implements OnInit {
     let singleBlockTimeSinceRetarget = parseFloat(await this.getBlockTime(blocksSinceRetarget));
     let singleBlockTime = parseFloat(await this.getBlockTime(blocksAgoToStart));
     let total_time = blocksSinceRetarget * singleBlockTimeSinceRetarget + blocksToRetarget * singleBlockTime;
-    let coefficient = total_time / (24 * 360);
-    console.log(coefficient);
+    let coefficient = total_time / (24 * 3600);
 
     return Math.round(currentDiff / coefficient);
   }
