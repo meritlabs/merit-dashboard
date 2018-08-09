@@ -12,15 +12,18 @@ export class WalletInfoViewComponent {
     wallet: ['', [Validators.required]],
   });
   isValid: boolean;
-  address: {};
+  address: any;
   constructor(private formBuilder: FormBuilder, public dashboardApi: DashboardAPI_Service) {}
   async validate(address) {
     let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
     let isValid: any = getAddress.isValid;
     if (isValid) {
+      let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
       this.isValid = true;
       this.address = getAddress;
-      console.log(getAddress);
+      this.address.balance = walletBalance.totalAmount / 1e8;
+
+      console.log(this.address);
     }
   }
 }

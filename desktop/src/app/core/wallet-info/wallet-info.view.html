@@ -18,8 +18,8 @@
   <div class="statsWidget" *ngIf="isValid">
     <div class="title-secondary">
       <p>
-        <strong>{{address.address}}
-          <i *ngIf="address.alias">({{address.alias}})</i>
+        <strong>{{address?.address}}
+          <i *ngIf="address.alias">({{address?.alias}})</i>
         </strong>
       </p>
     </div>
@@ -28,22 +28,28 @@
         <div class="column"></div>
         <div class="column heading">Details</div>
       </div>
-      <div class="row">
+      <div class="row" [class.alert]="!address?.isValid">
         <div class="column heading">Is valid</div>
         <div class="column selected">
-          <p>{{address.isValid}}</p>
+          <p>{{address?.isValid}}</p>
         </div>
       </div>
-      <div class="row">
+      <div class="row" [class.alert]="!address?.isBeaconed">
         <div class="column heading">Is beaconed</div>
         <div class="column selected">
           <p>{{address.isBeaconed}}</p>
         </div>
       </div>
-      <div class="row">
+      <div class="row" [class.alert]="!address?.isConfirmed">
         <div class="column heading">Is confirmed</div>
         <div class="column selected">
           <p>{{address.isConfirmed}}</p>
+        </div>
+      </div>
+      <div class="row" [class.alert]="address?.balance === 0">
+        <div class="column heading">Balance</div>
+        <div class="column selected">
+          <p>{{address?.balance}}</p>
         </div>
       </div>
 
