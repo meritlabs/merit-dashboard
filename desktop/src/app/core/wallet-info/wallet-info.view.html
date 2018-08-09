@@ -52,6 +52,18 @@
           <p>{{address?.balance}}</p>
         </div>
       </div>
+      <div class="row" [class.alert]="!address?.top">
+        <div class="column heading">Network position</div>
+        <div class="column selected">
+          <p>{{address?.top || "-"}}</p>
+        </div>
+      </div>
+      <div class="row" [class.alert]="!address?.rank">
+        <div class="column heading">Network rank</div>
+        <div class="column selected">
+          <p>{{address?.rank || "-"}}</p>
+        </div>
+      </div>
 
     </div>
   </div>

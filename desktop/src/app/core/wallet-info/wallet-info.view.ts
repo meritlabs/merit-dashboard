@@ -19,11 +19,15 @@ export class WalletInfoViewComponent {
     let isValid: any = getAddress.isValid;
     if (isValid) {
       let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
+      let ranks: any;
+      if (getAddress.isConfirmed) {
+        ranks = ((await this.dashboardApi.getAddressRank(getAddress.address)) as any).ranks[0];
+        this.address.top = ranks.rank;
+        this.address.rank = (ranks.anv / 1e8).toFixed(0);
+      }
       this.isValid = true;
       this.address = getAddress;
       this.address.balance = walletBalance.totalAmount / 1e8;
-
-      console.log(this.address);
     }
   }
 }
