@@ -11,6 +11,7 @@ import { NetworkViewComponent } from '@dashboard/desktop/app/core/network/networ
 import { CalculatorViewComponent } from '@dashboard/desktop/app/core/calculator/calculator.view';
 import { WalletInfoViewComponent } from '@dashboard/desktop/app/core/wallet-info/wallet-info.view';
 import { MomentPipe } from '@dashboard/common/pipes/moment';
+import { KFormat } from '@dashboard/common/pipes/k-format';
 
 export function getPages() {
   return [
@@ -26,6 +27,6 @@ export function getPages() {
 @NgModule({
   entryComponents: [CoreComponent, ...getPages()],
   imports: [CommonModule, CoreRoutingModule, CoreComponentsModule, ReactiveFormsModule, FormsModule],
-  declarations: [CoreComponent, ...getPages(), MomentPipe],
+  declarations: [CoreComponent, ...getPages(), MomentPipe, KFormat],
 })
 export class CoreModule {}

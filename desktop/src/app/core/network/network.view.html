@@ -7,6 +7,20 @@
       <div class="description-primary">
         <p>Explorer the Merit Network</p>
       </div>
+      <div class="addressesCounter">
+        <div>
+          <p>{{addresses.total | kformat}}</p>
+          <span>TOTAL</span>
+        </div>
+        <div>
+          <p>+{{addresses.month | kformat}}</p>
+          <span>JOINED IN THIS MONT</span>
+        </div>
+        <div>
+          <p>+{{addresses.week | kformat}}</p>
+          <span>JOINED IN THIS WEEK</span>
+        </div>
+      </div>
       <form [formGroup]="formData" (ngSubmit)="validate(formData.controls.address.value)" class="networkNavigator">
         <label for="" class="ui-label">Find wallet (enter addresses or alias below)</label>
         <div class="networkNavigator_group">

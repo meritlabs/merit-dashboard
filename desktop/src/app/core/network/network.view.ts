@@ -23,7 +23,8 @@ export class NetworkViewComponent {
     private store: Store<IAppState>,
     private formBuilder: FormBuilder
   ) {}
-  @ViewChild('canvas') private canvas: ElementRef;
+  @ViewChild('canvas')
+  private canvas: ElementRef;
 
   nodes$ = this.store.select('nodes');
   arr = [];
@@ -34,6 +35,11 @@ export class NetworkViewComponent {
   formData: FormGroup = this.formBuilder.group({
     address: '',
   });
+  addresses = {
+    total: 0,
+    month: 0,
+    week: 0,
+  };
   async validate(address) {
     let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
     let isValid: any = getAddress.isValid;
@@ -42,6 +48,8 @@ export class NetworkViewComponent {
     this.loadGraph(validAddress);
   }
   ngOnInit() {
+    this.displayAddressesCount();
+
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
         this.arr = res.nodes;
@@ -50,6 +58,30 @@ export class NetworkViewComponent {
         this.generateGraph();
       }
     });
+  }
+
+  displayAddressesCount() {
+    let total = setInterval(() => {
+      if (this.addresses.total <= 10000) {
+        this.addresses.total += 1000;
+      } else {
+        clearInterval(total);
+      }
+    }, 10);
+    let thisMont = setInterval(() => {
+      if (this.addresses.month <= 1208) {
+        this.addresses.month += 100;
+      } else {
+        clearInterval(thisMont);
+      }
+    }, 10);
+    let thisWeek = setInterval(() => {
+      if (this.addresses.week <= 208) {
+        this.addresses.week += 13;
+      } else {
+        clearInterval(thisWeek);
+      }
+    }, 10);
   }
 
   loadNodes() {
