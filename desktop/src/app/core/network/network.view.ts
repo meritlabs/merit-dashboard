@@ -120,10 +120,10 @@ export class NetworkViewComponent {
     });
     let charge_force = d3
       .forceManyBody()
-      .distanceMax(-400)
-      .strength(-40);
+      .distanceMax(-150)
+      .strength(-500);
 
-    let center_force = d3.forceCenter(width / 2.5, height / 2.5);
+    let center_force = d3.forceCenter(width / 2, height / 2);
 
     simulation
       .force('charge_force', charge_force)
@@ -206,10 +206,8 @@ export class NetworkViewComponent {
     function zoom_actions() {
       let zoomLvl = d3.event.transform;
 
-      if (zoomLvl.k > 1.2 && !_this.isLabelEnable) {
+      if (zoomLvl.k > 1.05 && !_this.isLabelEnable) {
         _this.isLabelEnable = true;
-        node.append('rect');
-
         node
           .append('text')
           .style('font-size', '5px')
@@ -220,12 +218,9 @@ export class NetworkViewComponent {
           .text(function(d) {
             return d.label;
           });
-        charge_force = d3.forceManyBody().strength(-500);
-        simulation.force('charge_force', charge_force);
-      } else if (zoomLvl.k < 1.2) {
+      } else if (zoomLvl.k < 1.05) {
         _this.isLabelEnable = false;
         node.selectAll('text').remove();
-        node.selectAll('rect').remove();
       }
       g.attr('transform', zoomLvl);
     }
@@ -251,13 +246,3 @@ export class NetworkViewComponent {
     }
   }
 }
-
-// DRAG ABILITY
-//add drag capabilities
-// let drag_handler = d3
-//   .drag()
-//   .on('start', drag_start)
-//   .on('drag', drag_drag)
-//   .on('end', drag_end);
-
-// drag_handler(node);

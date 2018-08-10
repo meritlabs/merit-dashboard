@@ -33,7 +33,7 @@ export class CoreComponent {
     this.store.dispatch(new LoadRanks(ranks));
     this.store.dispatch(new LoadBlocks({ loading: false, blocks: await this.dashboardAPI.getBlocksInfo() } as IBlocks));
 
-    this.gNodes = await this.networkService.getNetwork('MGgAma9epMrSipSm9Y2YjCWGGSt7gJWzM7');
+    this.gNodes = await this.networkService.getNetwork('MGgAma9epMrSipSm9Y2YjCWGGSt7gJWzM7', 1000);
 
     this.store.dispatch(new LoadNodes({ loading: false, nodes: this.gNodes } as INodes));
   }
