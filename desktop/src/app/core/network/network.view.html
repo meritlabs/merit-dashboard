@@ -45,17 +45,23 @@
       </div>
     </div>
   </div>
-  <loading-spinner *ngIf="(nodes$ | async).loading"></loading-spinner>
+  <div class="container loading" *ngIf="(nodes$ | async).loading">
+    <loading-spinner></loading-spinner>
+  </div>
+
   <div #canvas class="canvas graphWrap" [class.loaded]="!(nodes$ | async).loading"></div>
 
 
   <div *ngIf="gNodes.length > 1" class="nodesDialog_wrapper">
     <div class="nodesDialog">
       <p>
-        <strong>{{gNodes.length}}</strong> child addresses found in current node!
+        <strong>{{gNodes.length}}</strong> ready to display!
       </p>
       <p>
         Do you want display it?
+      </p>
+      <p>
+        <small>If you using legacy machine or your hardware quite loaded, big amount on the nodes can call system freezing!</small>
       </p>
       <div class="navigation">
         <button (click)="gNodes.length = 0" class="ui-button ui-button--sm ui-button--red">No</button>

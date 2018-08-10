@@ -72,21 +72,21 @@ export class NetworkViewComponent {
       } else {
         clearInterval(total);
       }
-    }, 10);
+    }, 100);
     let thisMont = setInterval(() => {
       if (this.addresses.month <= 1208) {
         this.addresses.month += 100;
       } else {
         clearInterval(thisMont);
       }
-    }, 10);
+    }, 100);
     let thisWeek = setInterval(() => {
       if (this.addresses.week <= 208) {
         this.addresses.week += 13;
       } else {
         clearInterval(thisWeek);
       }
-    }, 10);
+    }, 100);
   }
 
   loadNodes() {
@@ -112,8 +112,8 @@ export class NetworkViewComponent {
     if (!address) address = this.selectedAddress;
 
     this.store.dispatch(new LoadNodes({ loading: true }));
-    let gNodes = await this.networkService.getNetwork(this.selectedAddress, this.selectedMapSize);
-    this.store.dispatch(new LoadNodes({ loading: false, nodes: gNodes }));
+    this.gNodes = await this.networkService.getNetwork(this.selectedAddress, this.selectedMapSize);
+    this.store.dispatch(new LoadNodes({ loading: false }));
   }
 
   generateGraph() {
@@ -132,7 +132,7 @@ export class NetworkViewComponent {
     });
     let charge_force = d3
       .forceManyBody()
-      .distanceMax(-150)
+      .distanceMax(-500)
       .strength(-500);
 
     let center_force = d3.forceCenter(width / 2, height / 2);
@@ -194,7 +194,7 @@ export class NetworkViewComponent {
     });
 
     node.on('click', function(d) {
-      _this.loadGraph(d.name);
+      _this.loadGraph(d.name, 500);
     });
 
     node.on('mouseout', function() {

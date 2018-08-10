@@ -28,7 +28,7 @@
 .nodesDialog
   max-width: 400px
   width: 100%
-  height: 200px
+  height: 250px
   background: $white
   text-align: center
   color: $ebony-clay
@@ -38,6 +38,7 @@
   align-items: center
   flex-direction: column
   border-radius: 10px
+  padding: 20px
   .navigation
     padding: 20px 0
     display: flex
@@ -57,7 +58,7 @@
   width: 100vw
   opacity: 0
   position: relative
-  left: 0
+  left: 1
   &.loaded
     opacity: 1
 .networkBreadCrumbs
@@ -161,4 +162,6 @@
     color: $yellow
   span
     font-weight: 600
-  
+.loading
+  display: flex
+  justify-content: center
