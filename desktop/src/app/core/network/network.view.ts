@@ -63,7 +63,7 @@ export class NetworkViewComponent {
   displayAddressesCount() {
     let total = setInterval(() => {
       if (this.addresses.total <= 10000) {
-        this.addresses.total += 1000;
+        this.addresses.total += 1234;
       } else {
         clearInterval(total);
       }

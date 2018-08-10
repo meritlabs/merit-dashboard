@@ -2,10 +2,10 @@
   <div class="networkView_heading">
     <div class="container">
       <div class="title-primary">
-        <p>Meet the Merit Networ</p>
+        <p>Meet the Merit Network</p>
       </div>
       <div class="description-primary">
-        <p>Explorer the Merit Network</p>
+        <p>Explore the Merit Network</p>
       </div>
       <div class="addressesCounter">
         <div>
@@ -22,9 +22,8 @@
         </div>
       </div>
       <form [formGroup]="formData" (ngSubmit)="validate(formData.controls.address.value)" class="networkNavigator">
-        <label for="" class="ui-label">Find wallet (enter addresses or alias below)</label>
         <div class="networkNavigator_group">
-          <input type="text" class="ui-input ui-input--text" formControlName="address">
+          <input type="text" class="ui-input ui-input--text" formControlName="address" placeholder="Find wallet (enter addresses or alias)">
           <button class="ui-button">FIND</button>
         </div>
       </form>
