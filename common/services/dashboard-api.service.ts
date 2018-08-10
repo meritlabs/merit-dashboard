@@ -13,8 +13,9 @@ export class DashboardAPI_Service {
     if (!step) step = 1140;
     return this._doGetRequestDA(`blocks-info?blocks=${amount}&step=${step}`);
   }
-  getReferrals(address) {
-    return this._doGetRequestDA(`address/${address}/nearby?nodes=300`);
+  getReferrals(address, limit?) {
+    if (!limit) limit = 1000;
+    return this._doGetRequestDA(`address/${address}/nearby?nodes=${limit}`);
   }
   getAddressNetwork(address) {
     return this._doGetRequestDA(`address/${address}/referrals`);
