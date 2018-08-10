@@ -22,6 +22,15 @@
         </div>
       </div>
       <form [formGroup]="formData" (ngSubmit)="validate(formData.controls.address.value)" class="networkNavigator">
+        <div class="networkNavigator_group networkNavigator_group-column">
+          <span class="ui-label">Select network size to display</span>
+          <div class="selectMapSize" (click)="showList = !showList">
+            {{selectedMapSize}}
+            <div class="selectMapSize_list" *ngIf="showList">
+              <div class="selectMapSize_item" *ngFor="let item of selectionList" (click)="loadGraph('', item)">{{item}}</div>
+            </div>
+          </div>
+        </div>
         <div class="networkNavigator_group">
           <input type="text" class="ui-input ui-input--text" formControlName="address" placeholder="Find wallet (enter addresses or alias)">
           <button class="ui-button">FIND</button>

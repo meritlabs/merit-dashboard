@@ -6,6 +6,7 @@ import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.s
 import { INode } from '@dashboard/common/models/network';
 import { LoadNodes } from '@dashboard/common/actions/nodes.action';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ENV } from '@app/env';
 
 declare const window: any;
 declare const d3: any;
@@ -40,6 +41,9 @@ export class NetworkViewComponent {
     month: 0,
     week: 0,
   };
+  selectedAddress: string;
+  selectedMapSize: number = 1000;
+  selectionList = [500, 1000, 5000, 10000, 15000, 'FULL NETWORK'];
   async validate(address) {
     let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
     let isValid: any = getAddress.isValid;
@@ -48,6 +52,7 @@ export class NetworkViewComponent {
     this.loadGraph(validAddress);
   }
   ngOnInit() {
+    this.selectedAddress = ENV.coreAddress;
     this.displayAddressesCount();
 
     this.nodes$.subscribe(res => {
@@ -98,10 +103,17 @@ export class NetworkViewComponent {
     }
   }
 
-  async loadGraph(address) {
+  async loadGraph(address?, amount?) {
+    if (!amount) amount = 500;
+    if (amount === 'FULL NETWORK') amount = 1000000;
+    if (amount) this.selectedMapSize = amount;
+    if (this.selectedMapSize) amount = this.selectedMapSize;
+
+    if (!address) address = this.selectedAddress;
+
     this.store.dispatch(new LoadNodes({ loading: true }));
-    this.gNodes = await this.networkService.getNetwork(address);
-    this.store.dispatch(new LoadNodes({ loading: false }));
+    let gNodes = await this.networkService.getNetwork(this.selectedAddress, this.selectedMapSize);
+    this.store.dispatch(new LoadNodes({ loading: false, nodes: gNodes }));
   }
 
   generateGraph() {
