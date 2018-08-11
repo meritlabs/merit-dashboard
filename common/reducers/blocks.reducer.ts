@@ -14,7 +14,7 @@ export function blocksReducer(state: IBlocks = INITIAL_STATE, action: LoadBlocks
         let currentBlockDiff = item.difficulty;
         let prevBlockDiff = currentBlockDiff;
         let difficultyChange = 0;
-        if (index !== 99) prevBlockDiff = prevBlockDiff = blocks[index + 1].difficulty;
+        if (index !== blocks.length - 1) prevBlockDiff = blocks[index + 1].difficulty;
         difficultyChange = ((currentBlockDiff - prevBlockDiff) / ((currentBlockDiff + prevBlockDiff) / 2)) * 100;
         item.difficultyChange = `${difficultyChange.toFixed(2)}%`;
         item.lastChange = moment(item.timestamp).format('MMM Do YYYY');

@@ -10,7 +10,7 @@ export class DashboardAPI_Service {
   }
   getBlocksInfo(amount?, step?) {
     if (!amount) amount = 100;
-    if (!step) step = 1140;
+    if (!step) step = ENV.nPowTargetTimeSpan;
     return this._doGetRequestDA(`blocks-info?blocks=${amount}&step=${step}`);
   }
   getReferrals(address, limit?) {
@@ -21,8 +21,8 @@ export class DashboardAPI_Service {
     return this._doGetRequestDA(`address/${address}/referrals`);
   }
   getMiningInfo(step?, amount?) {
-    if (!amount) amount = 100;
-    if (!step) step = 100;
+    if (!amount) amount = 30;
+    if (!step) step = ENV.nPowTargetTimeSpan;
     return this._doGetRequestDA(`mininginfo?step=${step}&n=${amount}`);
   }
   getLeaderBoard() {
