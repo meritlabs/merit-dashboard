@@ -6,6 +6,7 @@ import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.s
 import { INode } from '@dashboard/common/models/network';
 import { LoadNodes } from '@dashboard/common/actions/nodes.action';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { INodes, Node } from '@dashboard/common/models/network';
 import { ENV } from '@app/env';
 
 declare const window: any;
@@ -41,19 +42,13 @@ export class NetworkViewComponent {
     month: 0,
     week: 0,
   };
-  selectedAddress: string;
-  selectedMapSize: number = 1000;
+  initialLoading = true;
+  selectedAddress: string = ENV.coreAddress;
+  selectedMapSize: number = 500;
   selectionList = [500, 1000, 5000, 10000, 15000, 'FULL NETWORK'];
-  async validate(address) {
-    let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
-    let isValid: any = getAddress.isValid;
-    let validAddress;
-    if (isValid) validAddress = getAddress.address;
-    this.loadGraph(validAddress);
-  }
-  ngOnInit() {
-    this.selectedAddress = ENV.coreAddress;
-    this.displayAddressesCount();
+
+  async ngOnInit() {
+    this.loadGraph();
 
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
@@ -61,8 +56,19 @@ export class NetworkViewComponent {
         let isDuplicate = this.breadCrumbs.find(item => item === this.arr[0].source);
         if (!isDuplicate) this.breadCrumbs.push(this.arr[0].source);
         this.generateGraph();
+        this.initialLoading = false;
       }
     });
+
+    this.displayAddressesCount();
+  }
+
+  async validate(address) {
+    let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
+    let isValid: any = getAddress.isValid;
+    let validAddress;
+    if (isValid) validAddress = getAddress.address;
+    this.loadGraph(validAddress);
   }
 
   displayAddressesCount() {
@@ -94,9 +100,8 @@ export class NetworkViewComponent {
     this.gNodes.length = 0;
   }
   async backToParent(item) {
-    this.store.dispatch(new LoadNodes({ loading: true }));
     let gNodes = await this.networkService.getNetwork(item);
-    this.store.dispatch(new LoadNodes({ loading: false, nodes: gNodes }));
+    this.store.dispatch(new LoadNodes({ nodes: gNodes }));
     var index = this.breadCrumbs.indexOf(item);
     if (index > -1) {
       this.breadCrumbs.length = index + 1;
@@ -104,16 +109,15 @@ export class NetworkViewComponent {
   }
 
   async loadGraph(address?, amount?) {
-    if (!amount) amount = 500;
+    if (!amount) amount = this.selectedMapSize;
     if (amount === 'FULL NETWORK') amount = 1000000;
     if (amount) this.selectedMapSize = amount;
     if (this.selectedMapSize) amount = this.selectedMapSize;
 
     if (!address) address = this.selectedAddress;
 
-    this.store.dispatch(new LoadNodes({ loading: true }));
     this.gNodes = await this.networkService.getNetwork(this.selectedAddress, this.selectedMapSize);
-    this.store.dispatch(new LoadNodes({ loading: false }));
+    this.store.dispatch(new LoadNodes({ nodes: this.gNodes }));
   }
 
   generateGraph() {

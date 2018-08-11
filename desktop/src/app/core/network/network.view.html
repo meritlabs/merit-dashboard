@@ -52,7 +52,7 @@
   <div #canvas class="canvas graphWrap" [class.loaded]="!(nodes$ | async).loading"></div>
 
 
-  <div *ngIf="gNodes.length > 1" class="nodesDialog_wrapper">
+  <div *ngIf="gNodes.length > 1 && !initialLoading" class="nodesDialog_wrapper">
     <div class="nodesDialog">
       <p>
         <strong>{{gNodes.length}}</strong> ready to display!
