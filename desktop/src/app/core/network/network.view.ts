@@ -37,13 +37,16 @@ export class NetworkViewComponent {
   formData: FormGroup = this.formBuilder.group({
     address: '',
   });
-  wallets: any = this.dashboardApi.getWalletsAmount();
+  wallets: any;
+  walletsDisplay: any = { totalDisplay: 0, monthDisplay: 0, weekDisplay: 0 };
   selectedAddress: string = ENV.coreAddress;
   selectedMapSize: number = 500;
-  selectionList = [500, 1000, 5000, 10000, 15000, 'FULL NETWORK'];
+  selectionList = [500, 1000, 1500, 2000, 'FULL NETWORK'];
   showWarning = false;
 
   async ngOnInit() {
+    this.wallets = Object.assign(this.walletsDisplay, await this.dashboardApi.getWalletsAmount());
+
     this.loadGraph();
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
@@ -69,22 +72,22 @@ export class NetworkViewComponent {
 
   displayAddressesCount() {
     let total = setInterval(() => {
-      if (this.wallets.total <= 10000) {
-        this.wallets.total += 1234;
+      if (this.wallets.totalDisplay <= this.wallets.total) {
+        this.wallets.totalDisplay += 1234;
       } else {
         clearInterval(total);
       }
     }, 100);
     let thisMont = setInterval(() => {
-      if (this.wallets.month <= 1208) {
-        this.wallets.month += 100;
+      if (this.wallets.monthDisplay <= this.wallets.month) {
+        this.wallets.monthDisplay += 100;
       } else {
         clearInterval(thisMont);
       }
     }, 100);
     let thisWeek = setInterval(() => {
-      if (this.wallets.week <= 208) {
-        this.wallets.week += 13;
+      if (this.wallets.weekDisplay <= this.wallets.week) {
+        this.wallets.weekDisplay += 13;
       } else {
         clearInterval(thisWeek);
       }
@@ -107,7 +110,7 @@ export class NetworkViewComponent {
 
   async loadGraph(address?, amount?) {
     if (!amount) amount = this.selectedMapSize;
-    if (amount === 'FULL NETWORK') amount = 1000000;
+    if (amount === 'FULL NETWORK') amount = this.wallets.total;
     if (amount) this.selectedMapSize = amount;
     if (this.selectedMapSize) amount = this.selectedMapSize;
     if (!address) address = this.selectedAddress;
@@ -124,7 +127,12 @@ export class NetworkViewComponent {
   generateGraph() {
     D3.select('svg').remove();
     let _this = this;
-    let nodes_data = this.arr.map(item => ({ name: item.source, label: item.label, weight: item.weight }));
+    let nodes_data = this.arr.map(item => ({
+      name: item.source,
+      label: item.label,
+      weight: item.weight,
+      childNodes: item.childNodes,
+    }));
     let links_data = this.arr.map(item => ({ source: item.source, target: item.target }));
     let width = this.canvas.nativeElement.offsetWidth;
     let height = this.canvas.nativeElement.offsetHeight;
@@ -137,8 +145,8 @@ export class NetworkViewComponent {
     });
     let charge_force = d3
       .forceManyBody()
-      .distanceMax(-500)
-      .strength(-10);
+      .distanceMax(-300)
+      .strength(-500);
 
     let center_force = d3.forceCenter(width / 2, height / 2);
 
@@ -151,6 +159,9 @@ export class NetworkViewComponent {
     simulation.on('tick', tickActions);
 
     let g = svg.append('g').attr('class', 'everything');
+    let defaultScale = 0.5;
+    if (nodes_data.length > 1500) defaultScale = 0.3;
+    g.attr('transform', `translate(${width / 3}, ${height / 3}) scale(${defaultScale})`);
 
     //draw lines for the links
     let link = g
@@ -161,7 +172,7 @@ export class NetworkViewComponent {
       .enter()
       .append('line')
       .attr('stroke-width', 1)
-      .style('stroke', '#FFF');
+      .style('stroke', '#c8c7cc');
 
     //draw circles for the nodes
     let node = g
@@ -171,11 +182,11 @@ export class NetworkViewComponent {
       .data(nodes_data)
       .enter()
       .append('g')
-      .attr('fill', '#FFF');
+      .attr('fill', '#c8c7cc');
 
     node
       .append('circle')
-      .attr('fill', '#fff')
+      .attr('fill', '#c8c7cc')
       .attr('r', function(d) {
         let w = d.weight;
         if (w > 100) w = 30;
@@ -197,7 +208,9 @@ export class NetworkViewComponent {
     });
 
     node.on('click', function(d) {
-      _this.validateAddress(d.name);
+      if (d.childNodes > 0) {
+        _this.validateAddress(d.name);
+      }
     });
 
     node.on('mouseout', function() {
@@ -229,9 +242,20 @@ export class NetworkViewComponent {
           .style('fill', '#FFDF00')
           .attr('x', 5)
           .attr('y', -5)
-          .attr('dy', '.35em')
+          .attr('dy', '.5em')
           .text(function(d) {
             return d.label;
+          });
+        node
+          .append('text')
+          .style('font-size', '2px')
+          .style('fill', '#00b0dd')
+          .attr('x', 5)
+          .attr('y', 0)
+          .attr('dy', '.5em')
+          .attr('class', 'link')
+          .text(function(t) {
+            if (t.childNodes > 0) return `show more +${t.childNodes}`;
           });
       } else if (zoomLvl.k < 1.05) {
         _this.isLabelEnable = false;
