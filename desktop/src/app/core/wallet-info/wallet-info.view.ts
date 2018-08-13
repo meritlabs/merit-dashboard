@@ -17,7 +17,7 @@ export class WalletInfoViewComponent {
 
   constructor(private formBuilder: FormBuilder, public dashboardApi: DashboardAPI_Service) {}
 
-  async validate(address) {
+  async validateAddress(address) {
     this.isLoading = true;
     let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
     let isValid: any = getAddress.isValid;

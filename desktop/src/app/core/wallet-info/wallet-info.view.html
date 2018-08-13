@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="container">
-  <form [formGroup]="formData" (ngSubmit)="validate(formData.controls.wallet.value)">
+  <form [formGroup]="formData" (ngSubmit)="validateAddress(formData.controls.wallet.value)">
     <label for="" class="ui-label">Enter wallet address or alias</label>
     <div class="validateWallet">
       <input type="text" placeholder="address or alias" class="ui-input ui-input--form ui-input--text" formControlName="wallet">

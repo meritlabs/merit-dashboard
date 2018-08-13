@@ -60,7 +60,7 @@ export class NetworkViewComponent {
     this.displayAddressesCount();
   }
 
-  async validate(address) {
+  async validateAddress(address) {
     let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
     let isValid: any = getAddress.isValid;
     let validAddress;
@@ -103,6 +103,7 @@ export class NetworkViewComponent {
     let gNodes = await this.networkService.getNetwork(item);
     this.store.dispatch(new LoadNodes({ nodes: gNodes }));
     var index = this.breadCrumbs.indexOf(item);
+    this.selectedAddress = item;
     if (index > -1) {
       this.breadCrumbs.length = index + 1;
     }
@@ -200,7 +201,7 @@ export class NetworkViewComponent {
     });
 
     node.on('click', function(d) {
-      _this.validate(d.name);
+      _this.validateAddress(d.name);
     });
 
     node.on('mouseout', function() {

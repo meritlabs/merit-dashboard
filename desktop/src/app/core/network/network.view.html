@@ -21,10 +21,10 @@
           <span>JOINED IN THIS WEEK</span>
         </div>
       </div>
-      <form [formGroup]="formData" (ngSubmit)="validate(formData.controls.address.value)" class="networkNavigator">
+      <form [formGroup]="formData" (ngSubmit)="validateAddress(formData.controls.address.value)" class="networkNavigator">
         <div class="networkNavigator_group networkNavigator_group-column">
-          <span class="ui-label">Select network size to display</span>
           <div class="selectMapSize" (click)="showList = !showList">
+            <span class="ui-label">Addresses to display</span>
             {{selectedMapSize}}
             <div class="selectMapSize_list" *ngIf="showList">
               <div class="selectMapSize_item" *ngFor="let item of selectionList" (click)="loadGraph('', item)">{{item}}</div>
