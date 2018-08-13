@@ -45,11 +45,20 @@
       </div>
     </div>
   </div>
+  {{isGraphBuilded}}
   <div class="container loading" *ngIf="(nodes$ | async).loading">
+    <p>
+      <strong>Loading nodes...</strong>
+    </p>
     <loading-spinner></loading-spinner>
   </div>
-
-  <div #canvas class="canvas graphWrap" [class.loaded]="!(nodes$ | async).loading"></div>
+  <div class="container loading" *ngIf="!(nodes$ | async).loading && !isGraphBuilded">
+    <p>
+      <strong>Building graph...</strong>
+    </p>
+    <loading-spinner></loading-spinner>
+  </div>
+  <div #canvas class="canvas graphWrap" [class.loaded]="isGraphBuilded"></div>
 
 
   <div *ngIf="showWarning" class="nodesDialog_wrapper">

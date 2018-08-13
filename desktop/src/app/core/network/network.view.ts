@@ -42,7 +42,8 @@ export class NetworkViewComponent {
   selectedAddress: string = ENV.coreAddress;
   selectedMapSize: number = 500;
   selectionList = [500, 1000, 1500, 2000, 'FULL NETWORK'];
-  showWarning = false;
+  showWarning: boolean = false;
+  isGraphBuilded: boolean;
 
   async ngOnInit() {
     this.wallets = Object.assign(this.walletsDisplay, await this.dashboardApi.getWalletsAmount());
@@ -125,6 +126,7 @@ export class NetworkViewComponent {
   }
 
   generateGraph() {
+    this.isGraphBuilded = false;
     D3.select('svg').remove();
     let _this = this;
     let nodes_data = this.arr.map(item => ({
@@ -145,8 +147,8 @@ export class NetworkViewComponent {
     });
     let charge_force = d3
       .forceManyBody()
-      .distanceMax(-300)
-      .strength(-500);
+      .distanceMax(-150)
+      .strength(-400);
 
     let center_force = d3.forceCenter(width / 2, height / 2);
 
@@ -156,12 +158,9 @@ export class NetworkViewComponent {
       .force('links', link_force);
 
     //add tick instructions:
-    simulation.on('tick', tickActions);
+    simulation.on('end', tickActions);
 
     let g = svg.append('g').attr('class', 'everything');
-    let defaultScale = 0.5;
-    if (nodes_data.length > 1500) defaultScale = 0.3;
-    g.attr('transform', `translate(${width / 3}, ${height / 3}) scale(${defaultScale})`);
 
     //draw lines for the links
     let link = g
@@ -282,6 +281,7 @@ export class NetworkViewComponent {
       node.attr('transform', function(d) {
         return 'translate(' + d.x + ',' + d.y + ')';
       });
+      _this.isGraphBuilded = true;
     }
   }
 }
