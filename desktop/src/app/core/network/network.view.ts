@@ -153,8 +153,6 @@ export class NetworkViewComponent {
     //add tick instructions:
     simulation.on('tick', tickActions);
 
-    //add encompassing group for the zoom
-
     let g = svg.append('g').attr('class', 'everything');
 
     //draw lines for the links
@@ -202,7 +200,7 @@ export class NetworkViewComponent {
     });
 
     node.on('click', function(d) {
-      _this.loadGraph(d.name);
+      _this.validate(d.name);
     });
 
     node.on('mouseout', function() {
