@@ -52,7 +52,7 @@
   <div #canvas class="canvas graphWrap" [class.loaded]="!(nodes$ | async).loading"></div>
 
 
-  <div *ngIf="gNodes.length > 1 && !initialLoading" class="nodesDialog_wrapper">
+  <div *ngIf="showWarning" class="nodesDialog_wrapper">
     <div class="nodesDialog">
       <p>
         <strong>{{gNodes.length}}</strong> ready to display!
@@ -64,7 +64,7 @@
         <small>If you using legacy machine or your hardware quite loaded, big amount on the nodes can call system freezing!</small>
       </p>
       <div class="navigation">
-        <button (click)="gNodes.length = 0" class="ui-button ui-button--sm ui-button--red">No</button>
+        <button (click)="showWarning = 0" class="ui-button ui-button--sm ui-button--red">No</button>
         <button (click)="loadNodes()" class="ui-button ui-button--sm ui-button--green">YES</button>
       </div>
     </div>

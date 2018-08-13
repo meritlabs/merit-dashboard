@@ -42,24 +42,21 @@ export class NetworkViewComponent {
     month: 0,
     week: 0,
   };
-  initialLoading = true;
   selectedAddress: string = ENV.coreAddress;
   selectedMapSize: number = 500;
   selectionList = [500, 1000, 5000, 10000, 15000, 'FULL NETWORK'];
+  showWarning = false;
 
   async ngOnInit() {
     this.loadGraph();
-
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
         this.arr = res.nodes;
         let isDuplicate = this.breadCrumbs.find(item => item === this.arr[0].source);
         if (!isDuplicate) this.breadCrumbs.push(this.arr[0].source);
         this.generateGraph();
-        this.initialLoading = false;
       }
     });
-
     this.displayAddressesCount();
   }
 
@@ -67,7 +64,10 @@ export class NetworkViewComponent {
     let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
     let isValid: any = getAddress.isValid;
     let validAddress;
-    if (isValid) validAddress = getAddress.address;
+    if (isValid) {
+      validAddress = getAddress.address;
+      this.selectedAddress = validAddress;
+    }
     this.loadGraph(validAddress);
   }
 
@@ -97,7 +97,7 @@ export class NetworkViewComponent {
 
   loadNodes() {
     this.store.dispatch(new LoadNodes({ nodes: this.gNodes } as any));
-    this.gNodes.length = 0;
+    this.showWarning = false;
   }
   async backToParent(item) {
     let gNodes = await this.networkService.getNetwork(item);
@@ -113,11 +113,15 @@ export class NetworkViewComponent {
     if (amount === 'FULL NETWORK') amount = 1000000;
     if (amount) this.selectedMapSize = amount;
     if (this.selectedMapSize) amount = this.selectedMapSize;
-
     if (!address) address = this.selectedAddress;
 
     this.gNodes = await this.networkService.getNetwork(this.selectedAddress, this.selectedMapSize);
-    this.store.dispatch(new LoadNodes({ nodes: this.gNodes }));
+
+    if (this.gNodes.length > 1000) {
+      this.showWarning = true;
+    } else {
+      this.store.dispatch(new LoadNodes({ nodes: this.gNodes }));
+    }
   }
 
   generateGraph() {
@@ -137,7 +141,7 @@ export class NetworkViewComponent {
     let charge_force = d3
       .forceManyBody()
       .distanceMax(-500)
-      .strength(-500);
+      .strength(-10);
 
     let center_force = d3.forceCenter(width / 2, height / 2);
 
@@ -198,7 +202,7 @@ export class NetworkViewComponent {
     });
 
     node.on('click', function(d) {
-      _this.loadGraph(d.name, 500);
+      _this.loadGraph(d.name);
     });
 
     node.on('mouseout', function() {
