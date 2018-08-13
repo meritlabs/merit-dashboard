@@ -62,7 +62,7 @@ setRunLevelStaging() {
 
 productionPrompt() {
     while true; do
-        read -p "Would you like to deploy to Market to production? [Y/N]: " yn
+        read -p "Would you like to deploy to Dashboard to production? [Y/N]: " yn
         case $yn in
             [Yy]* ) setRunLevelProduction; break;;
             [Nn]* ) setRunLevelStaging; break;;
@@ -95,7 +95,7 @@ else
     fi
 fi
 
-print_in_yellow "Building Market for $environment-environment now \n"
+print_in_yellow "Building Dashboard for $environment-environment now \n"
 pushd $build_file_path
 if [ ! -z "$market_env_vars" ]; then
     print_in_yellow "Running export $market_env_vars \n"
