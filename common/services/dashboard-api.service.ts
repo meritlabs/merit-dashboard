@@ -55,6 +55,9 @@ export class DashboardAPI_Service {
   getBlock(hash) {
     return this._doGetRequestDA(`block/${hash}`);
   }
+  getWalletsAmount() {
+    return this._doGetRequestDA(`wallets`);
+  }
   validateAddress(address) {
     return this._doGetRequestMWS(`addresses/${address}/validate`);
   }

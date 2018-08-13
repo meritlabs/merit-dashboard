@@ -37,11 +37,7 @@ export class NetworkViewComponent {
   formData: FormGroup = this.formBuilder.group({
     address: '',
   });
-  addresses = {
-    total: 0,
-    month: 0,
-    week: 0,
-  };
+  wallets: any = this.dashboardApi.getWalletsAmount();
   selectedAddress: string = ENV.coreAddress;
   selectedMapSize: number = 500;
   selectionList = [500, 1000, 5000, 10000, 15000, 'FULL NETWORK'];
@@ -73,22 +69,22 @@ export class NetworkViewComponent {
 
   displayAddressesCount() {
     let total = setInterval(() => {
-      if (this.addresses.total <= 10000) {
-        this.addresses.total += 1234;
+      if (this.wallets.total <= 10000) {
+        this.wallets.total += 1234;
       } else {
         clearInterval(total);
       }
     }, 100);
     let thisMont = setInterval(() => {
-      if (this.addresses.month <= 1208) {
-        this.addresses.month += 100;
+      if (this.wallets.month <= 1208) {
+        this.wallets.month += 100;
       } else {
         clearInterval(thisMont);
       }
     }, 100);
     let thisWeek = setInterval(() => {
-      if (this.addresses.week <= 208) {
-        this.addresses.week += 13;
+      if (this.wallets.week <= 208) {
+        this.wallets.week += 13;
       } else {
         clearInterval(thisWeek);
       }

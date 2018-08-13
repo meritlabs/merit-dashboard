@@ -9,15 +9,15 @@
       </div>
       <div class="addressesCounter">
         <div>
-          <p>{{addresses.total | kformat}}</p>
+          <p>{{(wallets | async)?.total | kformat}}</p>
           <span>TOTAL</span>
         </div>
         <div>
-          <p>+{{addresses.month | kformat}}</p>
+          <p>+{{(wallets | async)?.month | kformat}}</p>
           <span>JOINED IN THIS MONT</span>
         </div>
         <div>
-          <p>+{{addresses.week | kformat}}</p>
+          <p>+{{(wallets | async)?.week | kformat}}</p>
           <span>JOINED IN THIS WEEK</span>
         </div>
       </div>
