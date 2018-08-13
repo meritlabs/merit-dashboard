@@ -2,7 +2,7 @@
   <div class="networkView_heading">
     <div class="container">
       <div class="title-primary">
-        <p>Meet the Merit Network</p>
+        <p>The Merit Network</p>
       </div>
       <div class="description-primary">
         <p>Explore the Merit Network</p>
@@ -10,15 +10,15 @@
       <div class="addressesCounter">
         <div>
           <p>{{(wallets | async)?.total | kformat}}</p>
-          <span>TOTAL</span>
+          <span>TOTAL USERS</span>
         </div>
         <div>
           <p>+{{(wallets | async)?.month | kformat}}</p>
-          <span>JOINED IN THIS MONT</span>
+          <span>JOINED THIS MONTH</span>
         </div>
         <div>
           <p>+{{(wallets | async)?.week | kformat}}</p>
-          <span>JOINED IN THIS WEEK</span>
+          <span>JOINED THIS WEEK</span>
         </div>
       </div>
       <form [formGroup]="formData" (ngSubmit)="validateAddress(formData.controls.address.value)" class="networkNavigator">
@@ -55,13 +55,13 @@
   <div *ngIf="showWarning" class="nodesDialog_wrapper">
     <div class="nodesDialog">
       <p>
-        <strong>{{gNodes.length}}</strong> ready to display!
+        You have<strong>{{gNodes.length}}</strong> connections!
       </p>
       <p>
-        Do you want display it?
+        Would you like to see your network?
       </p>
       <p>
-        <small>If you using legacy machine or your hardware quite loaded, big amount on the nodes can call system freezing!</small>
+        <small>If you are using an older machine or you are using your computer for other memory-intensive processes, loading this map could cause your machine to feeze!</small>
       </p>
       <div class="navigation">
         <button (click)="showWarning = 0" class="ui-button ui-button--sm ui-button--red">No</button>
