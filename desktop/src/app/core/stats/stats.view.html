@@ -1,10 +1,9 @@
 <div class="container">
   <div class="title-primary">
-    <p>BlockChain current stats</p>
+    <p>BlockChain stats</p>
   </div>
   <div class="description-primary">
-    <p>Merit aims to be the world’s friendliest digital currency, making it effortless to pay friends, buy goods, and manage
-      your wealth.
+    <p>Here you can check current network state and get forecasts about near future network state.
     </p>
   </div>
 
@@ -16,7 +15,7 @@
       <div class="row">
         <div class="column heading">#Number</div>
         <div class="column selected">{{stats?.currentBlock?.height}}</div>
-        <div class="column text-italic">Description</div>
+        <div class="column text-italic">Current block number is a latest mined block in the BlockChain.</div>
       </div>
       <div class="row">
         <div class="column heading">Network cycles/s</div>
@@ -26,14 +25,14 @@
             <small>{{stats?.networkAvgCyclesPS}} avg of last 30 blocks</small>
           </p>
         </div>
-        <div class="column text-italic">Description</div>
+        <div class="column text-italic">Network Cycles/Second is a HashRate or amount of the resolved tasks per second.</div>
       </div>
       <div class="row">
         <div class="column heading">Difficulty</div>
         <div class="column selected">
           <p>{{stats?.currentBlock?.difficulty}}</p>
         </div>
-        <div class="column text-italic">Description</div>
+        <div class="column text-italic">Shows how to hard mining in the current block.</div>
       </div>
       <div class="row">
         <div class="column heading">Block time</div>
@@ -43,21 +42,21 @@
             <small>target time: 60 s</small>
           </p>
         </div>
-        <div class="column text-italic">Description</div>
+        <div class="column text-italic">Required time for single block generation.</div>
       </div>
       <div class="row">
         <div class="column heading">Last re-target at</div>
         <div class="column selected">
           <p>{{stats?.reTargetIn}}</p>
         </div>
-        <div class="column text-italic">Description</div>
+        <div class="column text-italic">The time when last difficulty was changed</div>
       </div>
       <div class="row">
         <div class="column heading">Re-target in</div>
         <div class="column selected">
           <p>{{stats?.reTargetInBlocks}} blocks</p>
         </div>
-        <div class="column text-italic">Description</div>
+        <div class="column text-italic">Amount of the blocks when last difficulty was changed</div>
       </div>
     </div>
   </div>
@@ -69,7 +68,7 @@
     <div class="statsTable">
       <div class="row">
         <div class="column"></div>
-        <div class="column heading">Predictions based on speed since last retarget</div>
+        <div class="column heading">Predictions based on speed since last Re-target</div>
         <div class="column heading">Predictions based on speed of last 100 blocks</div>
       </div>
       <div class="row">
@@ -126,29 +125,6 @@
         <div class="column heading">Next difficulty</div>
         <div class="column selected">
           <p>{{stats?.retargetDifficulty}}</p>
-        </div>
-      </div>
-
-      <!-- // -->
-      <div class="row">
-        <div class="column heading">Predictions based on speed of last 100 blocks</div>
-      </div>
-      <div class="row">
-        <div class="column heading">Next retarget in</div>
-        <div class="column selected">
-          <p>{{stats?.retarget100InHours}} hours</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="column heading">Next retarget at</div>
-        <div class="column selected">
-          <p>{{stats?.retarget100Timestamp}}4</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="column heading">Next difficulty</div>
-        <div class="column selected">
-          <p>{{stats?.retarget100Difficulty}}</p>
         </div>
       </div>
     </div>

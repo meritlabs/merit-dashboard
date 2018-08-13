@@ -12,7 +12,7 @@ export class DashboardAPI_Service {
     return this._doGetRequestDA(`mining-info?n=${amount}`);
   }
   getBlocksInfo(amount?, step?) {
-    if (!amount) amount = 100;
+    if (!amount) amount = 50;
     if (!step) step = ENV.nPowTargetTimeSpan;
     return this._doGetRequestDA(`blocks-info?blocks=${amount}&step=${step}`);
   }
