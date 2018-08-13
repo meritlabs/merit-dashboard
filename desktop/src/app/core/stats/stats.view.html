@@ -13,6 +13,11 @@
     </div>
     <div class="statsTable">
       <div class="row">
+        <div class="column heading"></div>
+        <div class="column selected"></div>
+        <div class="column text-italic"></div>
+      </div>
+      <div class="row">
         <div class="column heading">#Number</div>
         <div class="column selected">{{stats?.currentBlock?.height}}</div>
         <div class="column text-italic">Current block number is a latest mined block in the BlockChain.</div>
@@ -58,18 +63,22 @@
         </div>
         <div class="column text-italic">Amount of the blocks when last difficulty was changed</div>
       </div>
+      <div class="row">
+        <div class="column heading"></div>
+        <div class="column selected"></div>
+        <div class="column text-italic"></div>
+      </div>
     </div>
   </div>
 
-  <div class="statsWidget hideOnMobile">
+  <div class="statsWidget statsWidget-twoCol hideOnMobile">
     <div class="title-secondary">
-      <p>Forecast for future stats</p>
+      <p>Predictions based on speed since last Re-target</p>
     </div>
     <div class="statsTable">
       <div class="row">
         <div class="column"></div>
-        <div class="column heading">Predictions based on speed since last Re-target</div>
-        <div class="column heading">Predictions based on speed of last 100 blocks</div>
+        <div class="column heading"></div>
       </div>
       <div class="row">
         <div class="column heading">Next retarget in</div>
@@ -77,25 +86,23 @@
           <p>{{stats?.retargetInHours}} hours
           </p>
         </div>
-        <div class="column selected">
-          <p>{{stats?.retarget100InHours}} hours</p>
-        </div>
       </div>
       <div class="row">
         <div class="column heading">Next retarget at</div>
         <div class="column selected">
           <p>{{stats?.retargetTimestamp}}</p>
         </div>
-        <div class="column selected">{{stats?.retarget100Timestamp}}</div>
+
       </div>
       <div class="row">
         <div class="column heading">Next difficulty</div>
         <div class="column selected">
           <p>{{stats?.retargetDifficulty}}</p>
         </div>
-        <div class="column selected">
-          <p>{{stats?.retarget100Difficulty}}</p>
-        </div>
+      </div>
+      <div class="row">
+        <div class="column heading"></div>
+        <div class="column selected"></div>
       </div>
     </div>
   </div>
@@ -106,7 +113,7 @@
     </div>
     <div class="statsTable">
       <div class="row">
-        <div class="column heading">Predictions based on speed since last retarget</div>
+        <div class="column heading"></div>
       </div>
       <div class="row">
         <div class="column heading">Next retarget in</div>
@@ -126,6 +133,9 @@
         <div class="column selected">
           <p>{{stats?.retargetDifficulty}}</p>
         </div>
+      </div>
+      <div class="row">
+        <div class="column heading"></div>
       </div>
     </div>
   </div>
