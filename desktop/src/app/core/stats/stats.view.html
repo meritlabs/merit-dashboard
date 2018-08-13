@@ -52,14 +52,14 @@
       <div class="row">
         <div class="column heading">Last re-target at</div>
         <div class="column selected">
-          <p>{{stats?.reTargetIn}}</p>
+          <p>{{stats?.lastRetargetBlock?.timestamp}}</p>
         </div>
         <div class="column text-italic">The time when last difficulty was changed</div>
       </div>
       <div class="row">
         <div class="column heading">Re-target in</div>
         <div class="column selected">
-          <p>{{stats?.reTargetInBlocks}} blocks</p>
+          <p>{{stats?.lastRetargetInBlocks}} blocks</p>
         </div>
         <div class="column text-italic">Amount of the blocks when last difficulty was changed</div>
       </div>
@@ -83,14 +83,14 @@
       <div class="row">
         <div class="column heading">Next retarget in</div>
         <div class="column selected">
-          <p>{{stats?.retargetInHours}} hours
+          <p>{{stats?.retargetIn}}
           </p>
         </div>
       </div>
       <div class="row">
         <div class="column heading">Next retarget at</div>
         <div class="column selected">
-          <p>{{stats?.retargetTimestamp}}</p>
+          <p>{{stats?.retargetAt}}</p>
         </div>
 
       </div>
@@ -118,14 +118,14 @@
       <div class="row">
         <div class="column heading">Next retarget in</div>
         <div class="column selected">
-          <p>{{stats?.retargetInHours}} hours
+          <p>{{stats?.retargetIn}}
           </p>
         </div>
       </div>
       <div class="row">
         <div class="column heading">Next retarget at</div>
         <div class="column selected">
-          <p>{{stats?.retargetTimestamp}}</p>
+          <p>{{stats?.retargetAt}}</p>
         </div>
       </div>
       <div class="row">
