@@ -1,1 +1,26 @@
+@import "~styles/common/import-sass"
+
+.copyright
+  width: 100%
+  box-sizing: border-box
+  text-align: center
+  font-size: 12px
+  bottom: 0
+  left: 0
+  padding: 20px
+  justify-self: flex-end
+  a
+    text-decoration: underline
+  *
+    color: $ebony-clay
+  &.absolute
+    position: absolute
+    bottom: 0
+    z-index: 100
+    padding: 10px 20px
+    *
+      color: $white
+
+.main
+  min-height: calc(100vh - 80px)
 
