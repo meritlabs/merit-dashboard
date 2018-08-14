@@ -15,10 +15,12 @@ export class CoreComponent {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    if (this.router.url === '/network' || this.router.url === '/') {
-      this.isNetworkView = true;
-    } else {
-      this.isNetworkView = false;
-    }
+    this.router.events.subscribe(event => {
+      if (this.router.url === '/network' || this.router.url === '/') {
+        this.isNetworkView = true;
+      } else {
+        this.isNetworkView = false;
+      }
+    });
   }
 }
