@@ -46,3 +46,4 @@ testem.log
 Thumbs.db
 
 common/environments/environment.dev.ts
+desktop/.firebase/
