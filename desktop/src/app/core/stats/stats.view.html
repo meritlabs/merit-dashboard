@@ -13,6 +13,11 @@
     </div>
     <div class="statsTable">
       <div class="row">
+        <div class="column heading"></div>
+        <div class="column selected"></div>
+        <div class="column text-italic"></div>
+      </div>
+      <div class="row">
         <div class="column heading">#Number</div>
         <div class="column selected">{{stats?.currentBlock?.height}}</div>
         <div class="column text-italic">The current block number is the most recently mined block in the Blockchain.</div>
@@ -47,55 +52,57 @@
       <div class="row">
         <div class="column heading">Last re-target at</div>
         <div class="column selected">
-          <p>{{stats?.reTargetIn}}</p>
+          <p>{{stats?.lastRetargetBlock?.timestamp}}</p>
         </div>
         <div class="column text-italic">The time when the difficulty was last adjusted.</div>
       </div>
       <div class="row">
         <div class="column heading">Re-target in</div>
         <div class="column selected">
-          <p>{{stats?.reTargetInBlocks}} blocks</p>
+          <p>{{stats?.lastRetargetInBlocks}} blocks</p>
         </div>
         <div class="column text-italic">Number of blocks until the difficulty is adjusted.</div>
+      </div>
+      <div class="row">
+        <div class="column heading"></div>
+        <div class="column selected"></div>
+        <div class="column text-italic"></div>
       </div>
     </div>
   </div>
 
-  <div class="statsWidget hideOnMobile">
+  <div class="statsWidget statsWidget-twoCol hideOnMobile">
     <div class="title-secondary">
-      <p>Forecasts and predictions based on current data</p>
+      <p>Predictions based on speed since last Re-target</p>
     </div>
     <div class="statsTable">
       <div class="row">
         <div class="column"></div>
-        <div class="column heading">Predictions based on speed since the last Re-target</div>
-        <div class="column heading">Predictions based on speed of the last 100 blocks</div>
+        <div class="column heading"></div>
       </div>
       <div class="row">
         <div class="column heading">Predicted retarget in</div>
         <div class="column selected">
-          <p>{{stats?.retargetInHours}} hours
+          <p>{{stats?.retargetIn}}
           </p>
-        </div>
-        <div class="column selected">
-          <p>{{stats?.retarget100InHours}} hours</p>
         </div>
       </div>
       <div class="row">
         <div class="column heading">Predicted retarget at</div>
         <div class="column selected">
-          <p>{{stats?.retargetTimestamp}}</p>
+          <p>{{stats?.retargetAt}}</p>
         </div>
-        <div class="column selected">{{stats?.retarget100Timestamp}}</div>
+
       </div>
       <div class="row">
         <div class="column heading">Predicted difficulty</div>
         <div class="column selected">
           <p>{{stats?.retargetDifficulty}}</p>
         </div>
-        <div class="column selected">
-          <p>{{stats?.retarget100Difficulty}}</p>
-        </div>
+      </div>
+      <div class="row">
+        <div class="column heading"></div>
+        <div class="column selected"></div>
       </div>
     </div>
   </div>
@@ -106,19 +113,19 @@
     </div>
     <div class="statsTable">
       <div class="row">
-        <div class="column heading">Predictions based on speed since the last retarget</div>
+        <div class="column heading"></div>
       </div>
       <div class="row">
         <div class="column heading">Predicted retarget in</div>
         <div class="column selected">
-          <p>{{stats?.retargetInHours}} hours
+          <p>{{stats?.retargetIn}}
           </p>
         </div>
       </div>
       <div class="row">
         <div class="column heading">Predicted retarget at</div>
         <div class="column selected">
-          <p>{{stats?.retargetTimestamp}}</p>
+          <p>{{stats?.retargetAt}}</p>
         </div>
       </div>
       <div class="row">
@@ -126,6 +133,9 @@
         <div class="column selected">
           <p>{{stats?.retargetDifficulty}}</p>
         </div>
+      </div>
+      <div class="row">
+        <div class="column heading"></div>
       </div>
     </div>
   </div>
