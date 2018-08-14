@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'core',
@@ -9,8 +10,15 @@ import { Component, ViewEncapsulation } from '@angular/core';
 export class CoreComponent {
   topMenuItems: any[] = [];
   bottomMenuItems: any[] = [];
+  isNetworkView: boolean;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.router.url === '/network' || this.router.url === '/') {
+      this.isNetworkView = true;
+    } else {
+      this.isNetworkView = false;
+    }
+  }
 }

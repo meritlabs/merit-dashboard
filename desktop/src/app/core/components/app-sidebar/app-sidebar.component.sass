@@ -48,6 +48,12 @@
     display: flex
     align-items: center
     position: relative
+    *
+      color: $white
+    a
+      display: flex
+      align-items: center
+      position: relative
     &:after
       content: ""
       display: block
@@ -60,8 +66,9 @@
       left: 0
       width: 90px
     &.active,&:hover
-      color: $blue
-      opacity: .9
+      *
+        color: $blue
+        opacity: .9
     .icon
       width: 90px
       margin-right: 20px
