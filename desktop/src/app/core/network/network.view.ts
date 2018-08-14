@@ -197,12 +197,12 @@ export class NetworkViewComponent {
     node.on('mouseover', function(d) {
       node.attr('opacity', function(n) {
         if (d === n) return 1;
-        else return 0.05;
+        else return 0.15;
       });
 
       link.attr('opacity', function(l) {
         if (d === l.source || d === l.target) return 1;
-        else return 0.05;
+        else return 0.15;
       });
     });
 
@@ -264,7 +264,9 @@ export class NetworkViewComponent {
     }
 
     function tickActions() {
+      _this.isGraphBuilded = true;
       link
+        .attr('class', 'loaded')
         .attr('x1', function(d) {
           return d.source.x;
         })
@@ -278,10 +280,11 @@ export class NetworkViewComponent {
           return d.target.y;
         });
 
-      node.attr('transform', function(d) {
-        return 'translate(' + d.x + ',' + d.y + ')';
-      });
-      _this.isGraphBuilded = true;
+      node
+        .attr('transform', function(d) {
+          return 'translate(' + d.x + ',' + d.y + ')';
+        })
+        .attr('class', 'loaded');
     }
   }
 }
