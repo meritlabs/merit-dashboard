@@ -4,14 +4,14 @@
   </div>
   <div class="description-primary">
     <p>
-      You can easily calculate how many Merits you can earn on average. You only need to know how fast is your computer able to
-      mine. Let it mine at least 15 mins, then you can see average number how many cycles per second is your PC able to find.
-      In Desktop wallet you can find it under Mining tab in "Mining Rates" section as "Cycles Found/s".
+      You can use the mining calculator to estimate how many MRT you can earn on average. You only need to know how fast your computer is able to
+      mine. To find out, let it mine for at least 15 minutes, then you can see average number of cycles per second your PC is able to find.
+      In the Desktop Lightwallet you can find cycles per second under the  Mining tab in the section called "Mining Rates" and noted as "Cycles Found/s".
     </p>
     <p>
-      In Merit Core you need to use command "getmininginfo" in console and "cyclesps" value. Average computer CPUs have numbers
-      around 0.01 - 0.1. Gaming graphic cards can get around 0.2 - 0.5 each. If you have troubles finding your speed, don't
-      hesitate to ask the community in Discord group, Telegram or forum.
+      In Merit Core you will need to use command "getmininginfo" in the console and find the "cyclesps" value. Average computer CPUs have numbers
+      around 0.01 - 0.1. Gaming graphic cards can get around 0.2 - 0.5 each. If you have trouble finding your speed, don't
+      hesitate to ask the community in Discord, Telegram, or forum.
     </p>
   </div>
   <div class="calculations">
@@ -25,7 +25,7 @@
       <ng-container *ngIf="formData.status === 'VALID'">
         <p class="ui-label">Result:</p>
         <p>
-          If current net cycles/s will be same for the next 24 hours, you will be mining without interruption at
+          If current net cycles/s are the same for the next 24 hours, and you mine without interruption at
           <strong>{{formData.controls.cyclesps.value}} cycles/s</strong>, your rewards will be approximately:
           <strong>{{dailyReward}} MRT</strong>
         </p>
@@ -35,30 +35,30 @@
   <div class="description-primary">
     <small>
       <p>
-        <strong>Why I got lower rewards than calculated?</strong>
+        <strong>Why did I get lower rewards than calculated?</strong>
       </p>
-      <p>I saw many complaints from miners that didn't receive as many Merits as calculator computed. Calculations are based
-        on comparing your cycles/s with average of global cycles/s in last 30 blocks. There are some reasons why you might
-        not get as many MRT per day as it's calculated:</p>
+      <p>Keep in mind that this is an estimate and that it is entirely possible to mine fewer MRT than predicted by the mining calculator. Calculations are based
+        on comparing your cycles/s with average of global cycles/s in last 30 blocks. There are many reasons why you might
+        not get as many MRT per day as estimated:</p>
       <p>
-        <strong>You're not mining 24 hours continuously</strong>
+        <strong>You're not mining continuously</strong>
       </p>
-      <p>This is probably main problem with lower rewards. For now, pools are not fully stable and have some blackouts during
-        the day. It causes that you are not actually mining whole 24 hours. Also your miner can loose connection and fail
-        to reconnect. You then need to restart it manually - until then you're again loosing time of mining.</p>
+      <p>This is probably the main cause with fewer rewards than predicted. The mining pools are not 100% stable and have occasional blackouts during
+        the day. As a result, you are not actually mining continuously for 24 hours. It is also possible that your miner dropped the pool connection and fail
+        to reconnect. You then need to restart it manually - until it's restarted you're also losing time mining.</p>
       <p>
-        <strong>You're not mining 24 hours with same cycles/s</strong>
+        <strong>You're not mining continuously with the same cycles/s</strong>
       </p>
-      <p>Check your cycles/s couple times before you get some average. Also maybe one or more cards stopped mining and number
-        of cycles calculated in second decreased. Merit mining software is in development and is not fully optimized yet.
-        Pay more attention to your mining rigs when mining Merit.
+      <p>Check your cycles/s a couple times before you get enter a number into the mining calculator. It's possible that one or more cards stopped mining and the number
+        of cycles calculated decreased. Merit mining software is in development and is not fully optimized yet.
+        So you may need to pay attention to your mining rigs in order to achieve optimal results.
       </p>
       <p>
         <strong>Net cycles/s changed</strong>
       </p>
       <p>
-        During your mining, global cycles/s can change by couple of %. It shouldn't be very significant but can cause lower or higher
-        results up to 30% if it's increasing or decreasing quickly. Usually it shouldn't be changed for more than 10% in
+        During mining, global cycles/s can change by couple of %. It shouldn't be very significant, but it's possible that these fluctuations will cause lower or higher
+        results by up to 30%. Normally, you shouldn't see fluctuations outside of 10% in
         24 hours. You can always see current cycles/s on Network subpage.
       </p>
     </small>
