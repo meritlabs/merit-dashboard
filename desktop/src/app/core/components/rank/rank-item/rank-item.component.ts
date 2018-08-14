@@ -8,7 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 export class RankItemComponent implements OnInit {
   constructor() {}
 
-  @Input() item;
+  @Input()
+  item;
+  rating: number;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.rating = parseFloat((this.item.anv / 1e8).toFixed(2));
+  }
 }

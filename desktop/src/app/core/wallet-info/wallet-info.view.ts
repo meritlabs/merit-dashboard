@@ -32,7 +32,7 @@ export class WalletInfoViewComponent {
       this.address.balance = walletBalance.totalAmount / 1e8;
 
       if (getAddress.isConfirmed) {
-        ranks = ((await this.dashboardApi.getAddressRank(getAddress.address)) as any).ranks[0];
+        ranks = (await this.dashboardApi.getAddressRank(getAddress.address)) as any;
         this.address.top = ranks.rank;
         this.address.rank = (ranks.anv / 1e8).toFixed(0);
         this.address.referralsMap = referralsMap;
