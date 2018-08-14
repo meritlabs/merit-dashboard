@@ -9,16 +9,16 @@
       </div>
       <div class="addressesCounter">
         <div>
-          <p>{{(wallets | async)?.total | kformat}}</p>
+          <p>{{wallets?.totalDisplay | kformat}}</p>
           <span>TOTAL USERS</span>
         </div>
         <div>
-          <p>+{{(wallets | async)?.month | kformat}}</p>
-          <span>JOINED THIS MONTH</span>
+          <p>+{{wallets?.monthDisplay | kformat}}</p>
+          <span>JOINED IN THIS MONT</span>
         </div>
         <div>
-          <p>+{{(wallets | async)?.week | kformat}}</p>
-          <span>JOINED THIS WEEK</span>
+          <p>+{{wallets?.weekDisplay | kformat}}</p>
+          <span>JOINED IN THIS WEEK</span>
         </div>
       </div>
       <form [formGroup]="formData" (ngSubmit)="validateAddress(formData.controls.address.value)" class="networkNavigator">
@@ -45,11 +45,20 @@
       </div>
     </div>
   </div>
+  {{isGraphBuilded}}
   <div class="container loading" *ngIf="(nodes$ | async).loading">
+    <p>
+      <strong>Loading nodes...</strong>
+    </p>
     <loading-spinner></loading-spinner>
   </div>
-
-  <div #canvas class="canvas graphWrap" [class.loaded]="!(nodes$ | async).loading"></div>
+  <div class="container loading" *ngIf="!(nodes$ | async).loading && !isGraphBuilded">
+    <p>
+      <strong>Building graph...</strong>
+    </p>
+    <loading-spinner></loading-spinner>
+  </div>
+  <div #canvas class="canvas graphWrap" [class.loaded]="isGraphBuilded"></div>
 
 
   <div *ngIf="showWarning" class="nodesDialog_wrapper">

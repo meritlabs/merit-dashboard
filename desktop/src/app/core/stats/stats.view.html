@@ -1,21 +1,26 @@
 <div class="container">
   <div class="title-primary">
-    <p>BlockChain stats</p>
+    <p>Blockchain Stats</p>
   </div>
   <div class="description-primary">
-    <p>Here you can check current network state and get forecasts about near future network state.
+    <p>Check current network statistics and get predictions about future performance.
     </p>
   </div>
 
   <div class="statsWidget">
     <div class="title-secondary">
-      <p>Current block state</p>
+      <p>Current Block Information</p>
     </div>
     <div class="statsTable">
       <div class="row">
+        <div class="column heading"></div>
+        <div class="column selected"></div>
+        <div class="column text-italic"></div>
+      </div>
+      <div class="row">
         <div class="column heading">#Number</div>
         <div class="column selected">{{stats?.currentBlock?.height}}</div>
-        <div class="column text-italic">Current block number is a latest mined block in the BlockChain.</div>
+        <div class="column text-italic">The current block number is the most recently mined block in the Blockchain.</div>
       </div>
       <div class="row">
         <div class="column heading">Network cycles/s</div>
@@ -25,14 +30,14 @@
             <small>{{stats?.networkAvgCyclesPS}} avg of last 30 blocks</small>
           </p>
         </div>
-        <div class="column text-italic">Network Cycles/Second is a HashRate or amount of the resolved tasks per second.</div>
+        <div class="column text-italic">Network Cycles/Second is a Hash Rate or the number of calculations completed per second.</div>
       </div>
       <div class="row">
         <div class="column heading">Difficulty</div>
         <div class="column selected">
           <p>{{stats?.currentBlock?.difficulty}}</p>
         </div>
-        <div class="column text-italic">Shows how to hard mining in the current block.</div>
+        <div class="column text-italic">Shows how hard it is to mine the current block.</div>
       </div>
       <div class="row">
         <div class="column heading">Block time</div>
@@ -42,90 +47,95 @@
             <small>target time: 60 s</small>
           </p>
         </div>
-        <div class="column text-italic">Required time for single block generation.</div>
+        <div class="column text-italic">Amount of time required to confirm the latest block.</div>
       </div>
       <div class="row">
         <div class="column heading">Last re-target at</div>
         <div class="column selected">
-          <p>{{stats?.reTargetIn}}</p>
+          <p>{{stats?.lastRetargetBlock?.timestamp}}</p>
         </div>
-        <div class="column text-italic">The time when last difficulty was changed</div>
+        <div class="column text-italic">The time when the difficulty was last adjusted.</div>
       </div>
       <div class="row">
         <div class="column heading">Re-target in</div>
         <div class="column selected">
-          <p>{{stats?.reTargetInBlocks}} blocks</p>
+          <p>{{stats?.lastRetargetInBlocks}} blocks</p>
         </div>
-        <div class="column text-italic">Amount of the blocks when last difficulty was changed</div>
+        <div class="column text-italic">Number of blocks until the difficulty is adjusted.</div>
+      </div>
+      <div class="row">
+        <div class="column heading"></div>
+        <div class="column selected"></div>
+        <div class="column text-italic"></div>
       </div>
     </div>
   </div>
 
-  <div class="statsWidget hideOnMobile">
+  <div class="statsWidget statsWidget-twoCol hideOnMobile">
     <div class="title-secondary">
-      <p>Forecast for future stats</p>
+      <p>Predictions based on speed since last Re-target</p>
     </div>
     <div class="statsTable">
       <div class="row">
         <div class="column"></div>
-        <div class="column heading">Predictions based on speed since last Re-target</div>
-        <div class="column heading">Predictions based on speed of last 100 blocks</div>
+        <div class="column heading"></div>
       </div>
       <div class="row">
-        <div class="column heading">Next retarget in</div>
+        <div class="column heading">Predicted retarget in</div>
         <div class="column selected">
-          <p>{{stats?.retargetInHours}} hours
+          <p>{{stats?.retargetIn}}
           </p>
         </div>
-        <div class="column selected">
-          <p>{{stats?.retarget100InHours}} hours</p>
-        </div>
       </div>
       <div class="row">
-        <div class="column heading">Next retarget at</div>
+        <div class="column heading">Predicted retarget at</div>
         <div class="column selected">
-          <p>{{stats?.retargetTimestamp}}</p>
+          <p>{{stats?.retargetAt}}</p>
         </div>
-        <div class="column selected">{{stats?.retarget100Timestamp}}</div>
+
       </div>
       <div class="row">
-        <div class="column heading">Next difficulty</div>
+        <div class="column heading">Predicted difficulty</div>
         <div class="column selected">
           <p>{{stats?.retargetDifficulty}}</p>
         </div>
-        <div class="column selected">
-          <p>{{stats?.retarget100Difficulty}}</p>
-        </div>
+      </div>
+      <div class="row">
+        <div class="column heading"></div>
+        <div class="column selected"></div>
       </div>
     </div>
   </div>
 
   <div class="statsWidget hideOnDesktop">
     <div class="title-secondary">
-      <p>Forecast for future stats</p>
+      <p>Forecasts and predictions based on current data</p>
     </div>
     <div class="statsTable">
       <div class="row">
-        <div class="column heading">Predictions based on speed since last retarget</div>
+        <div class="column heading"></div>
       </div>
       <div class="row">
-        <div class="column heading">Next retarget in</div>
+        <div class="column heading">Predicted retarget in</div>
         <div class="column selected">
-          <p>{{stats?.retargetInHours}} hours
+          <p>{{stats?.retargetIn}}
           </p>
         </div>
       </div>
       <div class="row">
-        <div class="column heading">Next retarget at</div>
+        <div class="column heading">Predicted retarget at</div>
         <div class="column selected">
-          <p>{{stats?.retargetTimestamp}}</p>
+          <p>{{stats?.retargetAt}}</p>
         </div>
       </div>
       <div class="row">
-        <div class="column heading">Next difficulty</div>
+        <div class="column heading">Predicted difficulty</div>
         <div class="column selected">
           <p>{{stats?.retargetDifficulty}}</p>
         </div>
+      </div>
+      <div class="row">
+        <div class="column heading"></div>
       </div>
     </div>
   </div>
