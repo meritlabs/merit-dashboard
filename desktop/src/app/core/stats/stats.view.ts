@@ -22,7 +22,7 @@ export class StatsViewComponent implements OnInit {
     Stats.lastRetargetInBlocks = Stats.currentBlock.height - Stats.lastRetargetBlock.height;
     Stats.retargetIn = moment(Stats.retargetTimestamp).fromNow();
     Stats.retargetAt = moment(Stats.retargetTimestamp).format('MMM Do YYYY, hh:mm A');
-    Stats.retargetDifficulty = Stats.retargetDifficulty;
+    Stats.retargetDifficulty = parseFloat(Stats.retargetDifficulty.toFixed(0));
 
     this.stats = Stats;
   }
