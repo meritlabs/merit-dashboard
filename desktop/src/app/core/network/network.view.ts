@@ -6,8 +6,7 @@ import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.s
 import { INode } from '@dashboard/common/models/network';
 import { LoadNodes } from '@dashboard/common/actions/nodes.action';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { INodes, Node } from '@dashboard/common/models/network';
-import { ENV } from '@app/env';
+import { ENV } from '@dashboard/common/environments/environment';
 
 declare const window: any;
 declare const d3: any;
