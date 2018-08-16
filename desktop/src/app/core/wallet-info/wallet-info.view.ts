@@ -23,25 +23,29 @@ export class WalletInfoViewComponent {
     let isValid: any = getAddress.isValid;
 
     if (isValid) {
-      let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
-      let ranks: any;
-      let referralsMap: any = await this.dashboardApi.getAddressNetwork(getAddress.address);
-
-      this.isValid = true;
-      this.address = getAddress;
-      this.address.balance = walletBalance.totalAmount / 1e8;
-
-      if (getAddress.isConfirmed) {
-        ranks = (await this.dashboardApi.getAddressRank(getAddress.address)) as any;
-        this.address.top = ranks.rank;
-        this.address.rank = (ranks.anv / 1e8).toFixed(0);
-        this.address.referralsMap = referralsMap;
-      }
-      this.isLoading = false;
+      this.loadAddress(getAddress);
     } else {
       this.isLoading = false;
       this.isValid = false;
       (this.formData.controls.wallet as any).status = 'INVALID';
     }
+  }
+  async loadAddress(getAddress) {
+    this.isLoading = true;
+    let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
+    let ranks: any;
+    let referralsMap: any = await this.dashboardApi.getAddressNetwork(getAddress.address);
+
+    this.isValid = true;
+    this.address = getAddress;
+    this.address.balance = walletBalance.totalAmount / 1e8;
+
+    if (getAddress.isConfirmed) {
+      ranks = (await this.dashboardApi.getAddressRank(getAddress.address)) as any;
+      this.address.top = ranks.rank;
+      this.address.rank = (ranks.anv / 1e8).toFixed(0);
+      this.address.referralsMap = referralsMap;
+    }
+    this.isLoading = false;
   }
 }

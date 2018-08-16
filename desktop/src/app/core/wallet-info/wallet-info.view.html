@@ -3,8 +3,9 @@
     <p>Check wallet statistics</p>
   </div>
   <div class="description-primary">
-    <p>Here you can review any existing wallet in the our BlockChain. This can help you get familiar with other Merit users and your own wallet stats!
-      </p>
+    <p>Here you can review any existing wallet in the our BlockChain. This can help you get familiar with other Merit users
+      and your own wallet stats!
+    </p>
   </div>
 </div>
 <div class="container">
@@ -12,7 +13,7 @@
     <label for="" class="ui-label">Enter wallet address or alias</label>
     <div class="validateWallet">
       <input type="text" placeholder="address or alias" class="ui-input ui-input--form ui-input--text" formControlName="wallet">
-      <button class="ui-button ui-button--blue">CHECK WALLET</button>
+      <button class="ui-button ui-button--blue ui-button--sm">CHECK WALLET</button>
     </div>
   </form>
   <ng-container *ngIf="!isLoading; else loading">
@@ -66,7 +67,7 @@
           </div>
         </div>
       </div>
-      <div class="referralsMap" *ngIf="address?.referralsMap">
+      <div class="referralsMap" *ngIf="address?.referralsMap?.length > 0">
         <div class="title-secondary">
           <p>
             <strong>Referrals map</strong>
@@ -83,6 +84,9 @@
             <div class="cell cell-lg">
               Joined
             </div>
+            <div class="cell cell-xs">
+
+            </div>
           </div>
           <div class="ranksTableRow" *ngFor="let item of address?.referralsMap; let i = index">
             <div class="cell cell-xs">
@@ -93,6 +97,9 @@
             </div>
             <div class="cell cell-lg">
               {{item.created | moment}}
+            </div>
+            <div class="cell cell-xs">
+              <button (click)="validateAddress(item.address)" class="ui-button ui-button--green ui-button--xs">DETAILS</button>
             </div>
           </div>
         </div>
