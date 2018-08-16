@@ -28,6 +28,10 @@ const baseHref = '';
 const deployUrl = '';
 const projectRoot = process.cwd();
 const maximumInlineSize = 10;
+const staging = process.env.DASHBOARD_STAGING;
+const {
+  compilerOptions: { paths },
+} = require('./tsconfig');
 const postcssPlugins = function(loader) {
   return [
     postcssImports({
@@ -116,16 +120,19 @@ const postcssPlugins = function(loader) {
   ];
 };
 
-function getAliases(production) {
-  if (production) {
-    return {
-      '@app/env': path.resolve(__dirname, '../common/environments/environment.prod.ts'),
-    };
-  }
+function getEnvPath(production) {
+  const env = staging ? 'staging' : production ? 'prod' : 'dev';
+  return '../common/environments/environment.' + env + '.ts';
+}
 
+function getAliases(production) {
   return {
-    '@app/env': path.resolve(__dirname, '../common/environments/environment.ts'),
+    '@app/env': path.resolve(__dirname, getEnvPath(production)),
   };
+}
+
+function isProduction(config) {
+  return config.env && config.env.production === true;
 }
 
 module.exports = (_, config) => {
@@ -390,13 +397,16 @@ module.exports = (_, config) => {
       new AngularCompilerPlugin({
         mainPath: 'main.ts',
         platform: 0,
-        hostReplacementPaths: {
-          'environments/environment.ts': '../../common/environments/environment.ts',
-        },
-        sourceMap: true,
+        sourceMap: !isProduction(config),
         tsConfigPath: 'src/tsconfig.app.json',
-        skipCodeGeneration: true,
-        compilerOptions: {},
+        skipCodeGeneration: !isProduction(config),
+        compilerOptions: {
+          paths: {
+            ...paths,
+            '@app/env': [getEnvPath(isProduction(config))],
+          },
+          sourceMap: !isProduction(config),
+        },
       }),
     ],
     node: {
