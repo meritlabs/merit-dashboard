@@ -44,6 +44,7 @@ export class NetworkViewComponent {
   showWarning: boolean;
   isGraphBuilded: boolean;
   isFullScreen: boolean;
+  showList: boolean;
 
   async ngOnInit() {
     this.wallets = Object.assign(this.walletsDisplay, await this.dashboardApi.getWalletsAmount());
