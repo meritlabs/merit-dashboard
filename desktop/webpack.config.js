@@ -119,12 +119,12 @@ const postcssPlugins = function(loader) {
 function getAliases(production) {
   if (production) {
     return {
-      '@app/env': path.resolve(__dirname, '../common/environments/environment.ts'),
+      '@app/env': path.resolve(__dirname, '../common/environments/environment.prod.ts'),
     };
   }
 
   return {
-    '@app/env': path.resolve(__dirname, '../common/environments/environment.dev.ts'),
+    '@app/env': path.resolve(__dirname, '../common/environments/environment.ts'),
   };
 }
 
@@ -275,7 +275,11 @@ module.exports = (_, config) => {
     plugins: [
       new DefinePlugin({
         WEBPACK_CONFIG: {
-          COMMIT_HASH: JSON.stringify(execSync('git rev-parse --short HEAD').toString().trim()),
+          COMMIT_HASH: JSON.stringify(
+            execSync('git rev-parse --short HEAD')
+              .toString()
+              .trim()
+          ),
           VERSION: JSON.stringify(require('./package.json').version),
         },
       }),
