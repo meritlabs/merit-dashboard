@@ -153,7 +153,6 @@ export class NetworkViewComponent {
     }
     let select = D3.select(this.canvas.nativeElement);
     let size = [width, height];
-    console.log(size);
 
     let svg = this.networkService.createSvg(select, size);
     let simulation = d3.forceSimulation().nodes(nodes_data);
