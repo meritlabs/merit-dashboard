@@ -49,7 +49,7 @@ setDesktopParams() {
 setRunLevelProduction() {
     environment="production"
     firebase_project="production-merit-dashboard"
-    build_tag=""
+    build_tag=":prod"
     market_env_vars=""
 }
 
