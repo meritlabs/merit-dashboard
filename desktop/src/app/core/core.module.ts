@@ -12,6 +12,7 @@ import { CalculatorViewComponent } from '@dashboard/desktop/app/core/calculator/
 import { WalletInfoViewComponent } from '@dashboard/desktop/app/core/wallet-info/wallet-info.view';
 import { MomentPipe } from '@dashboard/common/pipes/moment';
 import { KFormat } from '@dashboard/common/pipes/k-format';
+import { DisifiViewComponent } from '@dashboard/desktop/app/core/disifi-project/disifi-project.view';
 
 export function getPages() {
   return [
@@ -21,6 +22,7 @@ export function getPages() {
     NetworkViewComponent,
     CalculatorViewComponent,
     WalletInfoViewComponent,
+    DisifiViewComponent,
   ];
 }
 
