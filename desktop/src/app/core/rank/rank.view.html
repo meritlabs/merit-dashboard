@@ -17,6 +17,7 @@
       <div class="cell cell-lg">
         Score
       </div>
+      <div class="cell cell-xs"></div>
     </div>
     <ng-container *ngIf="!(ranks$ | async).loading; else loading">
       <app-rank-item *ngFor="let item of (ranks$ | async)?.ranks" [item]=item></app-rank-item>

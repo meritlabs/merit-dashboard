@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-wallet-info-view',
@@ -16,7 +17,20 @@ export class WalletInfoViewComponent {
   address: any;
   breadCrumbs: Array<any> = [];
 
-  constructor(private formBuilder: FormBuilder, public dashboardApi: DashboardAPI_Service) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    public dashboardApi: DashboardAPI_Service,
+    private activatedRoute: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      let address = params['address'];
+      if (address) {
+        this.validateAddress(address);
+      }
+    });
+  }
 
   async validateAddress(address) {
     this.isLoading = true;
