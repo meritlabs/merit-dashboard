@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-wallet-info-view',
@@ -14,8 +15,22 @@ export class WalletInfoViewComponent {
   isValid: boolean;
   isLoading: boolean;
   address: any;
+  breadCrumbs: Array<any> = [];
 
-  constructor(private formBuilder: FormBuilder, public dashboardApi: DashboardAPI_Service) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    public dashboardApi: DashboardAPI_Service,
+    private activatedRoute: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      let address = params['address'];
+      if (address) {
+        this.validateAddress(address);
+      }
+    });
+  }
 
   async validateAddress(address) {
     this.isLoading = true;
@@ -27,6 +42,7 @@ export class WalletInfoViewComponent {
       let ranks: any;
       let referralsMap: any = await this.dashboardApi.getAddressNetwork(getAddress.address);
 
+      this.pushCrumb(getAddress);
       this.isValid = true;
       this.address = getAddress;
       this.address.balance = walletBalance.totalAmount / 1e8;
@@ -42,6 +58,28 @@ export class WalletInfoViewComponent {
       this.isLoading = false;
       this.isValid = false;
       (this.formData.controls.wallet as any).status = 'INVALID';
+    }
+  }
+  findAddress(address) {
+    this.breadCrumbs.length = 0;
+    this.validateAddress(address);
+  }
+  selectCrumb(item) {
+    var index = this.breadCrumbs.indexOf(item);
+    if (index > -1) {
+      this.breadCrumbs.length = index + 1;
+    }
+    this.validateAddress(item.address);
+  }
+  pushCrumb(getAddress) {
+    let crumb = {
+      name: getAddress.alias || 'Anonymous',
+      address: getAddress.address,
+    };
+    let isExist = this.breadCrumbs.find(item => getAddress.address === item.address);
+
+    if (!isExist) {
+      this.breadCrumbs.push(crumb);
     }
   }
 }

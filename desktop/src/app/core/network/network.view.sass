@@ -179,6 +179,46 @@
   color: $white
   p
     margin-bottom: 20px
+.fullScreenContainer
+  height: 100%
+  width: 100%
+  flex: 1
+  display: flex
+  flex-direction: column
+  margin-left: -20px
+  position: relative
+  .networkNavigator
+    width: 100%
+    max-width: 100%
+    justify-content: flex-end
+    padding: 20px 40px
+    box-sizing: border-box
+    position: fixed
+    right: 0px
+    top: 0px
+    z-index: 2
+  &.inMode
+    position: fixed
+    width: 100vw
+    height: 100vh
+    z-index: 200
+    top: 0
+    left: 0
+    padding: 20px
+    background: $ebony-clay
+    .networkNavigator
+      padding: 20px
+.graphWrap.fullScreen
+  position: relative
+  z-index: 1
+.enterFullScreen
+  display: flex
+  align-items: center
+  color: $white
+  cursor: pointer
+  user-select: none
+  merit-icon
+    margin-right: 5px
 @media screen and (max-width: 1024px)
   .addressesCounter 
     p

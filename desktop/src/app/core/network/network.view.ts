@@ -31,7 +31,7 @@ export class NetworkViewComponent {
   nodes$ = this.store.select('nodes');
   arr = [];
   genesisAddress;
-  isLabelEnable: boolean = false;
+  isLabelEnable: boolean;
   gNodes: INode[] = [];
   breadCrumbs = [];
   formData: FormGroup = this.formBuilder.group({
@@ -42,8 +42,9 @@ export class NetworkViewComponent {
   selectedAddress: string = ENV.coreAddress;
   selectedMapSize: number = 500;
   selectionList = [500, 1000, 1500, 2000, 'FULL NETWORK'];
-  showWarning: boolean = false;
+  showWarning: boolean;
   isGraphBuilded: boolean;
+  isFullScreen: boolean;
 
   async ngOnInit() {
     this.wallets = Object.assign(this.walletsDisplay, await this.dashboardApi.getWalletsAmount());
@@ -125,6 +126,14 @@ export class NetworkViewComponent {
     }
   }
 
+  enterFullScreen() {
+    this.isFullScreen = !this.isFullScreen;
+    this.isGraphBuilded = false;
+    setTimeout(() => {
+      this.generateGraph();
+    }, 200);
+  }
+
   generateGraph() {
     this.isGraphBuilded = false;
     D3.select('svg').remove();
@@ -138,8 +147,13 @@ export class NetworkViewComponent {
     let links_data = this.arr.map(item => ({ source: item.source, target: item.target }));
     let width = this.canvas.nativeElement.offsetWidth;
     let height = this.canvas.nativeElement.offsetHeight;
+    if (this.isFullScreen) {
+      width = window.innerWidth;
+      height = window.innerHeight;
+    }
     let select = D3.select(this.canvas.nativeElement);
     let size = [width, height];
+
     let svg = this.networkService.createSvg(select, size);
     let simulation = d3.forceSimulation().nodes(nodes_data);
     let link_force = d3.forceLink(links_data).id(function(d) {
@@ -264,7 +278,6 @@ export class NetworkViewComponent {
     }
 
     function tickActions() {
-      _this.isGraphBuilded = true;
       link
         .attr('class', 'loaded')
         .attr('x1', function(d) {
@@ -285,6 +298,9 @@ export class NetworkViewComponent {
           return 'translate(' + d.x + ',' + d.y + ')';
         })
         .attr('class', 'loaded');
+      setTimeout(() => {
+        _this.isGraphBuilded = true;
+      }, 2000);
     }
   }
 }

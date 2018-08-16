@@ -53,12 +53,36 @@
 .ranksTableRow
   width: 100%
   display: flex
+  opacity: .6
   &:nth-child(2n)
     background: $grey
+  &:hover
+    opacity: 1
 .referralsMap
   padding-top: 40px
   .ranksTable
     border-right: 1px solid $white
+.breadCrumbs
+  display: flex
+  margin-bottom: 10px
+  li
+    color: $ebony-clay
+    font-weight: 500
+    font-size: 13px
+    user-select: none
+    cursor: pointer
+    opacity: .8
+    i
+      text-decoration: underline
+      font-style: italic
+      padding-right: 2px
+    &:after
+      margin: 0 2px
+      content: ">"
+    &:last-of-type
+      text-decoration: none
+      &:after
+        display: none
 @media screen and (max-width: 768px)
   .validateWallet
     flex-direction: column
