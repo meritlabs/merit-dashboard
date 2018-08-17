@@ -10,7 +10,7 @@
   "scripts": {
     "ng": "ng",
     "start": "webpack-dev-server --port=4200 --env.dev",
-    "build": "webpack",
+    "build:stage": "webpack --env.stage",
     "build:prod": "webpack --env.production",
     "postinstall": "rm -rf ./node_modules/rxjs"
   },
