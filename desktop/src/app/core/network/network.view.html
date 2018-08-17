@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <div class="enterFullScreen" (click)="enterFullScreen()" [class.loaded]="isGraphBuilded">
+      <div class="enterFullScreen" (click)="enterFullScreen()">
         <merit-icon name="full"></merit-icon> {{isFullScreen ? "Exit": "Enter"}} FullScreen mode
       </div>
     </form>
@@ -84,8 +84,8 @@
 
   <div class="scrollNavigator" [class.loaded]="isGraphBuilded">
     <div class="buttons">
-      <button class="zoom in ui-button ui-button--white">+</button>
       <button class="zoom out ui-button ui-button--white">-</button>
+      <button class="zoom in ui-button ui-button--white">+</button>
     </div>
     <p>
       For map zoom, you can use mouse wheel <br> or "+" and "-" buttons.
