@@ -53,14 +53,23 @@ export class NetworkViewComponent {
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
         this.arr = res.nodes;
-        let isDuplicate = this.breadCrumbs.find(item => item === this.arr[0].source);
-        if (!isDuplicate) this.breadCrumbs.push(this.arr[0].source);
+        let source = this.arr[0].source;
+        let isDuplicate = this.breadCrumbs.find(item => item.address === source);
+        if (!isDuplicate) {
+          (async () => {
+            this.breadCrumbs.push({ name: await this.getAddressDetails(source), address: source });
+          })();
+        }
         this.generateGraph();
       }
     });
     this.displayAddressesCount();
   }
 
+  async getAddressDetails(address) {
+    let getAddress = (await this.dashboardApi.validateAddress(address)) as any;
+    return getAddress.alias || 'Anonymous';
+  }
   async validateAddress(address) {
     let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
     let isValid: any = getAddress.isValid;
@@ -101,7 +110,7 @@ export class NetworkViewComponent {
     this.showWarning = false;
   }
   async backToParent(item) {
-    let gNodes = await this.networkService.getNetwork(item);
+    let gNodes = await this.networkService.getNetwork(item.address);
     this.store.dispatch(new LoadNodes({ nodes: gNodes }));
     var index = this.breadCrumbs.indexOf(item);
     this.selectedAddress = item;
@@ -300,7 +309,7 @@ export class NetworkViewComponent {
         .attr('class', 'loaded');
       setTimeout(() => {
         _this.isGraphBuilded = true;
-      }, 2000);
+      }, 5000);
     }
   }
 }

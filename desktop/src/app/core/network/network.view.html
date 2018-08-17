@@ -39,7 +39,7 @@
       <div class="networkBreadCrumbs">
         <ul>
           <li *ngFor="let item of breadCrumbs" (click)="backToParent(item)">
-            <i>{{item}}</i>
+            <i>{{item.name}}</i>
           </li>
         </ul>
       </div>
@@ -50,7 +50,7 @@
       <div class="networkBreadCrumbs" *ngIf="isFullScreen">
         <ul>
           <li *ngFor="let item of breadCrumbs" (click)="backToParent(item)">
-            <i>{{item}}</i>
+            <i>{{item.name}}</i>
           </li>
         </ul>
       </div>

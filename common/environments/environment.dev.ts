@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  dashboardApi: 'https://cors-now.herokuapp.com/http://167.99.179.33:8301/',
+  dashboardApi: 'https://dashboard-api.merit.me/',
   mwsApiUrl: 'https://mws.merit.me/bws/api/v1/',
   coreAddress: 'MGgAma9epMrSipSm9Y2YjCWGGSt7gJWzM7',
   nPowTargetTimeSpan: 1140,

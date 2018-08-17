@@ -7,8 +7,9 @@
   padding: 50px 20px 20px
   margin-left: -150px
   width: calc(100vw + 40px)
-  min-height: 100vh
+  height: 100vh
   box-sizing: border-box
+  overflow: hidden
   .title-primary, .description-primary
     color: $white
     width: 100%
@@ -66,12 +67,14 @@
   margin-bottom: 20px
   ul
     display: flex
+    flex-direction: row
+    align-items: center
     justify-content: center
+    width: 100%
+    text-align: center
     font-size: 13px
     li
-      display: block
-      max-width: 100px
-      overflow: hidden
+      display: inline-block
       box-sizing: border-box
       display: flex
       cursor: pointer
@@ -190,8 +193,6 @@
   .networkBreadCrumbs
     padding-top: 11px
     margin-bottom: 0
-  .loading
-    padding-top: 150px
   .networkNavigator_group
     margin: 0 20px
   .networkNavigator
@@ -216,6 +217,8 @@
     background: $ebony-clay
     .networkNavigator
       padding: 20px
+    .loading
+      padding-top: 150px
 .graphWrap.fullScreen
   position: relative
   z-index: 1
