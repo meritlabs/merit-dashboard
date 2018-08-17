@@ -39,7 +39,7 @@ export class WalletInfoViewComponent {
 
     if (isValid) {
       let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
-      let ranks: any;
+      let rank: any;
       let referralsMap: any = await this.dashboardApi.getAddressNetwork(getAddress.address);
 
       this.pushCrumb(getAddress);
@@ -48,9 +48,9 @@ export class WalletInfoViewComponent {
       this.address.balance = walletBalance.totalAmount / 1e8;
 
       if (getAddress.isConfirmed) {
-        ranks = (await this.dashboardApi.getAddressRank(getAddress.address)) as any;
-        this.address.top = ranks.rank;
-        this.address.rank = (ranks.anv / 1e8).toFixed(0);
+        rank = (await this.dashboardApi.getAddressRank(getAddress.address)) as any;
+        this.address.top = rank.rank;
+        this.address.rank = rank.anv;
         this.address.referralsMap = referralsMap;
       }
       this.isLoading = false;
