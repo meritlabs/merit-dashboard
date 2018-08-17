@@ -1,0 +1,13 @@
+svg g {
+  cursor: pointer;
+  transition: all 0.1s linear;
+}
+
+svg .loaded {
+  transition-delay: 0.5s;
+}
+
+svg line {
+  cursor: pointer;
+  transition: all 0.1s linear;
+}

@@ -7,9 +7,9 @@ import { INode } from '@dashboard/common/models/network';
 import { LoadNodes } from '@dashboard/common/actions/nodes.action';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ENV } from '@app/env';
+import * as d3 from 'd3v4';
 
 declare const window: any;
-declare const d3: any;
 const D3 = d3;
 
 @Component({
