@@ -10,6 +10,7 @@ import { ENV } from '@app/env';
 import * as d3 from 'd3v4';
 
 declare const window: any;
+declare const document: any;
 const D3 = d3;
 
 @Component({
@@ -45,6 +46,7 @@ export class NetworkViewComponent {
   isGraphBuilded: boolean;
   isFullScreen: boolean;
   showList: boolean;
+  zoomLvl: any;
 
   async ngOnInit() {
     this.wallets = Object.assign(this.walletsDisplay, await this.dashboardApi.getWalletsAmount());
@@ -145,6 +147,11 @@ export class NetworkViewComponent {
 
   generateGraph() {
     this.isGraphBuilded = false;
+    this.zoomLvl = {
+      k: 1,
+      x: 0,
+      y: 0,
+    };
     D3.select('svg').remove();
     let _this = this;
     let nodes_data = this.arr.map(item => ({
@@ -250,13 +257,32 @@ export class NetworkViewComponent {
 
     //add zoom capabilities
     let zoom_handler = d3.zoom().on('zoom', zoom_actions);
-
     zoom_handler(svg);
 
-    function zoom_actions() {
-      let zoomLvl = d3.event.transform;
+    d3.selectAll('button.zoom.ui-button.ui-button--white.in').on('click', function() {
+      _this.zoomLvl.k += 0.5;
+      _this.zoomLvl.x -= 500;
+      _this.zoomLvl.y -= 500;
+      zoom_actions(_this.zoomLvl);
+    });
+    d3.selectAll('button.zoom.ui-button.ui-button--white.out').on('click', function() {
+      if (_this.zoomLvl.k > 0.5) {
+        _this.zoomLvl.k -= 0.5;
+        _this.zoomLvl.x += 500;
+        _this.zoomLvl.y += 500;
+        zoom_actions(_this.zoomLvl);
+        zoom_actions(_this.zoomLvl);
+      }
+    });
 
-      if (zoomLvl.k > 1.05 && !_this.isLabelEnable) {
+    function zoom_actions(zoomLvL?) {
+      if (d3.event.transform) _this.zoomLvl = d3.event.transform;
+      if (zoomLvL) {
+        _this.zoomLvl.k = zoomLvL.k;
+        console.log(_this.zoomLvl.k);
+      }
+
+      if (_this.zoomLvl.k > 1.05 && !_this.isLabelEnable) {
         _this.isLabelEnable = true;
         node
           .append('text')
@@ -279,11 +305,12 @@ export class NetworkViewComponent {
           .text(function(t) {
             if (t.childNodes > 0) return `show more +${t.childNodes}`;
           });
-      } else if (zoomLvl.k < 1.05) {
+      } else if (_this.zoomLvl.k < 1.05) {
         _this.isLabelEnable = false;
         node.selectAll('text').remove();
       }
-      g.attr('transform', zoomLvl);
+
+      g.attr('transform', `translate(${_this.zoomLvl.x},${_this.zoomLvl.y}) scale(${_this.zoomLvl.k})`);
     }
 
     function tickActions() {
@@ -309,7 +336,7 @@ export class NetworkViewComponent {
         .attr('class', 'loaded');
       setTimeout(() => {
         _this.isGraphBuilded = true;
-      }, 5000);
+      }, _this.selectedMapSize);
     }
   }
 }

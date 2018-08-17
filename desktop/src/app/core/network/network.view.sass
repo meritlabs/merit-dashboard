@@ -200,7 +200,7 @@
     max-width: 100%
     justify-content: flex-end
     align-self: center
-    padding: 20px 40px
+    padding: 20px
     box-sizing: border-box
     position: fixed
     right: 0px
@@ -215,8 +215,6 @@
     left: 0
     padding: 20px
     background: $ebony-clay
-    .networkNavigator
-      padding: 20px
     .loading
       padding-top: 150px
 .graphWrap.fullScreen
@@ -230,6 +228,29 @@
   user-select: none
   merit-icon
     margin-right: 5px
+.scrollNavigator
+  position: fixed
+  z-index: 1000
+  right: 20px
+  bottom: 20px
+  display: flex
+  flex-direction: column
+  text-align: right
+  align-items: flex-end
+  opacity: 0
+  &.loaded
+    opacity: 1
+  .buttons
+    margin-bottom: 10px
+    .ui-button
+      padding: 12px 20px 10px
+  p
+    color: $white
+    font-size: 11px
+    line-height: 11px
+    font-weight: 100
+    opacity: .7
+
 @media screen and (max-width: 1024px)
   .addressesCounter 
     p

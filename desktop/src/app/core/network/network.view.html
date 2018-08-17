@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <div class="enterFullScreen" (click)="enterFullScreen()">
+      <div class="enterFullScreen" (click)="enterFullScreen()" [class.loaded]="isGraphBuilded">
         <merit-icon name="full"></merit-icon> {{isFullScreen ? "Exit": "Enter"}} FullScreen mode
       </div>
     </form>
@@ -82,6 +82,15 @@
     <div #canvas class="canvas graphWrap" [ngClass]="{'loaded': isGraphBuilded, 'fullScreen': isFullScreen}"></div>
   </div>
 
+  <div class="scrollNavigator" [class.loaded]="isGraphBuilded">
+    <div class="buttons">
+      <button class="zoom in ui-button ui-button--white">+</button>
+      <button class="zoom out ui-button ui-button--white">-</button>
+    </div>
+    <p>
+      For map zoom, you can use mouse wheel <br> or "+" and "-" buttons.
+    </p>
+  </div>
   <div *ngIf="showWarning" class="nodesDialog_wrapper">
     <div class="nodesDialog">
       <p>
