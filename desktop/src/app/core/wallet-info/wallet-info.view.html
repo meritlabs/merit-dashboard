@@ -102,7 +102,10 @@
               {{item.created | moment}}
             </div>
             <div class="cell cell-xs">
-              <button (click)="validateAddress(item.address)" class="ui-button ui-button--green ui-button--xs">DETAILS</button>
+              <button (click)="validateAddress(item.address)" class="ui-button ui-button--green ui-button--xs">
+                <i class="hideOnMobile">DETAILS</i>
+                <i class="hideOnDesktop">i</i>
+              </button>
             </div>
           </div>
         </div>

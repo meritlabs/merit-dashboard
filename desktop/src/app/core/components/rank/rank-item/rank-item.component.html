@@ -7,4 +7,8 @@
 <div class="cell cell-lg">
   {{item.anv}}
 </div>
-<div class="cell cell-xs"><button [routerLink]="['/validate-wallet']" [queryParams]="{address: item.address}" class="ui-button ui-button--green ui-button--xs">DETAILS</button></div>
+<div class="cell cell-xs">
+  <button [routerLink]="['/validate-wallet']" [queryParams]="{address: item.address}" class="ui-button ui-button--green ui-button--xs">
+    <i class="hideOnMobile">DETAILS</i>
+    <i class="hideOnDesktop">i</i>
+  </button></div>
