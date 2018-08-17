@@ -45,5 +45,4 @@ testem.log
 .DS_Store
 Thumbs.db
 
-common/environments/environment.dev.ts
 desktop/.firebase/
