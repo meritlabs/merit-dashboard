@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "webpack-dev-server --port=4200",
+    "start": "webpack-dev-server --port=4200 --env.dev",
     "build": "webpack",
     "build:prod": "webpack --env.production",
     "postinstall": "rm -rf ./node_modules/rxjs"
