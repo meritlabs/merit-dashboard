@@ -37,7 +37,7 @@ deploy_file_path=""
 firebase_project=""
 env_vars=""
 build_tag=""
-market_env_vars=""
+dashboard_env_vars=""
 
 setDesktopParams() {
     target="desktop"
@@ -50,14 +50,14 @@ setRunLevelProduction() {
     environment="production"
     firebase_project="production-merit-dashboard"
     build_tag=":prod"
-    market_env_vars=""
+    dashboard_env_vars=""
 }
 
 setRunLevelStaging() {
     environment="staging"
     firebase_project="staging-merit-dashboard"
     build_tag=""
-    market_env_vars="DASHBOARD_STAGING=true"
+    dashboard_env_vars="DASHBOARD_STAGING=true"
 }
 
 productionPrompt() {
@@ -97,9 +97,9 @@ fi
 
 print_in_yellow "Building Dashboard for $environment-environment now \n"
 pushd $build_file_path
-if [ ! -z "$market_env_vars" ]; then
-    print_in_yellow "Running export $market_env_vars \n"
-    export ${market_env_vars}
+if [ ! -z "$dashboard_env_vars" ]; then
+    print_in_yellow "Running export $dashboard_env_vars \n"
+    export ${dashboard_env_vars}
 fi
 print_in_yellow "Running npm run build$build_tag \n"
 npm run build$build_tag

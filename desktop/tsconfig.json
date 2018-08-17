@@ -10,24 +10,15 @@
     "target": "es5",
     "baseUrl": ".",
     "paths": {
-      "@app/env": [
-        "../common/environments/environment.ts"
-      ],
-      "@dashboard/common/*": [
-        "../common/*"
-      ],
-      "@dashboard/desktop/*": [
-        "./src/*"
-      ]
+      "@app/env": ["../common/environments/environment.ts"],
+      "@dashboard/common/*": ["../common/*"],
+      "@dashboard/desktop/*": ["./src/*"]
     },
     "typeRoots": [
       "../node_modules/@types",
       "../node_modules/@firebase/app-types",
       "../node_modules/@firebase/messaging-types"
     ],
-    "lib": [
-      "es2017",
-      "dom"
-    ]
+    "lib": ["es2017", "dom"]
   }
 }

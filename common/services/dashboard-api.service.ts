@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ENV } from '@dashboard/common/environments/environment';
+import { ENV } from '@app/env';
 import { LoadNodes } from '@dashboard/common/actions/nodes.action';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@dashboard/common/reducers/app.reducer';

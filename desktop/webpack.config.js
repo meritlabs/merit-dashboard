@@ -18,20 +18,26 @@ const {
 } = require('@angular/cli/plugins/webpack');
 const { CommonsChunkPlugin } = require('webpack').optimize;
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
+const {
+  compilerOptions: { paths },
+} = require('./tsconfig');
 
 const nodeModules = path.join(process.cwd(), 'node_modules');
 const realNodeModules = fs.realpathSync(nodeModules);
 const genDirNodeModules = path.join(process.cwd(), 'src', '$$_gendir', 'node_modules');
 const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'vendor', 'main'];
-const hashFormat = { chunk: '', extract: '', file: '.[hash:20]', script: '' };
+const hashFormat = {
+  chunk: '',
+  extract: '',
+  file: '.[hash:20]',
+  script: '',
+};
 const baseHref = '';
 const deployUrl = '';
 const projectRoot = process.cwd();
 const maximumInlineSize = 10;
 const staging = process.env.DASHBOARD_STAGING;
-const {
-  compilerOptions: { paths },
-} = require('./tsconfig');
+
 const postcssPlugins = function(loader) {
   return [
     postcssImports({
@@ -109,14 +115,18 @@ const postcssPlugins = function(loader) {
         maxSize: maximumInlineSize,
         fallback: 'rebase',
       },
-      { url: 'rebase' },
+      {
+        url: 'rebase',
+      },
     ]),
     PostcssCliResources({
       deployUrl: loader.loaders[loader.loaderIndex].options.ident == 'extracted' ? '' : deployUrl,
       loader,
       filename: `[name]${hashFormat.file}.[ext]`,
     }),
-    autoprefixer({ grid: true }),
+    autoprefixer({
+      grid: true,
+    }),
   ];
 };
 
@@ -143,7 +153,7 @@ module.exports = (_, config) => {
       modules: ['./src', './node_modules'],
       alias: {
         ...rxPaths(),
-        ...getAliases(config.p),
+        ...getAliases(isProduction(config)),
       },
       mainFields: ['browser', 'module', 'main'],
     },
@@ -151,7 +161,7 @@ module.exports = (_, config) => {
       modules: ['./node_modules'],
       alias: {
         ...rxPaths(),
-        ...getAliases(config.p),
+        ...getAliases(isProduction(config)),
       },
     },
     entry: {
@@ -309,22 +319,6 @@ module.exports = (_, config) => {
               dot: true,
             },
           },
-          {
-            context: 'src',
-            to: '',
-            from: {
-              glob: 'firebase-messaging-sw.js',
-              dot: true,
-            },
-          },
-          {
-            context: 'src',
-            to: '',
-            from: {
-              glob: 'manifest.json',
-              dot: true,
-            },
-          },
         ],
         {
           ignore: ['.gitkeep', '**/.DS_Store', '**/Thumbs.db'],
@@ -342,7 +336,7 @@ module.exports = (_, config) => {
       new HtmlWebpackPlugin({
         template: './src/index.html',
         filename: './index.html',
-        hash: false,
+        hash: true,
         inject: true,
         compile: true,
         favicon: false,
