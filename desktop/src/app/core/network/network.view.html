@@ -47,6 +47,13 @@
   </div>
   <div class="fullScreenContainer" [class.inMode]="isFullScreen">
     <form [formGroup]="formData" (ngSubmit)="validateAddress(formData.controls.address.value)" class="networkNavigator">
+      <div class="networkBreadCrumbs" *ngIf="isFullScreen">
+        <ul>
+          <li *ngFor="let item of breadCrumbs" (click)="backToParent(item)">
+            <i>{{item}}</i>
+          </li>
+        </ul>
+      </div>
       <div *ngIf="isFullScreen" class="networkNavigator_group networkNavigator_group-column">
         <div class="selectMapSize" (click)="showList = !showList">
           <span class="ui-label">Addresses to display</span>
