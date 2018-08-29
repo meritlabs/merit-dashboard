@@ -8,7 +8,7 @@ export const environment = {
   dashboardApi: 'https://cors-now.herokuapp.com/http://167.99.179.33:8301/',
   mwsApiUrl: 'https://mws.merit.me/bws/api/v1/',
   coreAddress: 'MGgAma9epMrSipSm9Y2YjCWGGSt7gJWzM7',
-  nPowTargetTimeSpan: 1140,
+  nPowTargetTimeSpan: 300,
 };
 
 export { environment as ENV };
