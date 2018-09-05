@@ -55,8 +55,6 @@ export class NetworkViewComponent {
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
         this.graphData = res.nodes;
-        console.log(res.nodes);
-
         let source = this.graphData[0].source;
         let isDuplicate = this.breadCrumbs.find(item => item.address === source);
         if (!isDuplicate) {
@@ -157,10 +155,9 @@ export class NetworkViewComponent {
     var height = window.innerHeight;
     var graphWidth = window.innerWidth;
     let tempData = {
-      nodes: this.graphData,
-      edges: this.graphData,
+      nodes: this.graphData as Array<[]>,
+      edges: this.graphData as Array<[]>,
     };
-    console.log(tempData);
 
     var graphCanvas = d3
       .select(this.canvas.nativeElement)
@@ -171,23 +168,17 @@ export class NetworkViewComponent {
 
     var context = graphCanvas.getContext('2d');
 
-    var div = d3
-      .select('body')
-      .append('div')
-      .attr('class', 'tooltip')
-      .style('opacity', 0);
-
     var simulation = d3
       .forceSimulation()
       .force('center', d3.forceCenter(graphWidth / 2, height / 2))
-      .force('x', d3.forceX(graphWidth / 2).strength(0.1))
-      .force('y', d3.forceY(height / 2).strength(0.1))
-      .force('charge', d3.forceManyBody().strength(-50))
+      .force('x', d3.forceX(graphWidth / 2).strength(0.5))
+      .force('y', d3.forceY(height / 2).strength(0.5))
+      .force('charge', d3.forceManyBody().strength(-1000))
       .force(
         'link',
         d3
           .forceLink()
-          .strength(1)
+          .strength(0.5)
           .id(function(d) {
             return d.source;
           })
@@ -198,20 +189,19 @@ export class NetworkViewComponent {
     var transform = d3.zoomIdentity;
 
     function zoomed() {
-      console.log('zooming');
       transform = d3.event.transform;
       simulationUpdate();
     }
 
     d3.select(graphCanvas)
-      .call(
-        d3
-          .drag()
-          .subject(dragsubject)
-          .on('start', dragstarted)
-          .on('drag', dragged)
-          .on('end', dragended)
-      )
+      // .call(
+      //   d3
+      //     .drag()
+      //     .subject(dragsubject)
+      //     .on('start', dragstarted)
+      //     .on('drag', dragged)
+      //     .on('end', dragended)
+      // )
       .call(
         d3
           .zoom()
@@ -219,48 +209,9 @@ export class NetworkViewComponent {
           .on('zoom', zoomed)
       );
 
-    function dragsubject() {
-      var i,
-        x = transform.invertX(d3.event.x),
-        y = transform.invertY(d3.event.y),
-        dx,
-        dy;
-      for (i = tempData.nodes.length - 1; i >= 0; --i) {
-        let node = tempData.nodes[i];
-        dx = x - node.x;
-        dy = y - node.y;
-
-        if (dx * dx + dy * dy < radius * radius) {
-          node.x = transform.applyX(node.x);
-          node.y = transform.applyY(node.y);
-
-          return node;
-        }
-      }
-    }
-
-    function dragstarted() {
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d3.event.subject.fx = transform.invertX(d3.event.x);
-      d3.event.subject.fy = transform.invertY(d3.event.y);
-    }
-
-    function dragged() {
-      d3.event.subject.fx = transform.invertX(d3.event.x);
-      d3.event.subject.fy = transform.invertY(d3.event.y);
-    }
-
-    function dragended() {
-      if (!d3.event.active) simulation.alphaTarget(0);
-      d3.event.subject.fx = null;
-      d3.event.subject.fy = null;
-    }
-
     simulation.nodes(tempData.nodes).on('tick', simulationUpdate);
 
     simulation.force('link').links(tempData.edges);
-
-    function render() {}
 
     function simulationUpdate() {
       context.save();
@@ -269,23 +220,80 @@ export class NetworkViewComponent {
       context.translate(transform.x, transform.y);
       context.scale(transform.k, transform.k);
 
-      tempData.edges.forEach(function(d) {
+      tempData.edges.map(item => {
+        let edge = item as any;
         context.beginPath();
-        context.moveTo(d.source.x, d.source.y);
-        context.lineTo(d.target.x, d.target.y);
+        context.moveTo(edge.source.x, edge.source.y);
+        context.lineTo(edge.target.x, edge.target.y);
+        context.strokeStyle = '#FFF';
         context.stroke();
       });
 
       // Draw the nodes
-      tempData.nodes.forEach(function(d, i) {
+      tempData.nodes.map(d => {
+        let node = d as any;
+        let radius = 10;
+        if (node.weight > 0 && node.weight < 15) {
+          radius += node.weight;
+        }
+        if (node.weight > 15 && node.weight < 30) {
+          radius = node.weight;
+          node.col = '#f9bd60';
+        }
+
+        if (node.weight > 30) {
+          radius = 40;
+          node.col = '#f9d360';
+        }
+
         context.beginPath();
-        context.arc(d.x, d.y, radius, 0, 2 * Math.PI, true);
-        context.fillStyle = d.col ? 'red' : 'black';
+        context.arc(node.x, node.y, radius, 0, 2 * Math.PI, true);
+        context.fillStyle = node.col ? node.col : 'white';
         context.fill();
+        context.fillStyle = '#08d0ff';
+        context.shadowBlur = 10;
+        context.shadowColor = 'rgba(0,0,0,0.3)';
+        context.fillText(node.label, node.x + 5, node.y + 5);
       });
 
       context.restore();
-      //transform = d3.zoomIdentity;
+
+      // function dragsubject() {
+      //   var i,
+      //     x = transform.invertX(d3.event.x),
+      //     y = transform.invertY(d3.event.y),
+      //     dx,
+      //     dy;
+      //   for (i = tempData.nodes.length - 1; i >= 0; --i) {
+      //     let node = tempData.nodes[i];
+      //     dx = x - node.x;
+      //     dy = y - node.y;
+
+      //     if (dx * dx + dy * dy < radius * radius) {
+      //       node.x = transform.applyX(node.x);
+      //       node.y = transform.applyY(node.y);
+
+      //       return node;
+      //     }
+      //   }
+      // }
+
+      // function dragstarted() {
+      //   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+      //   d3.event.subject.fx = transform.invertX(d3.event.x);
+      //   d3.event.subject.fy = transform.invertY(d3.event.y);
+      // }
+
+      // function dragged() {
+      //   d3.event.subject.fx = transform.invertX(d3.event.x);
+      //   d3.event.subject.fy = transform.invertY(d3.event.y);
+      // }
+
+      // function dragended() {
+      //   if (!d3.event.active) simulation.alphaTarget(0);
+      //   d3.event.subject.fx = null;
+      //   d3.event.subject.fy = null;
+      // }
     }
   }
 }
