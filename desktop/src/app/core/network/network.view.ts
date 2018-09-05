@@ -70,7 +70,7 @@ export class NetworkViewComponent {
     if (isValid) {
       validAddress = getAddress.address;
       this.selectedAddress = validAddress;
-      this.loadGraph(validAddress);
+      this.loadGraph({ address: validAddress, alias: getAddress.alias });
     } else {
       (this.formData.controls.address as any).status = 'INVALID';
     }
@@ -81,10 +81,11 @@ export class NetworkViewComponent {
     this.showWarning = false;
   }
 
-  async loadGraph(address?, amount?) {
+  async loadGraph(core?, amount?) {
     if (amount) this.selectedMapSize = amount;
+    if (!core) core = { address: this.selectedAddress, alias: '' };
 
-    this.gNodes = await this.networkService.getNetwork(address || this.selectedAddress, amount || this.selectedMapSize);
+    this.gNodes = await this.networkService.getNetwork(core, amount || this.selectedMapSize);
 
     if (this.gNodes.length > 1000) {
       this.showWarning = true;
@@ -199,7 +200,7 @@ export class NetworkViewComponent {
         context.fill();
         context.fillStyle = titleColor;
         context.font = 'normal small-caps bold 12px Arial';
-        context.fillText(node.label, node.x + 5, node.y - 5);
+        context.fillText(node.label, node.x, node.y - 1);
       });
 
       context.restore();
