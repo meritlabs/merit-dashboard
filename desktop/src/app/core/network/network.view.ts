@@ -29,7 +29,7 @@ export class NetworkViewComponent {
   private canvas: ElementRef;
 
   nodes$ = this.store.select('nodes');
-  arr = [];
+  graphData = {};
   genesisAddress;
   isLabelEnable: boolean;
   gNodes: INode[] = [];
@@ -54,8 +54,10 @@ export class NetworkViewComponent {
     this.loadGraph();
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
-        this.arr = res.nodes;
-        let source = this.arr[0].source;
+        this.graphData = res.nodes;
+        console.log(res.nodes);
+
+        let source = this.graphData[0].source;
         let isDuplicate = this.breadCrumbs.find(item => item.address === source);
         if (!isDuplicate) {
           (async () => {
@@ -155,8 +157,8 @@ export class NetworkViewComponent {
     var height = window.innerHeight;
     var graphWidth = window.innerWidth;
     let tempData = {
-      nodes: [{ id: 78 }, { id: 33, col: 'red' }, { id: 556 }],
-      edges: [{ source: 78, target: 33 }],
+      nodes: this.graphData,
+      edges: this.graphData,
     };
     console.log(tempData);
 
@@ -187,7 +189,7 @@ export class NetworkViewComponent {
           .forceLink()
           .strength(1)
           .id(function(d) {
-            return d.id;
+            return d.source;
           })
       )
       .alphaTarget(0)
