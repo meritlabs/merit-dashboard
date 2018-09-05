@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <div class="enterFullScreen" (click)="enterFullScreen()">
+      <div class="enterFullScreen" (click)="isFullScreen = !isFullScreen">
         <merit-icon name="full"></merit-icon> {{isFullScreen ? "Exit": "Enter"}} FullScreen mode
       </div>
     </form>
@@ -73,16 +73,10 @@
       </p>
       <loading-spinner></loading-spinner>
     </div>
-    <div class="container loading" *ngIf="!(nodes$ | async).loading && !isGraphBuilded">
-      <p>
-        <strong>Building graph...</strong>
-      </p>
-      <loading-spinner></loading-spinner>
-    </div>
-    <div #canvas class="canvas graphWrap" [ngClass]="{'loaded': isGraphBuilded, 'fullScreen': isFullScreen}"></div>
+    <div #canvas class="canvas loaded graphWrap" [ngClass]="{'fullScreen': isFullScreen}"></div>
   </div>
 
-  <div class="scrollNavigator" [class.loaded]="isGraphBuilded">
+  <div class="scrollNavigator ">
     <div class="buttons">
       <button class="zoom out ui-button ui-button--white">-</button>
       <button class="zoom in ui-button ui-button--white">+</button>

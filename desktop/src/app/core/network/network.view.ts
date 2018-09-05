@@ -40,9 +40,8 @@ export class NetworkViewComponent {
   walletsDisplay: any = { totalDisplay: 0, monthDisplay: 0, weekDisplay: 0 };
   selectedAddress: string = ENV.coreAddress;
   selectedMapSize: number = 500;
-  selectionList = [500, 1000, 1500, 2000, 'FULL NETWORK'];
+  selectionList = [500, 1000, 1500, 2000];
   showWarning: boolean;
-  isGraphBuilded: boolean;
   isFullScreen: boolean;
   showList: boolean;
   zoomLvl: any;
@@ -54,13 +53,6 @@ export class NetworkViewComponent {
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
         this.graphData = res.nodes;
-        let source = this.graphData[0].source;
-        let isDuplicate = this.breadCrumbs.find(item => item.address === source);
-        if (!isDuplicate) {
-          (async () => {
-            this.breadCrumbs.push({ name: await this.getAddressDetails(source), address: source });
-          })();
-        }
         this.generateGraph();
       }
     });
@@ -78,41 +70,17 @@ export class NetworkViewComponent {
     if (isValid) {
       validAddress = getAddress.address;
       this.selectedAddress = validAddress;
+      this.loadGraph(validAddress);
+    } else {
+      console.error('Address not found!');
     }
-    this.loadGraph(validAddress);
-  }
-
-  displayAddressesCount() {
-    let total = setInterval(() => {
-      if (this.wallets.totalDisplay <= this.wallets.total) {
-        let inc = this.wallets.total / 10;
-        this.wallets.totalDisplay += inc;
-      } else {
-        clearInterval(total);
-      }
-    }, 100);
-    let thisMont = setInterval(() => {
-      if (this.wallets.monthDisplay <= this.wallets.month) {
-        let inc = this.wallets.month / 10;
-        this.wallets.monthDisplay += inc;
-      } else {
-        clearInterval(thisMont);
-      }
-    }, 100);
-    let thisWeek = setInterval(() => {
-      if (this.wallets.weekDisplay <= this.wallets.week) {
-        let inc = this.wallets.week / 10;
-        this.wallets.weekDisplay += inc;
-      } else {
-        clearInterval(thisWeek);
-      }
-    }, 100);
   }
 
   loadNodes() {
     this.store.dispatch(new LoadNodes({ nodes: this.gNodes } as any));
     this.showWarning = false;
   }
+
   async backToParent(item) {
     let gNodes = await this.networkService.getNetwork(item.address);
     let index = this.breadCrumbs.indexOf(item);
@@ -125,13 +93,9 @@ export class NetworkViewComponent {
   }
 
   async loadGraph(address?, amount?) {
-    if (!amount) amount = this.selectedMapSize;
-    if (amount === 'FULL NETWORK') amount = this.wallets.total;
     if (amount) this.selectedMapSize = amount;
-    if (this.selectedMapSize) amount = this.selectedMapSize;
-    if (!address) address = this.selectedAddress;
 
-    this.gNodes = await this.networkService.getNetwork(this.selectedAddress, this.selectedMapSize);
+    this.gNodes = await this.networkService.getNetwork(address || this.selectedAddress, amount || this.selectedMapSize);
 
     if (this.gNodes.length > 1000) {
       this.showWarning = true;
@@ -140,17 +104,8 @@ export class NetworkViewComponent {
     }
   }
 
-  enterFullScreen() {
-    this.isFullScreen = !this.isFullScreen;
-    this.isGraphBuilded = false;
-    setTimeout(() => {
-      this.generateGraph();
-    }, 200);
-  }
   generateGraph() {
     D3.select('canvas').remove();
-    this.isGraphBuilded = true;
-
     let height = window.innerHeight;
     let graphWidth = window.innerWidth;
     let tempData = {
@@ -172,12 +127,12 @@ export class NetworkViewComponent {
       .force('center', d3.forceCenter(graphWidth / 2, height / 2))
       .force('x', d3.forceX(graphWidth / 2).strength(0.5))
       .force('y', d3.forceY(height / 2).strength(0.5))
-      .force('charge', d3.forceManyBody().strength(-1000))
+      .force('charge', d3.forceManyBody().strength(-600))
       .force(
         'link',
         d3
           .forceLink()
-          .strength(0.5)
+          .strength(0.2)
           .id(function(d) {
             return d.source;
           })
@@ -294,5 +249,33 @@ export class NetworkViewComponent {
       //   d3.event.subject.fy = null;
       // }
     }
+  }
+
+  displayAddressesCount() {
+    let total = setInterval(() => {
+      if (this.wallets.totalDisplay <= this.wallets.total) {
+        let inc = this.wallets.total / 10;
+        this.wallets.totalDisplay += inc;
+      } else {
+        clearInterval(total);
+        this.selectionList.push(this.wallets.totalDisplay.toFixed(0));
+      }
+    }, 100);
+    let thisMont = setInterval(() => {
+      if (this.wallets.monthDisplay <= this.wallets.month) {
+        let inc = this.wallets.month / 10;
+        this.wallets.monthDisplay += inc;
+      } else {
+        clearInterval(thisMont);
+      }
+    }, 100);
+    let thisWeek = setInterval(() => {
+      if (this.wallets.weekDisplay <= this.wallets.week) {
+        let inc = this.wallets.week / 10;
+        this.wallets.weekDisplay += inc;
+      } else {
+        clearInterval(thisWeek);
+      }
+    }, 100);
   }
 }
