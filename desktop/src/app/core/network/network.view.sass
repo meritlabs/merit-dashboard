@@ -101,7 +101,7 @@
   margin: 0px auto 20px
   max-width: 600px
   display: flex
-  justify-content: space-between
+  flex-direction: column
   &_group
     display: flex
     .ui-button
@@ -204,7 +204,7 @@
     margin: 0 20px
   .networkNavigator
     width: 100%
-    max-width: 100%
+    max-width: 500px
     justify-content: flex-end
     align-self: center
     padding: 20px
@@ -213,9 +213,10 @@
     right: 0px
     top: 0px
     z-index: 2
+    background: $ebony-clay
   &.inMode
     position: fixed
-    width: 100vw
+    width: calc(100vw + 40px)
     height: 100vh
     z-index: 200
     top: 0
@@ -257,7 +258,16 @@
     line-height: 11px
     font-weight: 100
     opacity: .7
-
+merit-icon
+  width: 20px
+  height: 20px
+.ui-button--sm, .ui-input
+  font-size: 12px
+.ui-input--text
+  margin-left: 20px
+  padding: 5px 10px
+.form
+  display: flex
 @media screen and (max-width: 1024px)
   .addressesCounter 
     p

@@ -5,7 +5,7 @@ import { IAppState } from '@dashboard/common/reducers/app.reducer';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 import { INode } from '@dashboard/common/models/network';
 import { LoadNodes } from '@dashboard/common/actions/nodes.action';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ENV } from '@app/env';
 import * as d3 from 'd3v4';
 
@@ -29,12 +29,11 @@ export class NetworkViewComponent {
 
   nodes$ = this.store.select('nodes');
   graphData = {};
-  genesisAddress;
+  genesisAddress = ENV.coreAddress;
   isLabelEnable: boolean;
   gNodes: INode[] = [];
-  breadCrumbs = [];
   formData: FormGroup = this.formBuilder.group({
-    address: '',
+    address: ['', [Validators.required]],
   });
   wallets: any;
   walletsDisplay: any = { totalDisplay: 0, monthDisplay: 0, weekDisplay: 0 };
@@ -44,7 +43,6 @@ export class NetworkViewComponent {
   showWarning: boolean;
   isFullScreen: boolean;
   showList: boolean;
-  zoomLvl: any;
 
   async ngOnInit() {
     this.wallets = Object.assign(this.walletsDisplay, await this.dashboardApi.getWalletsAmount());
@@ -60,6 +58,8 @@ export class NetworkViewComponent {
   }
 
   async getAddressDetails(address) {
+    console.log(address);
+
     let getAddress = (await this.dashboardApi.validateAddress(address)) as any;
     return getAddress.alias || 'Anonymous';
   }
@@ -72,24 +72,13 @@ export class NetworkViewComponent {
       this.selectedAddress = validAddress;
       this.loadGraph(validAddress);
     } else {
-      console.error('Address not found!');
+      (this.formData.controls.address as any).status = 'INVALID';
     }
   }
 
   loadNodes() {
     this.store.dispatch(new LoadNodes({ nodes: this.gNodes } as any));
     this.showWarning = false;
-  }
-
-  async backToParent(item) {
-    let gNodes = await this.networkService.getNetwork(item.address);
-    let index = this.breadCrumbs.indexOf(item);
-
-    this.store.dispatch(new LoadNodes({ nodes: gNodes }));
-    this.selectedAddress = item;
-    if (index > -1) {
-      this.breadCrumbs.length = index + 1;
-    }
   }
 
   async loadGraph(address?, amount?) {
