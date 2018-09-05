@@ -144,199 +144,146 @@ export class NetworkViewComponent {
       this.generateGraph();
     }, 200);
   }
-
   generateGraph() {
-    this.isGraphBuilded = false;
-    this.zoomLvl = {
-      k: 1,
-      x: 0,
-      y: 0,
+    this.isGraphBuilded = true;
+
+    var radius = 5;
+
+    var defaultNodeCol = 'white',
+      highlightCol = 'yellow';
+
+    var height = window.innerHeight;
+    var graphWidth = window.innerWidth;
+    let tempData = {
+      nodes: [{ id: 78 }, { id: 33, col: 'red' }, { id: 556 }],
+      edges: [{ source: 78, target: 33 }],
     };
-    D3.select('svg').remove();
-    let _this = this;
-    let nodes_data = this.arr.map(item => ({
-      name: item.source,
-      label: item.label,
-      weight: item.weight,
-      childNodes: item.childNodes,
-    }));
-    let links_data = this.arr.map(item => ({ source: item.source, target: item.target }));
-    let width = this.canvas.nativeElement.offsetWidth;
-    let height = this.canvas.nativeElement.offsetHeight;
-    if (this.isFullScreen) {
-      width = window.innerWidth;
-      height = window.innerHeight;
-    }
-    let select = D3.select(this.canvas.nativeElement);
-    let size = [width, height];
+    console.log(tempData);
 
-    let svg = this.networkService.createSvg(select, size);
-    let simulation = d3.forceSimulation().nodes(nodes_data);
-    let link_force = d3.forceLink(links_data).id(function(d) {
-      return d.name;
-    });
-    let charge_force = d3
-      .forceManyBody()
-      .distanceMax(-150)
-      .strength(-400);
+    var graphCanvas = d3
+      .select(this.canvas.nativeElement)
+      .append('canvas')
+      .attr('width', graphWidth + 'px')
+      .attr('height', height + 'px')
+      .node();
 
-    let center_force = d3.forceCenter(width / 2, height / 2);
+    var context = graphCanvas.getContext('2d');
 
-    simulation
-      .force('charge_force', charge_force)
-      .force('center_force', center_force)
-      .force('links', link_force);
+    var div = d3
+      .select('body')
+      .append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0);
 
-    //add tick instructions:
-    simulation.on('end', tickActions);
+    var simulation = d3
+      .forceSimulation()
+      .force('center', d3.forceCenter(graphWidth / 2, height / 2))
+      .force('x', d3.forceX(graphWidth / 2).strength(0.1))
+      .force('y', d3.forceY(height / 2).strength(0.1))
+      .force('charge', d3.forceManyBody().strength(-50))
+      .force(
+        'link',
+        d3
+          .forceLink()
+          .strength(1)
+          .id(function(d) {
+            return d.id;
+          })
+      )
+      .alphaTarget(0)
+      .alphaDecay(0.05);
 
-    let g = svg.append('g').attr('class', 'everything');
+    var transform = d3.zoomIdentity;
 
-    //draw lines for the links
-    let link = g
-      .append('g')
-      .attr('class', 'links')
-      .selectAll('line')
-      .data(links_data)
-      .enter()
-      .append('line')
-      .attr('stroke-width', 1)
-      .style('stroke', '#c8c7cc');
-
-    //draw circles for the nodes
-    let node = g
-      .append('g')
-      .attr('class', 'nodes')
-      .selectAll('g')
-      .data(nodes_data)
-      .enter()
-      .append('g')
-      .attr('fill', '#c8c7cc');
-
-    node
-      .append('circle')
-      .attr('fill', '#c8c7cc')
-      .attr('r', function(d) {
-        let w = d.weight;
-        if (w > 100) w = 30;
-        if (w > 50 && w < 100) w = 15;
-        if (w < 50 && w > 10) w = 10;
-        if (w === 0) w = 3;
-        return w;
-      });
-    node.on('mouseover', function(d) {
-      node.attr('opacity', function(n) {
-        if (d === n) return 1;
-        else return 0.15;
-      });
-
-      link.attr('opacity', function(l) {
-        if (d === l.source || d === l.target) return 1;
-        else return 0.15;
-      });
-    });
-
-    node.on('click', function(d) {
-      if (d.childNodes > 0) {
-        _this.validateAddress(d.name);
-      }
-    });
-
-    node.on('mouseout', function() {
-      link.attr('opacity', 1);
-      node.attr('opacity', 1);
-    });
-
-    node
-      .append('image')
-      .attr('xlink:href', 'https://www.merit.me/images/favicon.ico')
-      .attr('x', -2)
-      .attr('y', -2)
-      .attr('width', 4)
-      .attr('height', 4);
-
-    //add zoom capabilities
-    let zoom_handler = d3.zoom().on('zoom', zoom_actions);
-    zoom_handler(svg);
-
-    d3.selectAll('button.zoom.ui-button.ui-button--white.in').on('click', function() {
-      _this.zoomLvl.k += 0.5;
-      _this.zoomLvl.x -= 500;
-      _this.zoomLvl.y -= 500;
-      zoom_actions(_this.zoomLvl);
-    });
-    d3.selectAll('button.zoom.ui-button.ui-button--white.out').on('click', function() {
-      if (_this.zoomLvl.k > 0.5) {
-        _this.zoomLvl.k -= 0.5;
-        _this.zoomLvl.x += 500;
-        _this.zoomLvl.y += 500;
-        zoom_actions(_this.zoomLvl);
-        zoom_actions(_this.zoomLvl);
-      }
-    });
-
-    function zoom_actions(zoomLvL?) {
-      if (d3.event.transform) _this.zoomLvl = d3.event.transform;
-      if (zoomLvL) {
-        _this.zoomLvl.k = zoomLvL.k;
-        console.log(_this.zoomLvl.k);
-      }
-
-      if (_this.zoomLvl.k > 1.05 && !_this.isLabelEnable) {
-        _this.isLabelEnable = true;
-        node
-          .append('text')
-          .style('font-size', '5px')
-          .style('fill', '#FFDF00')
-          .attr('x', 5)
-          .attr('y', -5)
-          .attr('dy', '.5em')
-          .text(function(d) {
-            return d.label;
-          });
-        node
-          .append('text')
-          .style('font-size', '2px')
-          .style('fill', '#00b0dd')
-          .attr('x', 5)
-          .attr('y', 0)
-          .attr('dy', '.5em')
-          .attr('class', 'link')
-          .text(function(t) {
-            if (t.childNodes > 0) return `show more +${t.childNodes}`;
-          });
-      } else if (_this.zoomLvl.k < 1.05) {
-        _this.isLabelEnable = false;
-        node.selectAll('text').remove();
-      }
-
-      g.attr('transform', `translate(${_this.zoomLvl.x},${_this.zoomLvl.y}) scale(${_this.zoomLvl.k})`);
+    function zoomed() {
+      console.log('zooming');
+      transform = d3.event.transform;
+      simulationUpdate();
     }
 
-    function tickActions() {
-      link
-        .attr('class', 'loaded')
-        .attr('x1', function(d) {
-          return d.source.x;
-        })
-        .attr('y1', function(d) {
-          return d.source.y;
-        })
-        .attr('x2', function(d) {
-          return d.target.x;
-        })
-        .attr('y2', function(d) {
-          return d.target.y;
-        });
+    d3.select(graphCanvas)
+      .call(
+        d3
+          .drag()
+          .subject(dragsubject)
+          .on('start', dragstarted)
+          .on('drag', dragged)
+          .on('end', dragended)
+      )
+      .call(
+        d3
+          .zoom()
+          .scaleExtent([1 / 10, 8])
+          .on('zoom', zoomed)
+      );
 
-      node
-        .attr('transform', function(d) {
-          return 'translate(' + d.x + ',' + d.y + ')';
-        })
-        .attr('class', 'loaded');
-      setTimeout(() => {
-        _this.isGraphBuilded = true;
-      }, _this.selectedMapSize);
+    function dragsubject() {
+      var i,
+        x = transform.invertX(d3.event.x),
+        y = transform.invertY(d3.event.y),
+        dx,
+        dy;
+      for (i = tempData.nodes.length - 1; i >= 0; --i) {
+        let node = tempData.nodes[i];
+        dx = x - node.x;
+        dy = y - node.y;
+
+        if (dx * dx + dy * dy < radius * radius) {
+          node.x = transform.applyX(node.x);
+          node.y = transform.applyY(node.y);
+
+          return node;
+        }
+      }
+    }
+
+    function dragstarted() {
+      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+      d3.event.subject.fx = transform.invertX(d3.event.x);
+      d3.event.subject.fy = transform.invertY(d3.event.y);
+    }
+
+    function dragged() {
+      d3.event.subject.fx = transform.invertX(d3.event.x);
+      d3.event.subject.fy = transform.invertY(d3.event.y);
+    }
+
+    function dragended() {
+      if (!d3.event.active) simulation.alphaTarget(0);
+      d3.event.subject.fx = null;
+      d3.event.subject.fy = null;
+    }
+
+    simulation.nodes(tempData.nodes).on('tick', simulationUpdate);
+
+    simulation.force('link').links(tempData.edges);
+
+    function render() {}
+
+    function simulationUpdate() {
+      context.save();
+
+      context.clearRect(0, 0, graphWidth, height);
+      context.translate(transform.x, transform.y);
+      context.scale(transform.k, transform.k);
+
+      tempData.edges.forEach(function(d) {
+        context.beginPath();
+        context.moveTo(d.source.x, d.source.y);
+        context.lineTo(d.target.x, d.target.y);
+        context.stroke();
+      });
+
+      // Draw the nodes
+      tempData.nodes.forEach(function(d, i) {
+        context.beginPath();
+        context.arc(d.x, d.y, radius, 0, 2 * Math.PI, true);
+        context.fillStyle = d.col ? 'red' : 'black';
+        context.fill();
+      });
+
+      context.restore();
+      //transform = d3.zoomIdentity;
     }
   }
 }
