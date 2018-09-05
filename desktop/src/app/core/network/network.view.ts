@@ -149,7 +149,7 @@ export class NetworkViewComponent {
       .call(
         d3
           .zoom()
-          .scaleExtent([1 / 10, 8])
+          .scaleExtent([0, 4])
           .on('zoom', zoomed)
       );
 
