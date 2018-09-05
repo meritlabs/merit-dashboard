@@ -50,18 +50,22 @@
   display: flex
   flex-direction: column
   min-height: calc(100vh - 70px)
-  .graphWrap
-    height: 100%
-    max-height: 100vw
-    flex: 1
+.graphWrap
+  height: 100%
+  overflow: hidden
+  flex: 1
+  display: flex
+  justify-content: center
+  align-items: center
+  position: relative
+  &.loaded .canvas
+    opacity: 1
 .canvas
   height: 100%
   width: 100vw
   opacity: 0
-  position: relative
+  position: absolute
   left: 1
-  &.loaded
-    opacity: 1
 .networkBreadCrumbs
   color: $white
   margin-bottom: 20px
@@ -104,8 +108,6 @@
       margin-left: 20px
     &-column
       flex-direction: column
-    &:first-of-type
-      padding-right: 20px
     &:last-of-type
       flex: 1
       width: 100%
@@ -118,14 +120,14 @@
     margin-bottom: 2px
   .selectMapSize
     display: flex
-    height: 40px
+    height: 25px
     width: 100%
     box-sizing: border-box
     background: #ebedf1
     border-radius: 5px
     font-size: 12px
     line-height: 12px
-    padding: 14px 25px 5px 10px
+    padding: 7px 25px 6px 10px
     color: #484d5e
     font-weight: 400
     opacity: 0.99999
@@ -139,7 +141,7 @@
       transform: rotate(90deg) scaleX(0.7)
       position: absolute
       right: 7px
-      top: 13px
+      top: 7px
     .ui-label
       color: $ebony-clay
       opacity: .5
@@ -291,3 +293,5 @@
       line-height: 40px
     span
       font-size: 18px
+  .addressesCounter div
+    width: 100%

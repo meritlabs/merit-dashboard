@@ -21,21 +21,6 @@
           <span>JOINED IN LAST 7DAYS</span>
         </div>
       </div>
-      <form [formGroup]="formData" (ngSubmit)="validateAddress(formData.controls.address.value)" class="networkNavigator">
-        <div class="networkNavigator_group networkNavigator_group-column">
-          <div class="selectMapSize" (click)="showList = !showList">
-            <span class="ui-label">Addresses to display</span>
-            {{selectedMapSize}}
-            <div class="selectMapSize_list" *ngIf="showList">
-              <div class="selectMapSize_item" *ngFor="let item of selectionList" (click)="loadGraph('', item)">{{item}}</div>
-            </div>
-          </div>
-        </div>
-        <div class="networkNavigator_group">
-          <input type="text" class="ui-input ui-input--text" formControlName="address" placeholder="Find wallet (enter address or alias)">
-          <button class="ui-button">FIND</button>
-        </div>
-      </form>
       <div class="networkBreadCrumbs">
         <ul>
           <li *ngFor="let item of breadCrumbs" (click)="backToParent(item)">
@@ -47,14 +32,7 @@
   </div>
   <div class="fullScreenContainer" [class.inMode]="isFullScreen">
     <form [formGroup]="formData" (ngSubmit)="validateAddress(formData.controls.address.value)" class="networkNavigator">
-      <div class="networkBreadCrumbs" *ngIf="isFullScreen">
-        <ul>
-          <li *ngFor="let item of breadCrumbs" (click)="backToParent(item)">
-            <i>{{item.name}}</i>
-          </li>
-        </ul>
-      </div>
-      <div *ngIf="isFullScreen" class="networkNavigator_group networkNavigator_group-column">
+      <div class="networkNavigator_group">
         <div class="selectMapSize" (click)="showList = !showList">
           <span class="ui-label">Addresses to display</span>
           {{selectedMapSize}}
@@ -62,9 +40,12 @@
             <div class="selectMapSize_item" *ngFor="let item of selectionList" (click)="loadGraph('', item)">{{item}}</div>
           </div>
         </div>
+        <input type="text" class="ui-input ui-input--text" formControlName="address" placeholder="Find wallet (enter address or alias)">
+        <button class="ui-button ui-button--sm">FIND</button>
       </div>
       <div class="enterFullScreen" (click)="isFullScreen = !isFullScreen">
-        <merit-icon name="full"></merit-icon> {{isFullScreen ? "Exit": "Enter"}} FullScreen mode
+        <merit-icon name="full" *ngIf="!isFullScreen"></merit-icon>
+        <merit-icon name="full-exit" *ngIf="isFullScreen"></merit-icon>
       </div>
     </form>
     <div class="container loading" *ngIf="(nodes$ | async).loading">
@@ -73,7 +54,9 @@
       </p>
       <loading-spinner></loading-spinner>
     </div>
-    <div #canvas class="canvas loaded graphWrap" [ngClass]="{'fullScreen': isFullScreen}"></div>
+    <div class="loaded graphWrap" [ngClass]="{'fullScreen': isFullScreen}">
+      <div #canvas class="canvas"></div>
+    </div>
   </div>
 
   <div class="scrollNavigator ">
