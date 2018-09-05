@@ -244,7 +244,7 @@ export class NetworkViewComponent {
 
   displayAddressesCount() {
     let total = setInterval(() => {
-      if (this.wallets.totalDisplay <= this.wallets.total) {
+      if (this.wallets.totalDisplay < this.wallets.total) {
         let inc = this.wallets.total / 10;
         this.wallets.totalDisplay += inc;
       } else {
@@ -253,7 +253,7 @@ export class NetworkViewComponent {
       }
     }, 100);
     let thisMont = setInterval(() => {
-      if (this.wallets.monthDisplay <= this.wallets.month) {
+      if (this.wallets.monthDisplay < this.wallets.month) {
         let inc = this.wallets.month / 10;
         this.wallets.monthDisplay += inc;
       } else {
@@ -261,7 +261,7 @@ export class NetworkViewComponent {
       }
     }, 100);
     let thisWeek = setInterval(() => {
-      if (this.wallets.weekDisplay <= this.wallets.week) {
+      if (this.wallets.weekDisplay < this.wallets.week) {
         let inc = this.wallets.week / 10;
         this.wallets.weekDisplay += inc;
       } else {
