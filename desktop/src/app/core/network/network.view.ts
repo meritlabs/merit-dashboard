@@ -127,18 +127,18 @@ export class NetworkViewComponent {
       .force('center', d3.forceCenter(graphWidth / 2, height / 2))
       .force('x', d3.forceX(graphWidth / 2).strength(0.5))
       .force('y', d3.forceY(height / 2).strength(0.5))
-      .force('charge', d3.forceManyBody().strength(-600))
+      .force('charge', d3.forceManyBody().strength(-700))
       .force(
         'link',
         d3
           .forceLink()
-          .strength(0.2)
+          .strength(0.6)
           .id(function(d) {
             return d.source;
           })
       )
       .alphaTarget(0)
-      .alphaDecay(0.05);
+      .alphaDecay(0.04);
 
     let transform = d3.zoomIdentity;
 
@@ -179,34 +179,38 @@ export class NetworkViewComponent {
         context.beginPath();
         context.moveTo(edge.source.x, edge.source.y);
         context.lineTo(edge.target.x, edge.target.y);
-        context.strokeStyle = '#FFF';
+        context.strokeStyle = '#c8cbce';
         context.stroke();
       });
 
       // Draw the nodes
       tempData.nodes.map(d => {
         let node = d as any;
-        let radius = 10;
+        let radius = 4;
+        let titleColor = '#17dcd1';
+        if (node.weight > 0) titleColor = '#f91f4f';
+
         if (node.weight > 0 && node.weight < 15) {
-          radius += node.weight;
+          radius = 10 + node.weight;
+          node.col = '#ffdc00';
         }
         if (node.weight > 15 && node.weight < 30) {
           radius = node.weight;
-          node.col = '#f9bd60';
+          node.col = '#ffd10f';
         }
 
         if (node.weight > 30) {
           radius = 40;
-          node.col = '#f9d360';
+          node.col = '#ffbe00';
         }
 
         context.beginPath();
         context.arc(node.x, node.y, radius, 0, 2 * Math.PI, true);
         context.fillStyle = node.col ? node.col : 'white';
         context.fill();
-        context.fillStyle = '#08d0ff';
-        context.shadowBlur = 10;
-        context.shadowColor = 'rgba(0,0,0,0.3)';
+        context.fillStyle = titleColor;
+        // context.shadowBlur = 10;
+        // context.shadowColor = 'rgba(0,0,0,0.3)';
         context.fillText(node.label, node.x + 5, node.y + 5);
       });
 
