@@ -14,11 +14,11 @@
         </div>
         <div>
           <p>+{{wallets?.monthDisplay | kformat}}</p>
-          <span>JOINED THIS MONTH</span>
+          <span>JOINED IN LAST 30DAYS</span>
         </div>
         <div>
           <p>+{{wallets?.weekDisplay | kformat}}</p>
-          <span>JOINED THIS WEEK</span>
+          <span>JOINED IN LAST 7DAYS</span>
         </div>
       </div>
       <form [formGroup]="formData" (ngSubmit)="validateAddress(formData.controls.address.value)" class="networkNavigator">

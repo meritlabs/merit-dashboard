@@ -85,21 +85,24 @@ export class NetworkViewComponent {
   displayAddressesCount() {
     let total = setInterval(() => {
       if (this.wallets.totalDisplay <= this.wallets.total) {
-        this.wallets.totalDisplay += 1234;
+        let inc = this.wallets.total / 10;
+        this.wallets.totalDisplay += inc;
       } else {
         clearInterval(total);
       }
     }, 100);
     let thisMont = setInterval(() => {
       if (this.wallets.monthDisplay <= this.wallets.month) {
-        this.wallets.monthDisplay += 100;
+        let inc = this.wallets.month / 10;
+        this.wallets.monthDisplay += inc;
       } else {
         clearInterval(thisMont);
       }
     }, 100);
     let thisWeek = setInterval(() => {
       if (this.wallets.weekDisplay <= this.wallets.week) {
-        this.wallets.weekDisplay += 13;
+        let inc = this.wallets.week / 10;
+        this.wallets.weekDisplay += inc;
       } else {
         clearInterval(thisWeek);
       }
