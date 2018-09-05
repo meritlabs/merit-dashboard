@@ -10,7 +10,6 @@ import { ENV } from '@app/env';
 import * as d3 from 'd3v4';
 
 declare const window: any;
-declare const document: any;
 const D3 = d3;
 
 @Component({
@@ -113,8 +112,9 @@ export class NetworkViewComponent {
   }
   async backToParent(item) {
     let gNodes = await this.networkService.getNetwork(item.address);
+    let index = this.breadCrumbs.indexOf(item);
+
     this.store.dispatch(new LoadNodes({ nodes: gNodes }));
-    var index = this.breadCrumbs.indexOf(item);
     this.selectedAddress = item;
     if (index > -1) {
       this.breadCrumbs.length = index + 1;
@@ -145,30 +145,26 @@ export class NetworkViewComponent {
     }, 200);
   }
   generateGraph() {
+    D3.select('canvas').remove();
     this.isGraphBuilded = true;
 
-    var radius = 5;
-
-    var defaultNodeCol = 'white',
-      highlightCol = 'yellow';
-
-    var height = window.innerHeight;
-    var graphWidth = window.innerWidth;
+    let height = window.innerHeight;
+    let graphWidth = window.innerWidth;
     let tempData = {
-      nodes: this.graphData as Array<[]>,
-      edges: this.graphData as Array<[]>,
+      nodes: this.graphData as Array<INode>,
+      edges: this.graphData as Array<INode>,
     };
 
-    var graphCanvas = d3
+    let graphCanvas = d3
       .select(this.canvas.nativeElement)
       .append('canvas')
       .attr('width', graphWidth + 'px')
       .attr('height', height + 'px')
       .node();
 
-    var context = graphCanvas.getContext('2d');
+    let context = graphCanvas.getContext('2d');
 
-    var simulation = d3
+    let simulation = d3
       .forceSimulation()
       .force('center', d3.forceCenter(graphWidth / 2, height / 2))
       .force('x', d3.forceX(graphWidth / 2).strength(0.5))
@@ -186,7 +182,7 @@ export class NetworkViewComponent {
       .alphaTarget(0)
       .alphaDecay(0.05);
 
-    var transform = d3.zoomIdentity;
+    let transform = d3.zoomIdentity;
 
     function zoomed() {
       transform = d3.event.transform;
