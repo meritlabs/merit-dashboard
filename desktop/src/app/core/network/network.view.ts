@@ -137,14 +137,14 @@ export class NetworkViewComponent {
     }
 
     d3.select(graphCanvas)
-      // .call(
-      //   d3
-      //     .drag()
-      //     .subject(dragsubject)
-      //     .on('start', dragstarted)
-      //     .on('drag', dragged)
-      //     .on('end', dragended)
-      // )
+      .call(
+        d3
+          .drag()
+          .subject(dragSubject)
+          .on('start', dragStarted)
+          .on('drag', dragged)
+          .on('end', dragended)
+      )
       .call(
         d3
           .zoom()
@@ -198,49 +198,47 @@ export class NetworkViewComponent {
         context.fillStyle = node.col ? node.col : 'white';
         context.fill();
         context.fillStyle = titleColor;
-        // context.shadowBlur = 10;
-        // context.shadowColor = 'rgba(0,0,0,0.3)';
-        context.fillText(node.label, node.x + 5, node.y + 5);
+        context.font = 'normal small-caps bold 12px Arial';
+        context.fillText(node.label, node.x + 5, node.y - 5);
       });
 
       context.restore();
+    }
+    function dragSubject() {
+      var i,
+        x = transform.invertX(d3.event.x),
+        y = transform.invertY(d3.event.y),
+        dx,
+        dy;
+      for (i = tempData.nodes.length - 1; i >= 0; --i) {
+        let node = tempData.nodes[i] as any;
+        let radius = 15;
+        dx = x - node.x;
+        dy = y - node.y;
 
-      // function dragsubject() {
-      //   var i,
-      //     x = transform.invertX(d3.event.x),
-      //     y = transform.invertY(d3.event.y),
-      //     dx,
-      //     dy;
-      //   for (i = tempData.nodes.length - 1; i >= 0; --i) {
-      //     let node = tempData.nodes[i];
-      //     dx = x - node.x;
-      //     dy = y - node.y;
+        if (dx * dx + dy * dy < radius * radius) {
+          node.x = transform.applyX(node.x);
+          node.y = transform.applyY(node.y);
+          return node;
+        }
+      }
+    }
 
-      //     if (dx * dx + dy * dy < radius * radius) {
-      //       node.x = transform.applyX(node.x);
-      //       node.y = transform.applyY(node.y);
+    function dragStarted() {
+      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+      d3.event.subject.fx = transform.invertX(d3.event.x);
+      d3.event.subject.fy = transform.invertY(d3.event.y);
+    }
 
-      //       return node;
-      //     }
-      //   }
-      // }
+    function dragged() {
+      d3.event.subject.fx = transform.invertX(d3.event.x);
+      d3.event.subject.fy = transform.invertY(d3.event.y);
+    }
 
-      // function dragstarted() {
-      //   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      //   d3.event.subject.fx = transform.invertX(d3.event.x);
-      //   d3.event.subject.fy = transform.invertY(d3.event.y);
-      // }
-
-      // function dragged() {
-      //   d3.event.subject.fx = transform.invertX(d3.event.x);
-      //   d3.event.subject.fy = transform.invertY(d3.event.y);
-      // }
-
-      // function dragended() {
-      //   if (!d3.event.active) simulation.alphaTarget(0);
-      //   d3.event.subject.fx = null;
-      //   d3.event.subject.fy = null;
-      // }
+    function dragended() {
+      if (!d3.event.active) simulation.alphaTarget(0);
+      d3.event.subject.fx = null;
+      d3.event.subject.fy = null;
     }
   }
 
