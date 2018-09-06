@@ -38,7 +38,7 @@ export class CoreComponent {
     let core = { address: ENV.coreAddress, alias: '' };
     let _nodes = await this.networkService.getNetwork(core, 500);
 
-    this.store.dispatch(new LoadNodes({ nodes: _nodes }));
+    this.store.dispatch(new LoadNodes({ nodes: _nodes, toDisplay: 500 }));
   }
   checkCurrentRoute() {
     if (this.router.url === '/network' || this.router.url === '/') {

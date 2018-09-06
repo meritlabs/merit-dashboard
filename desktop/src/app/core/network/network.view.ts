@@ -3,7 +3,7 @@ import { NetworkService } from '@dashboard/common/services/network.service';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@dashboard/common/reducers/app.reducer';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
-import { INode } from '@dashboard/common/models/network';
+import { INode, INodes } from '@dashboard/common/models/network';
 import { LoadNodes } from '@dashboard/common/actions/nodes.action';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ENV } from '@app/env';
@@ -48,7 +48,11 @@ export class NetworkViewComponent {
     this.wallets = Object.assign(this.walletsDisplay, await this.dashboardApi.getWalletsAmount());
 
     this.nodes$.subscribe(res => {
-      if (res.nodes.length > 0) {
+      if (res.nodes && res.nodes.length > 0) {
+        if (res.toDisplay === this.selectedMapSize) {
+          this.selectedMapSize = res.toDisplay;
+        }
+
         this.graphData = res.nodes;
         this.generateGraph();
       }
@@ -57,11 +61,10 @@ export class NetworkViewComponent {
   }
 
   async getAddressDetails(address) {
-    console.log(address);
-
     let getAddress = (await this.dashboardApi.validateAddress(address)) as any;
     return getAddress.alias || 'Anonymous';
   }
+
   async validateAddress(address) {
     let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
     let isValid: any = getAddress.isValid;
@@ -76,7 +79,13 @@ export class NetworkViewComponent {
   }
 
   loadNodes() {
-    this.store.dispatch(new LoadNodes({ nodes: this.gNodes } as any));
+    this.store.dispatch(
+      new LoadNodes({
+        selectedAddress: this.selectedAddress,
+        toDisplay: this.selectedMapSize,
+        nodes: this.gNodes,
+      })
+    );
     this.showWarning = false;
   }
 
@@ -86,10 +95,12 @@ export class NetworkViewComponent {
 
     this.gNodes = await this.networkService.getNetwork(core, amount || this.selectedMapSize);
 
-    if (this.gNodes.length > 1000) {
+    if (this.gNodes.length > 10000) {
       this.showWarning = true;
     } else {
-      this.store.dispatch(new LoadNodes({ nodes: this.gNodes }));
+      this.store.dispatch(
+        new LoadNodes({ selectedAddress: core.address, toDisplay: amount || this.selectedMapSize, nodes: this.gNodes })
+      );
     }
   }
 
