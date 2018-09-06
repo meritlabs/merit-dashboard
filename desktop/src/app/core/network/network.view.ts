@@ -102,54 +102,42 @@ export class NetworkViewComponent {
       nodes: this.graphData as Array<INode>,
       edges: this.graphData as Array<INode>,
     };
-
     let graphCanvas = d3
       .select(this.canvas.nativeElement)
       .append('canvas')
       .attr('width', graphWidth + 'px')
       .attr('height', height + 'px')
       .node();
-
     let context = graphCanvas.getContext('2d');
-
+    let link = d3
+      .forceLink()
+      .strength(0.6)
+      .id(function(d) {
+        return d.source;
+      });
     let simulation = d3
       .forceSimulation()
       .force('center', d3.forceCenter(graphWidth / 2, height / 2))
       .force('x', d3.forceX(graphWidth / 2).strength(0.5))
       .force('y', d3.forceY(height / 2).strength(0.5))
       .force('charge', d3.forceManyBody().strength(-700))
-      .force(
-        'link',
-        d3
-          .forceLink()
-          .strength(0.6)
-          .id(function(d) {
-            return d.source;
-          })
-      )
+      .force('link', link)
       .alphaTarget(0)
       .alphaDecay(0.04);
-
     let transform = d3.zoomIdentity;
-
-    function zoomed() {
-      transform = d3.event.transform;
-      simulationUpdate();
-    }
-
     let _zoom = d3
       .zoom()
       .scaleExtent([0, 4])
       .on('zoom', zoomed);
+    let _drag = d3
+      .drag()
+      .subject(dragSubject)
+      .on('start', dragStarted)
+      .on('drag', dragged)
+      .on('end', dragended);
+
     d3.select(graphCanvas)
-      .call(
-        d3
-          .drag()
-          .subject(dragSubject)
-          .on('start', dragStarted)
-          .on('drag', dragged)
-          .on('end', dragended)
-      )
+      .call(_drag)
       .call(_zoom);
     d3.selectAll('button.zoom.ui-button.ui-button--white.in').on('click', function() {
       _zoom.scaleBy(d3.select(graphCanvas), 4);
@@ -159,16 +147,13 @@ export class NetworkViewComponent {
     });
 
     simulation.nodes(tempData.nodes).on('tick', simulationUpdate);
-
     simulation.force('link').links(tempData.edges);
 
     function simulationUpdate() {
       context.save();
-
       context.clearRect(0, 0, graphWidth, height);
       context.translate(transform.x, transform.y);
       context.scale(transform.k, transform.k);
-
       tempData.edges.map(item => {
         let edge = item as any;
         context.beginPath();
@@ -245,6 +230,11 @@ export class NetworkViewComponent {
       if (!d3.event.active) simulation.alphaTarget(0);
       d3.event.subject.fx = null;
       d3.event.subject.fy = null;
+    }
+
+    function zoomed() {
+      transform = d3.event.transform;
+      simulationUpdate();
     }
   }
 

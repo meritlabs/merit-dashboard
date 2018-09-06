@@ -18,11 +18,4 @@ export class NetworkService {
     });
     return network;
   }
-
-  createSvg(select, size) {
-    return select
-      .append('svg')
-      .attr('width', size[0])
-      .attr('height', size[1]);
-  }
 }
