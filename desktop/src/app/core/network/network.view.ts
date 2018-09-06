@@ -137,6 +137,10 @@ export class NetworkViewComponent {
       simulationUpdate();
     }
 
+    let _zoom = d3
+      .zoom()
+      .scaleExtent([0, 4])
+      .on('zoom', zoomed);
     d3.select(graphCanvas)
       .call(
         d3
@@ -146,12 +150,13 @@ export class NetworkViewComponent {
           .on('drag', dragged)
           .on('end', dragended)
       )
-      .call(
-        d3
-          .zoom()
-          .scaleExtent([0, 4])
-          .on('zoom', zoomed)
-      );
+      .call(_zoom);
+    d3.selectAll('button.zoom.ui-button.ui-button--white.in').on('click', function() {
+      _zoom.scaleBy(d3.select(graphCanvas), 4);
+    });
+    d3.selectAll('button.zoom.ui-button.ui-button--white.out').on('click', function() {
+      _zoom.scaleBy(d3.select(graphCanvas), 0.5);
+    });
 
     simulation.nodes(tempData.nodes).on('tick', simulationUpdate);
 
