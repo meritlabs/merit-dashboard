@@ -45,19 +45,17 @@ export class NetworkViewComponent {
   showList: boolean;
 
   async ngOnInit() {
-    this.wallets = Object.assign(this.walletsDisplay, await this.dashboardApi.getWalletsAmount());
-
     this.nodes$.subscribe(res => {
+      this.wallets = Object.assign(this.walletsDisplay, res.wallets);
       if (res.nodes && res.nodes.length > 0) {
         if (res.toDisplay === this.selectedMapSize) {
           this.selectedMapSize = res.toDisplay;
         }
-
         this.graphData = res.nodes;
         this.generateGraph();
+        this.displayAddressesCount();
       }
     });
-    this.displayAddressesCount();
   }
 
   async getAddressDetails(address) {

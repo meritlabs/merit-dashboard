@@ -14,7 +14,7 @@ const INITIAL_STATE: IAppState = {
   loading: true,
   ranks: new Ranks(false, 0, 0),
   blocks: new Blocks(false, []),
-  nodes: new Nodes(false, []),
+  nodes: new Nodes(false, 500, '', []),
 };
 
 export enum AppReducerActionType {
