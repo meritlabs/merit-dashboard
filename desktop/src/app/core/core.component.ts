@@ -32,14 +32,17 @@ export class CoreComponent {
     this.checkCurrentRoute();
     this.router.events.subscribe(event => this.checkCurrentRoute());
 
-    let ranks = (await this.dashboardAPI.getLeaderBoard()) as IRanks;
-    ranks.loading = false;
     let core = { address: ENV.coreAddress, alias: '' };
     let _nodes = await this.networkService.getNetwork(core, 500);
     let wallets = await this.dashboardAPI.getWalletsAmount();
-    this.store.dispatch(new LoadRanks(ranks));
+
     this.store.dispatch(new LoadNodes({ nodes: _nodes, toDisplay: 500, wallets: wallets }));
     this.initialLoading = false;
+
+    let ranks = (await this.dashboardAPI.getLeaderBoard()) as IRanks;
+
+    ranks.loading = false;
+    this.store.dispatch(new LoadRanks(ranks));
   }
   checkCurrentRoute() {
     if (this.router.url === '/network' || this.router.url === '/') {
