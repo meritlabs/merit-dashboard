@@ -47,7 +47,6 @@ export class NetworkViewComponent {
   async ngOnInit() {
     this.wallets = Object.assign(this.walletsDisplay, await this.dashboardApi.getWalletsAmount());
 
-    this.loadGraph();
     this.nodes$.subscribe(res => {
       if (res.nodes.length > 0) {
         this.graphData = res.nodes;

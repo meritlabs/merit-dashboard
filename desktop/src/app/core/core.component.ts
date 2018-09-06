@@ -5,6 +5,9 @@ import { IAppState } from '@dashboard/common/reducers/app.reducer';
 import { LoadRanks } from '@dashboard/common/actions/rank.action';
 import { IRanks } from '@dashboard/common/models/ranks';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
+import { LoadNodes } from '@dashboard/common/actions/nodes.action';
+import { NetworkService } from '@dashboard/common/services/network.service';
+import { ENV } from '@app/env';
 
 @Component({
   selector: 'core',
@@ -17,7 +20,12 @@ export class CoreComponent {
   bottomMenuItems: any[] = [];
   isNetworkView: boolean;
 
-  constructor(private router: Router, private store: Store<IAppState>, public dashboardAPI: DashboardAPI_Service) {}
+  constructor(
+    private router: Router,
+    private store: Store<IAppState>,
+    public dashboardAPI: DashboardAPI_Service,
+    private networkService: NetworkService
+  ) {}
 
   async ngOnInit() {
     this.checkCurrentRoute();
@@ -26,6 +34,11 @@ export class CoreComponent {
     let ranks = (await this.dashboardAPI.getLeaderBoard()) as IRanks;
     ranks.loading = false;
     this.store.dispatch(new LoadRanks(ranks));
+
+    let core = { address: ENV.coreAddress, alias: '' };
+    let _nodes = await this.networkService.getNetwork(core, 500);
+
+    this.store.dispatch(new LoadNodes({ nodes: _nodes }));
   }
   checkCurrentRoute() {
     if (this.router.url === '/network' || this.router.url === '/') {
