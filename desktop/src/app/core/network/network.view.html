@@ -29,13 +29,13 @@
       <div class="form">
         <div class="networkNavigator_group">
           <div class="selectMapSize" (click)="showList = !showList">
-            <span class="ui-label">Addresses to display</span>
+            <span class="ui-label">To display</span>
             {{selectedMapSize}}
             <div class="selectMapSize_list" *ngIf="showList">
               <div class="selectMapSize_item" *ngFor="let item of selectionList" (click)="loadGraph('', item)">{{item}}</div>
             </div>
           </div>
-          <input type="text" class="ui-input ui-input--text" formControlName="address" placeholder="Find wallet (enter address or alias)">
+          <input type="text" class="ui-input ui-input--text" formControlName="address" placeholder="Find wallet">
           <button class="ui-button ui-button--sm">FIND</button>
         </div>
         <div class="enterFullScreen" (click)="isFullScreen = !isFullScreen">
