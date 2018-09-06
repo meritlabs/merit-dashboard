@@ -23,6 +23,7 @@
       </div>
     </div>
   </div>
+  <div class="closeOverlay" *ngIf="showList" (click)="showList = !showList"></div>
   <div class="fullScreenContainer" [class.inMode]="isFullScreen">
     <form [formGroup]="formData" (ngSubmit)="validateAddress(formData.controls.address.value)" class="networkNavigator">
       <div class="form">
@@ -82,7 +83,8 @@
         Would you like to see this network?
       </p>
       <p>
-        <small><strong>*</strong> If you are using an older machine or you are using your computer for other memory-intensive
+        <small><strong>*</strong> If you are using an older machine or you are using your computer for other
+          memory-intensive
           processes, loading this map could cause your machine to feeze!</small>
       </p>
       <p>

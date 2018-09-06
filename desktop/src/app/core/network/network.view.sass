@@ -154,7 +154,7 @@
       width: 100%
       background: #ebedf1
       left: 0
-      top: 50px
+      top: 40px
       padding: 5px 10px 0px
       z-index: 1000
       font-size: 14px
@@ -162,6 +162,13 @@
         padding-bottom: 5px
         &:hover
           color: $blue
+.closeOverlay
+  position: fixed
+  width: 100vw
+  height: 100vh
+  z-index: 2
+  left: 0
+  top: 0
 .addressesCounter
   display: flex
   flex-flow: row wrap
@@ -212,7 +219,7 @@
     position: fixed
     right: 0px
     top: 0px
-    z-index: 2
+    z-index: 5
     background: $ebony-clay
   &.inMode
     position: fixed
