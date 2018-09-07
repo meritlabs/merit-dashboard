@@ -32,8 +32,8 @@ export class CoreComponent {
     this.checkCurrentRoute();
     this.router.events.subscribe(event => this.checkCurrentRoute());
 
-    let core = { address: ENV.coreAddress, alias: '' };
-    let _nodes = await this.networkService.getNetwork(core, 500);
+    const root = { address: ENV.coreAddress, alias: '' };
+    let _nodes = await this.networkService.getNetwork(root, 500);
     let wallets = await this.dashboardAPI.getWalletsAmount();
 
     this.store.dispatch(new LoadNodes({ nodes: _nodes, toDisplay: 500, wallets: wallets }));
