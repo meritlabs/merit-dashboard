@@ -24,7 +24,72 @@
 
 .main
   min-height: calc(100vh - 80px)
+.app-loader
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 100vh
 
+.loading-line
+  display: inline-block
+  height: 2px
+  margin-top: 10px
+  position: relative
+
+.loading-bit
+  animation: 2s ease infinite animWidth
+  background-color: white
+  border-radius: 0
+  display: inline-block
+  height: 100%
+  opacity: 0
+  transform: scale3d(1, 1, 1)
+  vertical-align: top
+  width: 20px
+  &:nth-child(1)
+    animation-delay: 0.05s
+  &:nth-child(2)
+    animation-delay: 0.1s
+  &:nth-child(3)
+    animation-delay: 0.15s
+  &:nth-child(4)
+    animation-delay: 0.2s
+  &:nth-child(5)
+    animation-delay: 0.25s
+  &:nth-child(6)
+    animation-delay: 0.2s
+  &:nth-child(7)
+    animation-delay: 0.35s
+  &:nth-child(8)
+    animation-delay: 0.4s
+  &:nth-child(9)
+    animation-delay: 0.45s
+  &:nth-child(10)
+    animation-delay: 0.5s
+  &:nth-child(11)
+    animation-delay: 0.55s
+  &:nth-child(12)
+    animation-delay: 0.6s
+  &:nth-child(13)
+    animation-delay: 0.65s
+  &:nth-child(14)
+    animation-delay: 0.7s
+  &:nth-child(15)
+    animation-delay: 0.75s
+  &:nth-child(16)
+    animation-delay: 0.8s
+
+@keyframes animWidth
+  0%
+    transform: scale3d(1, 1, 1)
+
+  50%
+    background-color: #00b0dd
+    opacity: 1
+    transform: scale3d(3, 3, 3)
+
+  100%
+    transform: scale3d(1, 1, 1)
 @media screen and (max-width: 768px)
   .copyright
     padding: 5px

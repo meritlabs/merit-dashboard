@@ -13,6 +13,8 @@ export class KFormat implements PipeTransform {
       } else {
         value = `${value.toFixed(0)}K`;
       }
+    } else {
+      value = value.toFixed(0);
     }
 
     return `${value}`;

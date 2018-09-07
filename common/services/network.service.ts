@@ -1,28 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Node, INodes } from '../models/network';
+import { Node } from '../models/network';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 
 @Injectable()
 export class NetworkService {
   constructor(public dashboardApi: DashboardAPI_Service) {}
 
-  async getNetwork(address, limit?) {
+  async getNetwork(core, limit?) {
+    let address = core.address;
     let getReferrals = await this.dashboardApi.getReferrals(address, limit);
-    let network = [];
     let referrals = Array.prototype.slice.apply(getReferrals);
+    const root = new Node(`${address}`, `${address}`, limit, `CORE (${core.alias || 'Anonymous'})`, limit);
 
-    network.push(new Node(`${address}`, `${address}`, 10000, `CORE(${address})`));
-    referrals.map(item => {
-      let weight = referrals.filter(wItem => wItem.parentAddress === item.address).length;
-      network.push(new Node(`${item.address}`, `${item.parentAddress}`, weight, item.alias, item.childNodes));
+    const childNodes = referrals.map(r => {
+      const weight = referrals.filter(wItem => wItem.parentAddress === r.address).length;
+
+      return new Node(`${r.address}`, `${r.parentAddress}`, weight, r.alias, r.childNodes);
     });
-    return network;
-  }
 
-  createSvg(select, size) {
-    return select
-      .append('svg')
-      .attr('width', size[0])
-      .attr('height', size[1]);
+    return [root, ...childNodes];
   }
 }

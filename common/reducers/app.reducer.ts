@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import { Ranks } from '../models/ranks';
-import { Blocks } from '../models/blocks';
+import { Ranks } from '@dashboard/common/models/ranks';
+import { Blocks } from '@dashboard/common/models/blocks';
 import { Nodes } from '@dashboard/common/models/network';
 
 export interface IAppState {
@@ -14,7 +14,7 @@ const INITIAL_STATE: IAppState = {
   loading: true,
   ranks: new Ranks(false, 0, 0),
   blocks: new Blocks(false, []),
-  nodes: new Nodes(false, []),
+  nodes: new Nodes(false, 500, '', {}, []),
 };
 
 export enum AppReducerActionType {

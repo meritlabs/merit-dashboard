@@ -57,7 +57,7 @@ export class WalletInfoViewComponent {
     } else {
       this.isLoading = false;
       this.isValid = false;
-      (this.formData.controls.wallet as any).status = 'INVALID';
+      this.formData.controls['wallet'].setErrors({ invalid: true });
     }
   }
   findAddress(address) {
