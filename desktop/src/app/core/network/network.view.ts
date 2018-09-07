@@ -72,7 +72,8 @@ export class NetworkViewComponent {
       this.selectedAddress = validAddress;
       this.loadGraph({ address: validAddress, alias: getAddress.alias });
     } else {
-      (this.formData.controls.address as any).status = 'INVALID';
+      // (this.formData.controls.address as any).status = 'INVALID';
+      this.formData.controls['address'].setErrors({ invalid: true });
     }
   }
 
