@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Node, INodes } from '../models/network';
+import { Node } from '../models/network';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 
 @Injectable()
@@ -9,13 +9,15 @@ export class NetworkService {
   async getNetwork(core, limit?) {
     let address = core.address;
     let getReferrals = await this.dashboardApi.getReferrals(address, limit);
-    let network = [];
     let referrals = Array.prototype.slice.apply(getReferrals);
-    network.push(new Node(`${address}`, `${address}`, limit, `ROOT (${core.alias || 'Anonymous'})`, limit));
-    referrals.map(item => {
-      let weight = referrals.filter(wItem => wItem.parentAddress === item.address).length;
-      network.push(new Node(`${item.address}`, `${item.parentAddress}`, weight, item.alias, item.childNodes));
+    const root = new Node(`${address}`, `${address}`, limit, `CORE (${core.alias || 'Anonymous'})`, limit);
+
+    const childNodes = referrals.map(r => {
+      const weight = referrals.filter(wItem => wItem.parentAddress === r.address).length;
+
+      return new Node(`${r.address}`, `${r.parentAddress}`, weight, r.alias, r.childNodes);
     });
-    return network;
+
+    return [root, ...childNodes];
   }
 }
