@@ -72,7 +72,6 @@ export class NetworkViewComponent {
       this.selectedAddress = validAddress;
       this.loadGraph({ address: validAddress, alias: getAddress.alias });
     } else {
-      // (this.formData.controls.address as any).status = 'INVALID';
       this.formData.controls['address'].setErrors({ invalid: true });
     }
   }
@@ -205,11 +204,12 @@ export class NetworkViewComponent {
       context.restore();
     }
     function dragSubject() {
-      var i,
-        x = transform.invertX(d3.event.x),
-        y = transform.invertY(d3.event.y),
-        dx,
-        dy;
+      let i;
+      let x = transform.invertX(d3.event.x);
+      let y = transform.invertY(d3.event.y);
+      let dx;
+      let dy;
+
       for (i = tempData.nodes.length - 1; i >= 0; --i) {
         let node = tempData.nodes[i] as any;
         let radius = 15;
