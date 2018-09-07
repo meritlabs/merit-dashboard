@@ -88,12 +88,14 @@ export class NetworkViewComponent {
   }
 
   async loadGraph(core?, amount?) {
+    const showWarningBeakPoint = 10000;
+
     if (amount) this.selectedMapSize = amount;
     if (!core) core = { address: this.selectedAddress, alias: '' };
 
     this.gNodes = await this.networkService.getNetwork(core, amount || this.selectedMapSize);
 
-    if (this.gNodes.length > 10000) {
+    if (this.gNodes.length > showWarningBeakPoint) {
       this.showWarning = true;
     } else {
       this.store.dispatch(
