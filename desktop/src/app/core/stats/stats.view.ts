@@ -20,8 +20,8 @@ export class StatsViewComponent implements OnInit {
     Stats.currentBlock.difficulty = parseFloat(Stats.currentBlock.difficulty.toFixed(0));
     Stats.lastRetargetBlock.timestamp = `${moment(Stats.lastRetargetBlock.timestamp).format('MMM Do YYYY, hh:mm A')}`;
     Stats.lastRetargetInBlocks = Stats.currentBlock.height - Stats.lastRetargetBlock.height;
-    Stats.retargetIn = moment(Stats.retargetTimestamp).fromNow();
-    Stats.retargetAt = moment(Stats.retargetTimestamp).format('MMM Do YYYY, hh:mm A');
+    Stats.retargetIn = moment(Stats.retargetTimestamp * 1000).fromNow();
+    Stats.retargetAt = moment(Stats.retargetTimestamp * 1000).format('MMM Do YYYY, hh:mm A');
     Stats.retargetDifficulty = parseFloat(Stats.retargetDifficulty.toFixed(0));
 
     this.stats = Stats;
