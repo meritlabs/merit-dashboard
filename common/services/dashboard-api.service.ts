@@ -66,6 +66,11 @@ export class DashboardAPI_Service {
   validateAddress(address) {
     return this._doGetRequestMWS(`addresses/${address}/validate`);
   }
+
+  getWalletInfo(address) {
+    return this._doGetRequestDA(`get-wallet-info/${address}`);
+  }
+
   _doGetRequestDA(path) {
     return this.http.get(ENV.dashboardApi + path).toPromise();
   }

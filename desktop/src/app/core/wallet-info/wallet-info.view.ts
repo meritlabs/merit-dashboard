@@ -34,31 +34,34 @@ export class WalletInfoViewComponent {
 
   async validateAddress(address) {
     this.isLoading = true;
-    let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
-    let isValid: any = getAddress.isValid;
+    let walletInfo = await this.dashboardApi.getWalletInfo(address);
+    console.log(walletInfo);
 
-    if (isValid) {
-      let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
-      let rank: any;
-      let referralsMap: any = await this.dashboardApi.getAddressNetwork(getAddress.address);
+    // let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
+    // let isValid: any = getAddress.isValid;
 
-      this.pushCrumb(getAddress);
-      this.isValid = true;
-      this.address = getAddress;
-      this.address.balance = walletBalance.totalAmount / 1e8;
+    // if (isValid) {
+    //   let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
+    //   let rank: any;
+    //   let referralsMap: any = await this.dashboardApi.getAddressNetwork(getAddress.address);
 
-      if (getAddress.isConfirmed) {
-        rank = (await this.dashboardApi.getAddressRank(getAddress.address)) as any;
-        this.address.top = rank.rank;
-        this.address.rank = rank.anv;
-        this.address.referralsMap = referralsMap;
-      }
-      this.isLoading = false;
-    } else {
-      this.isLoading = false;
-      this.isValid = false;
-      this.formData.controls['wallet'].setErrors({ invalid: true });
-    }
+    //   this.pushCrumb(getAddress);
+    //   this.isValid = true;
+    //   this.address = getAddress;
+    //   this.address.balance = walletBalance.totalAmount / 1e8;
+
+    //   if (getAddress.isConfirmed) {
+    //     rank = (await this.dashboardApi.getAddressRank(getAddress.address)) as any;
+    //     this.address.top = rank.rank;
+    //     this.address.rank = rank.anv;
+    //     this.address.referralsMap = referralsMap;
+    //   }
+    //   this.isLoading = false;
+    // } else {
+    //   this.isLoading = false;
+    //   this.isValid = false;
+    //   this.formData.controls['wallet'].setErrors({ invalid: true });
+    // }
   }
   findAddress(address) {
     this.breadCrumbs.length = 0;
