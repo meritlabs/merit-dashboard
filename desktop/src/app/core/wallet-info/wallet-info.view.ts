@@ -40,6 +40,8 @@ export class WalletInfoViewComponent {
       this.formData.controls['wallet'].setErrors({ invalid: true });
     } else {
       this.address.referrer = walletInfo.Referrer;
+      this.pushCrumb(walletInfo.Referrer, true);
+      this.pushCrumb(walletInfo.Info, false);
       if (this.address.isbeaconed === 1) {
         this.address.isbeaconed = true;
       } else {
@@ -54,31 +56,6 @@ export class WalletInfoViewComponent {
         this.address.isconfirmed = false;
       }
     }
-
-    console.log(walletInfo);
-
-    // if (isValid) {
-    //   let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
-    //   let rank: any;
-    //   let referralsMap: any = await this.dashboardApi.getAddressNetwork(getAddress.address);
-
-    //   this.pushCrumb(getAddress);
-    //   this.isValid = true;
-    //   this.address = getAddress;
-    //   this.address.balance = walletBalance.totalAmount / 1e8;
-
-    //   if (getAddress.isConfirmed) {
-    //     rank = (await this.dashboardApi.getAddressRank(getAddress.address)) as any;
-    //     this.address.top = rank.rank;
-    //     this.address.rank = rank.anv;
-    //     this.address.referralsMap = referralsMap;
-    //   }
-    //   this.isLoading = false;
-    // } else {
-    //   this.isLoading = false;
-    //   this.isValid = false;
-    //
-    // }
   }
   findAddress(address) {
     this.breadCrumbs.length = 0;
@@ -91,7 +68,7 @@ export class WalletInfoViewComponent {
     }
     this.validateAddress(item.address);
   }
-  pushCrumb(getAddress) {
+  pushCrumb(getAddress, isParent) {
     let crumb = {
       name: getAddress.alias || 'Anonymous',
       address: getAddress.address,
@@ -99,7 +76,11 @@ export class WalletInfoViewComponent {
     let isExist = this.breadCrumbs.find(item => getAddress.address === item.address);
 
     if (!isExist) {
-      this.breadCrumbs.push(crumb);
+      if (!isParent) {
+        this.breadCrumbs.push(crumb);
+      } else {
+        this.breadCrumbs.unshift(crumb);
+      }
     }
   }
 }
