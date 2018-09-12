@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
+import { ENV } from '@app/env';
 
 @Component({
   selector: 'app-wallet-info-view',
@@ -60,6 +61,9 @@ export class WalletInfoViewComponent {
   findAddress(address) {
     this.breadCrumbs.length = 0;
     this.validateAddress(address);
+  }
+  isRoot(address) {
+    return address === ENV.startAddress;
   }
   selectCrumb(item) {
     var index = this.breadCrumbs.indexOf(item);

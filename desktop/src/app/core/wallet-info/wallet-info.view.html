@@ -19,7 +19,9 @@
   </form>
   <ng-container *ngIf="!isLoading; else loading">
     <ul class="breadCrumbs" *ngIf="breadCrumbs?.length > 1">
-      <li *ngFor="let item of breadCrumbs" (click)="selectCrumb(item)"><i>{{item.name}}</i></li>
+      <ng-container *ngFor="let item of breadCrumbs">
+        <li (click)="selectCrumb(item)" *ngIf="!isRoot(item.address)"><i>{{item.name}}</i></li>
+      </ng-container>
     </ul>
     <div class="statsWidget" *ngIf="address?.isvalid">
       <div class="title-secondary">
@@ -34,7 +36,7 @@
           <div class="column"></div>
           <div class="column heading">Details</div>
         </div>
-        <div class="row" *ngIf="address?.referrer?.alias">
+        <div class="row" *ngIf="address?.referrer?.address && !isRoot(address?.referrer?.address)">
           <div class="column heading">Referrer</div>
           <div class="column selected">
             <p>{{address?.referrer?.alias || address?.referrer?.address}}</p>
