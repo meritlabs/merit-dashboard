@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  dashboardApi: 'https://dashboard-api.merit.me/',
+  dashboardApi: 'http://0.0.0.0:8301/',
   mwsApiUrl: 'https://mws.merit.me/bws/api/v1/',
   coreAddress: 'MGgAma9epMrSipSm9Y2YjCWGGSt7gJWzM7',
   nPowTargetTimeSpan: 300,
