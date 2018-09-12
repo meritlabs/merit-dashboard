@@ -34,6 +34,16 @@
           <div class="column"></div>
           <div class="column heading">Details</div>
         </div>
+        <div class="row" *ngIf="address?.referrer?.alias">
+          <div class="column heading">Referrer</div>
+          <div class="column selected">
+            <p>{{address?.referrer?.alias || address?.referrer?.address}}</p>
+            <button (click)="validateAddress(address?.referrer?.address)" class="ui-button ui-button--green ui-button--xs">
+              <i class="hideOnMobile">DETAILS</i>
+              <i class="hideOnDesktop">i</i>
+            </button>
+          </div>
+        </div>
         <div class="row" [class.alert]="!address?.isvalid">
           <div class="column heading">Is valid</div>
           <div class="column selected">

@@ -38,20 +38,24 @@ export class WalletInfoViewComponent {
     this.address = walletInfo.Info;
     if (!this.address.isvalid) {
       this.formData.controls['wallet'].setErrors({ invalid: true });
-    }
-    if (this.address.isbeaconed === 1) {
-      this.address.isbeaconed = true;
     } else {
-      this.address.isbeaconed = false;
+      this.address.referrer = walletInfo.Referrer;
+      if (this.address.isbeaconed === 1) {
+        this.address.isbeaconed = true;
+      } else {
+        this.address.isbeaconed = false;
+      }
+      if (this.address.isconfirmed === 1) {
+        this.address.isconfirmed = true;
+        this.address.top = walletInfo.Rank.rank;
+        this.address.balance = walletInfo.Rank.balance / 1e8;
+        this.address.referralsMap = walletInfo.Referrals;
+      } else {
+        this.address.isconfirmed = false;
+      }
     }
-    if (this.address.isconfirmed === 1) {
-      this.address.isconfirmed = true;
-      this.address.top = walletInfo.Rank.rank;
-      this.address.balance = walletInfo.Rank.balance / 1e8;
-      this.address.referralsMap = walletInfo.Referrals;
-    } else {
-      this.address.isconfirmed = false;
-    }
+
+    console.log(walletInfo);
 
     // if (isValid) {
     //   let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
