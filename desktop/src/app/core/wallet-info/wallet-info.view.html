@@ -3,7 +3,8 @@
     <p>Check wallet statistics</p>
   </div>
   <div class="description-primary">
-    <p>Here you can review any existing wallet in the our BlockChain. This can help you get familiar with other Merit users
+    <p>Here you can review any existing wallet in the our BlockChain. This can help you get familiar with other Merit
+      users
       and your own wallet stats!
     </p>
   </div>
@@ -20,7 +21,7 @@
     <ul class="breadCrumbs" *ngIf="breadCrumbs?.length > 1">
       <li *ngFor="let item of breadCrumbs" (click)="selectCrumb(item)"><i>{{item.name}}</i></li>
     </ul>
-    <div class="statsWidget" *ngIf="isValid">
+    <div class="statsWidget" *ngIf="address?.isvalid">
       <div class="title-secondary">
         <p>
           <strong>{{address?.address}}
@@ -33,22 +34,22 @@
           <div class="column"></div>
           <div class="column heading">Details</div>
         </div>
-        <div class="row" [class.alert]="!address?.isValid">
+        <div class="row" [class.alert]="!address?.isvalid">
           <div class="column heading">Is valid</div>
           <div class="column selected">
-            <p>{{address?.isValid}}</p>
+            <p>{{address?.isvalid}}</p>
           </div>
         </div>
-        <div class="row" [class.alert]="!address?.isBeaconed">
+        <div class="row" [class.alert]="!address?.isbeaconed">
           <div class="column heading">Is beaconed</div>
           <div class="column selected">
-            <p>{{address.isBeaconed}}</p>
+            <p>{{address.isbeaconed}}</p>
           </div>
         </div>
-        <div class="row" [class.alert]="!address?.isConfirmed">
+        <div class="row" [class.alert]="!address?.isconfirmed">
           <div class="column heading">Is confirmed</div>
           <div class="column selected">
-            <p>{{address.isConfirmed}}</p>
+            <p>{{address.isconfirmed}}</p>
           </div>
         </div>
         <div class="row" [class.alert]="address?.balance === 0">
