@@ -74,7 +74,4 @@ export class DashboardAPI_Service {
   _doGetRequestDA(path) {
     return this.http.get(ENV.dashboardApi + path).toPromise();
   }
-  _doGetRequestMWS(path) {
-    return this.http.get(ENV.mwsApiUrl + path).toPromise();
-  }
 }
