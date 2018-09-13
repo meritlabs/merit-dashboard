@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DashboardAPI_Service } from '@dashboard/common/services/dashboard-api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
+import { ENV } from '@app/env';
 
 @Component({
   selector: 'app-wallet-info-view',
@@ -12,7 +13,6 @@ export class WalletInfoViewComponent {
   formData: FormGroup = this.formBuilder.group({
     wallet: ['', [Validators.required]],
   });
-  isValid: boolean;
   isLoading: boolean;
   address: any;
   breadCrumbs: Array<any> = [];
@@ -34,35 +34,36 @@ export class WalletInfoViewComponent {
 
   async validateAddress(address) {
     this.isLoading = true;
-    let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
-    let isValid: any = getAddress.isValid;
-
-    if (isValid) {
-      let walletBalance: any = await this.dashboardApi.getAddressBalance(getAddress.address);
-      let rank: any;
-      let referralsMap: any = await this.dashboardApi.getAddressNetwork(getAddress.address);
-
-      this.pushCrumb(getAddress);
-      this.isValid = true;
-      this.address = getAddress;
-      this.address.balance = walletBalance.totalAmount / 1e8;
-
-      if (getAddress.isConfirmed) {
-        rank = (await this.dashboardApi.getAddressRank(getAddress.address)) as any;
-        this.address.top = rank.rank;
-        this.address.rank = rank.anv;
-        this.address.referralsMap = referralsMap;
-      }
-      this.isLoading = false;
-    } else {
-      this.isLoading = false;
-      this.isValid = false;
+    let walletInfo = (await this.dashboardApi.getWalletInfo(address)) as any;
+    this.isLoading = false;
+    this.address = walletInfo.info;
+    if (!this.address.isvalid) {
       this.formData.controls['wallet'].setErrors({ invalid: true });
+    } else {
+      this.address.referrer = walletInfo.referrer;
+      this.pushCrumb(walletInfo.referrer, true);
+      this.pushCrumb(walletInfo.info, false);
+      if (this.address.isbeaconed === 1) {
+        this.address.isbeaconed = true;
+      } else {
+        this.address.isbeaconed = false;
+      }
+      if (this.address.isconfirmed === 1) {
+        this.address.isconfirmed = true;
+        this.address.top = walletInfo.rank.rank;
+        this.address.balance = walletInfo.rank.balance / 1e8;
+        this.address.referralsMap = walletInfo.referrals;
+      } else {
+        this.address.isconfirmed = false;
+      }
     }
   }
   findAddress(address) {
     this.breadCrumbs.length = 0;
     this.validateAddress(address);
+  }
+  isRoot(address) {
+    return address === ENV.startAddress;
   }
   selectCrumb(item) {
     var index = this.breadCrumbs.indexOf(item);
@@ -71,7 +72,7 @@ export class WalletInfoViewComponent {
     }
     this.validateAddress(item.address);
   }
-  pushCrumb(getAddress) {
+  pushCrumb(getAddress, isParent) {
     let crumb = {
       name: getAddress.alias || 'Anonymous',
       address: getAddress.address,
@@ -79,7 +80,11 @@ export class WalletInfoViewComponent {
     let isExist = this.breadCrumbs.find(item => getAddress.address === item.address);
 
     if (!isExist) {
-      this.breadCrumbs.push(crumb);
+      if (!isParent) {
+        this.breadCrumbs.push(crumb);
+      } else {
+        this.breadCrumbs.unshift(crumb);
+      }
     }
   }
 }

@@ -19,10 +19,11 @@ export class StatsViewComponent implements OnInit {
     Stats.networkAvgCyclesPS = parseFloat(Stats.networkAvgCyclesPS.toFixed(0));
     Stats.currentBlock.difficulty = parseFloat(Stats.currentBlock.difficulty.toFixed(0));
     Stats.lastRetargetBlock.timestamp = `${moment(Stats.lastRetargetBlock.timestamp).format('MMM Do YYYY, hh:mm A')}`;
-    Stats.lastRetargetInBlocks = Stats.currentBlock.height - Stats.lastRetargetBlock.height;
+    Stats.lastRetargetInBlocks = Stats.retargetInBlocks;
     Stats.retargetIn = moment(Stats.retargetTimestamp * 1000).fromNow();
     Stats.retargetAt = moment(Stats.retargetTimestamp * 1000).format('MMM Do YYYY, hh:mm A');
     Stats.retargetDifficulty = parseFloat(Stats.retargetDifficulty.toFixed(0));
+    Stats.currentSupply = Stats.currentBlock.height * 20;
 
     this.stats = Stats;
   }

@@ -30,7 +30,18 @@
             <small>{{stats?.networkAvgCyclesPS}} avg of last 30 blocks</small>
           </p>
         </div>
-        <div class="column text-italic">Network Cycles/Second is a Hash Rate or the number of calculations completed per second.</div>
+        <div class="column text-italic">Network Cycles/Second is a Hash Rate or the number of calculations completed
+          per second.</div>
+      </div>
+      <div class="row">
+        <div class="column heading">Current supply</div>
+        <div class="column selected">
+          <p>{{stats?.currentSupply | mformat}}</p>
+          <p>
+            <small>+20 mil locked in the Genesis block</small>
+          </p>
+        </div>
+        <div class="column text-italic">MRT mined since launch</div>
       </div>
       <div class="row">
         <div class="column heading">Difficulty</div>

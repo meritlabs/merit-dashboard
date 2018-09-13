@@ -18,6 +18,7 @@ export class Stats {
     public retargetTimestamp: number,
     public retargetIn: string,
     public retargetAt: string,
-    public retargetDifficulty: number
+    public retargetDifficulty: number,
+    public currentSupply: number
   ) {}
 }

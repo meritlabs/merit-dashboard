@@ -59,13 +59,13 @@ export class NetworkViewComponent {
   }
 
   async getAddressDetails(address) {
-    let getAddress = (await this.dashboardApi.validateAddress(address)) as any;
+    let getAddress = (await this.dashboardApi.validateWallet(address)) as any;
     return getAddress.alias || 'Anonymous';
   }
 
   async validateAddress(address) {
-    let getAddress: any = (await this.dashboardApi.validateAddress(address)) as any;
-    let isValid: any = getAddress.isValid;
+    let getAddress: any = (await this.dashboardApi.validateWallet(address)) as any;
+    let isValid: any = getAddress.isvalid;
     let validAddress;
     if (isValid) {
       validAddress = getAddress.address;
