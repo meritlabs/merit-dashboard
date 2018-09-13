@@ -64,11 +64,11 @@ export class DashboardAPI_Service {
   }
 
   validateWallet(address) {
-    return this._doGetRequestDA(`validate-wallet/${address}`);
+    return this._doGetRequestDA(`address/${address}/validate`);
   }
 
   getWalletInfo(address) {
-    return this._doGetRequestDA(`get-wallet-info/${address}`);
+    return this._doGetRequestDA(`address/${address}/wallet-info`);
   }
 
   _doGetRequestDA(path) {
