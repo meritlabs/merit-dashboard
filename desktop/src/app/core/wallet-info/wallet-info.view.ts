@@ -36,13 +36,13 @@ export class WalletInfoViewComponent {
     this.isLoading = true;
     let walletInfo = (await this.dashboardApi.getWalletInfo(address)) as any;
     this.isLoading = false;
-    this.address = walletInfo.Info;
+    this.address = walletInfo.info;
     if (!this.address.isvalid) {
       this.formData.controls['wallet'].setErrors({ invalid: true });
     } else {
-      this.address.referrer = walletInfo.Referrer;
-      this.pushCrumb(walletInfo.Referrer, true);
-      this.pushCrumb(walletInfo.Info, false);
+      this.address.referrer = walletInfo.referrer;
+      this.pushCrumb(walletInfo.referrer, true);
+      this.pushCrumb(walletInfo.info, false);
       if (this.address.isbeaconed === 1) {
         this.address.isbeaconed = true;
       } else {
@@ -50,9 +50,9 @@ export class WalletInfoViewComponent {
       }
       if (this.address.isconfirmed === 1) {
         this.address.isconfirmed = true;
-        this.address.top = walletInfo.Rank.rank;
-        this.address.balance = walletInfo.Rank.balance / 1e8;
-        this.address.referralsMap = walletInfo.Referrals;
+        this.address.top = walletInfo.rank.rank;
+        this.address.balance = walletInfo.rank.balance / 1e8;
+        this.address.referralsMap = walletInfo.referrals;
       } else {
         this.address.isconfirmed = false;
       }
