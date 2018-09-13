@@ -23,6 +23,7 @@ export class StatsViewComponent implements OnInit {
     Stats.retargetIn = moment(Stats.retargetTimestamp * 1000).fromNow();
     Stats.retargetAt = moment(Stats.retargetTimestamp * 1000).format('MMM Do YYYY, hh:mm A');
     Stats.retargetDifficulty = parseFloat(Stats.retargetDifficulty.toFixed(0));
+    Stats.currentSupply = Stats.currentBlock.height * 20;
 
     this.stats = Stats;
   }
