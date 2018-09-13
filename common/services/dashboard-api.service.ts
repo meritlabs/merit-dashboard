@@ -63,8 +63,8 @@ export class DashboardAPI_Service {
     return this._doGetRequestDA(`stats`);
   }
 
-  validateAddress(address) {
-    return this._doGetRequestMWS(`addresses/${address}/validate`);
+  validateWallet(address) {
+    return this._doGetRequestDA(`validate-wallet/${address}`);
   }
 
   getWalletInfo(address) {
