@@ -12,6 +12,7 @@ import { CalculatorViewComponent } from '@dashboard/desktop/app/core/calculator/
 import { WalletInfoViewComponent } from '@dashboard/desktop/app/core/wallet-info/wallet-info.view';
 import { MomentPipe } from '@dashboard/common/pipes/moment';
 import { KFormat } from '@dashboard/common/pipes/k-format';
+import { MFormat } from '@dashboard/common/pipes/m-format';
 import { DisifiViewComponent } from '@dashboard/desktop/app/core/disifi-project/disifi-project.view';
 
 export function getPages() {
@@ -29,6 +30,6 @@ export function getPages() {
 @NgModule({
   entryComponents: [CoreComponent, ...getPages()],
   imports: [CommonModule, CoreRoutingModule, CoreComponentsModule, ReactiveFormsModule, FormsModule],
-  declarations: [CoreComponent, ...getPages(), MomentPipe, KFormat],
+  declarations: [CoreComponent, ...getPages(), MomentPipe, KFormat, MFormat],
 })
 export class CoreModule {}
