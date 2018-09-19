@@ -10,7 +10,8 @@ To work on this project, you need:
 
 Start with installing dependencies:
 ```
-yarn
+yarn # install global deps
+cd desktop && yarn && cd .. 
 ```
 
 Check the environment file in `common/environments` folder.
