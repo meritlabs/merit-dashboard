@@ -29,7 +29,7 @@
   "devDependencies": {
     "@angular-devkit/core": "0.3.2",
     "@angular/animations": "5.0.3",
-    "@angular/cli": "~1.7.1",
+    "@angular/cli": "~15.0.0",
     "@angular/common": "5.0.3",
     "@angular/compiler": "5.0.3",
     "@angular/compiler-cli": "5.0.3",
@@ -54,7 +54,7 @@
     "circular-dependency-plugin": "^4.2.1",
     "copy-webpack-plugin": "~4.4.1",
     "file-loader": "^1.1.5",
-    "html-webpack-plugin": "^2.29.0",
+    "html-webpack-plugin": "^5.5.0",
     "istanbul-instrumenter-loader": "^3.0.0",
     "less-loader": "^4.0.5",
     "postcss-import": "^11.0.0",
